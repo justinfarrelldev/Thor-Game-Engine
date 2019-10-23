@@ -3,6 +3,11 @@
 let AddElem = (type, innerHTML) => {
     let el = document.createElement(type);
     el.innerHTML = innerHTML;
-    document.body.appendChild(el);
+    if (!document.getElementById("GamePreviewWindow")) {
+        document.body.appendChild(el);
+    }
+    else {
+        document.getElementById("GamePreviewWindow").appendChild(el);
+    }
 };
 //# sourceMappingURL=func-lib.js.map

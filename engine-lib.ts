@@ -2,31 +2,67 @@
 //own risk.
 
 //Launches the game
-let LaunchGame = (newWindow : boolean) =>
+let LaunchGame = () =>
 {
-    if (newWindow)
+    //Launches in new browser window
+    console.log("Launching in new browser window.")
+
+    //Grab the stuff written in the text window and check
+    //if it works as Javascript 
+    let textInputWindowValue = 
+    (<HTMLInputElement>document.getElementById('TextInputWindow')).value
+
+    ExecuteGameInEditor(textInputWindowValue)
+
+}
+
+//Downloads the game as an HTML file
+let DownloadGame = () =>
+{
+    let textInputWindowValue = 
+    (<HTMLInputElement>document.getElementById('TextInputWindow')).value
+
+    let title = "Test output game"
+    //The skeleton for the file output
+    let out = "<head><title>" + title + "</title></head><body>" +
+    "<script>" + ReadFileOnServer("js-src/func-lib.js") + "</script>" + 
+    "<script>"
+        + textInputWindowValue + "</script></body>"
+
+    DownloadGameFile(out, "test.html")
+}
+
+let ClearGamePreviewWindow = () => 
+{
+    document.getElementById("GamePreviewWindow").innerHTML = null
+}
+
+//Executes the game inside the editor itself (in the game preview window)
+let ExecuteGameInEditor = (textInputWindowValue : string) => 
+{
+    ClearGamePreviewWindow()
+
+    let s = document.createElement("script")
+    s.id = "TextInputWindowValueScript"
+    let funcLib = document.createElement("script")
+    funcLib.id = "FuncLibScript"
+    s.type = 'text/javascript'
+    funcLib.type = 'text/javascript'
+    let code = textInputWindowValue
+    let funcLibCode = ReadFileOnServer("js-src/func-lib.js")
+    try 
     {
-        //Launches in new browser window
-        console.log("Launching in new browser window.")
-
-        //Grab the stuff written in the text window and check
-        //if it works as Javascript 
-        let textInputWindowValue = 
-        (<HTMLInputElement>document.getElementById('TextInputWindow')).value
-
-        let title = "Test output game"
-        //The skeleton for the file output
-        let out = "<head><title>" + title + "</title></head><body>" +
-        "<script>" + ReadFileOnServer("js-src/func-lib.js") + "</script>" + 
-        "<script>"
-         + textInputWindowValue + "</script></body>"
-
-        DownloadGameFile(out, "test.html")
+        s.appendChild(document.createTextNode(code))
+        funcLib.appendChild(document.createTextNode(funcLibCode))
+        document.getElementById("GamePreviewWindow").appendChild(funcLib)
+        document.getElementById("GamePreviewWindow").appendChild(s)
     }
-    else
+    catch (error)
     {
-        //Launches in the current engine window
-        console.error("Not yet supported.")
+        s.text = code
+        funcLib.text = funcLibCode
+        document.getElementById("GamePreviewWindow").appendChild(funcLib)
+        document.getElementById("GamePreviewWindow").appendChild(s)
     }
 }
 

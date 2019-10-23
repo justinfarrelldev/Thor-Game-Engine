@@ -5,5 +5,12 @@ let AddElem = (type : string, innerHTML : string) =>
 {
     let el = document.createElement(type)
     el.innerHTML = innerHTML
-    document.body.appendChild(el)
+    if (!document.getElementById("GamePreviewWindow"))
+    {
+        document.body.appendChild(el)
+    }
+    else
+    {
+        document.getElementById("GamePreviewWindow").appendChild(el)
+    }
 }
