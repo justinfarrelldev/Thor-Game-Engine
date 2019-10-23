@@ -1,1 +1,1 @@
-{"version":3,"file":"func-lib.js","sourceRoot":"","sources":["../func-lib.ts"],"names":[],"mappings":"AAAA,yCAAyC;AACzC,6DAA6D"}
+{"version":3,"file":"func-lib.js","sourceRoot":"","sources":["../func-lib.ts"],"names":[],"mappings":"AAAA,yCAAyC;AACzC,6DAA6D;AAE7D,IAAI,OAAO,GAAG,CAAC,IAAa,EAAE,SAAkB,EAAE,EAAE;IAEhD,IAAI,EAAE,GAAG,QAAQ,CAAC,aAAa,CAAC,IAAI,CAAC,CAAA;IACrC,EAAE,CAAC,SAAS,GAAG,SAAS,CAAA;IACxB,QAAQ,CAAC,IAAI,CAAC,WAAW,CAAC,EAAE,CAAC,CAAA;AACjC,CAAC,CAAA"}

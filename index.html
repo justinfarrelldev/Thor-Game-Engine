@@ -12,11 +12,15 @@
     <title>⚡Thor Game Engine⚡</title>
 </head>
 <body>
-    <button id = "PlayButton" onclick = "LaunchGame(true)">Launch Game in New Window</button>
-    <div id = "GamePreviewWindow" style = "width: 720px; height: 720px; border-style: solid">
+    <button id = "PlayButton" onclick = "LaunchGame(true)" style = "color: green">▶</button>
+    <br>
+    <div id = "GamePreviewWindow" style = "width: 50%; height: 75%; border-style: solid;
+                                           resize: both; overflow: auto; float: left;
+                                           max-width: 50%;">
         <!--Elements are added to this to simulate gameplay.-->
     
     </div>
+    <textarea id = "TextInputWindow" style = "width: 49%; height: 75%; max-width: 49%;"></textarea>
     <script src = "js-src/start.js"></script>
     <script src = "js-src/engine-lib.js"></script>
     <script src = "js-src/jquery-3.4.1.js"></script>
