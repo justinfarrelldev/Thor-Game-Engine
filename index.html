@@ -1,0 +1,31 @@
+<head>
+    <!--
+        Purpose: swift development of simple idle games, which will 
+        likely transition into development of visual novels and 
+        such.
+    
+        Engine will use a download system where you can download 
+        your project from the server. You can click a test button
+        to test your game. It will interface with Javascript 
+        and a special syntax which was made for this engine. 
+    -->
+    <title>⚡Thor Game Engine⚡</title>
+</head>
+<body>
+    <button id = "PlayButton" onclick = "LaunchGame(true)">Launch Game in New Window</button>
+    <div id = "GamePreviewWindow" style = "width: 720px; height: 720px; border-style: solid">
+        <!--Elements are added to this to simulate gameplay.-->
+    
+    </div>
+    <script src = "js-src/start.js"></script>
+    <script src = "js-src/engine-lib.js"></script>
+    <script src = "js-src/jquery-3.4.1.js"></script>
+
+    <script>    
+                $(document).ready(function()
+                    {
+                    }
+                )
+    </script>
+
+</body>

@@ -1,0 +1,9 @@
+{
+    "compilerOptions": {
+        "target": "esnext",
+        "watch" : true,
+        "module": "commonjs",
+        "sourceMap": true,
+        "outDir" : "./js-src"
+    }
+}
