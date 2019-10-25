@@ -42,15 +42,26 @@ function GetElemById(id : string)
 {
     document.getElementById(id)
 }
-
-let AppendChildToCorrectElement = (element : any) => 
+if (AppendChildToCorrectElement === undefined)
 {
-    if (!document.getElementById("GamePreviewWindow"))
+    var AppendChildToCorrectElement = (element : any) => 
     {
-        document.body.appendChild(element)
+        if (!document.getElementById("GamePreviewWindow"))
+        {
+            document.body.appendChild(element)
+        }
+        else
+        {
+            document.getElementById("GamePreviewWindow").appendChild(element)
+        }
     }
-    else
+}
+
+//Sets style of given element to a certain style
+if (SetStyle === undefined)
+{
+    var SetStyle = (element : any, style : string) =>
     {
-        document.getElementById("GamePreviewWindow").appendChild(element)
+        element.style = style
     }
 }

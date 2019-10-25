@@ -2,8 +2,11 @@
     "compilerOptions": {
         "target": "esnext",
         "watch" : true,
-        "module": "commonjs",
         "sourceMap": true,
-        "outDir" : "./js-src"
+        "outDir" : "./js-src",
+        "baseUrl": "./",
+        "paths" : {
+            "jszip" : ["jszip/jszip.min.js"]
+        }
     }
 }

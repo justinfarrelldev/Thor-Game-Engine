@@ -9,8 +9,8 @@ let LaunchGame = () =>
 
     //Grab the stuff written in the text window and check
     //if it works as Javascript 
-    let textInputWindowValue = 
-    (<HTMLInputElement>document.getElementById('TextInputWindow')).value
+
+    let textInputWindowValue = editor.getValue()
 
     ExecuteGameInEditor(textInputWindowValue)
 
@@ -19,8 +19,8 @@ let LaunchGame = () =>
 //Downloads the game as an HTML file
 let DownloadGame = () =>
 {
-    let textInputWindowValue = 
-    (<HTMLInputElement>document.getElementById('TextInputWindow')).value
+
+    let textInputWindowValue = editor.getValue()
 
     let title = "Test output game"
     //The skeleton for the file output
@@ -40,6 +40,17 @@ let ClearGamePreviewWindow = () =>
 //Executes the game inside the editor itself (in the game preview window)
 let ExecuteGameInEditor = (textInputWindowValue : string) => 
 {
+
+    if (document.getElementById("FuncLibScript"))
+    {
+        document.getElementById("FuncLibScript").parentNode.removeChild(document.getElementById("FuncLibScript"))
+    }
+
+    if (document.getElementById("TextInputWindowValueScript"))
+    {
+        document.getElementById("TextInputWindowValueScript").parentNode.removeChild(document.getElementById("TextInputWindowValueScript"))
+    }
+
     ClearGamePreviewWindow()
 
     let s = document.createElement("script")
@@ -48,8 +59,9 @@ let ExecuteGameInEditor = (textInputWindowValue : string) =>
     funcLib.id = "FuncLibScript"
     s.type = 'text/javascript'
     funcLib.type = 'text/javascript'
-    let code = textInputWindowValue
-    let funcLibCode = ReadFileOnServer("js-src/func-lib.js")
+
+    var code = textInputWindowValue
+    var funcLibCode = ReadFileOnServer("js-src/func-lib.js")
     try 
     {
         s.appendChild(document.createTextNode(code))

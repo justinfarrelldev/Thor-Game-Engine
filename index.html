@@ -19,20 +19,33 @@
     <br>
     <div id = "GamePreviewWindow" style = "width: 50%; height: 75%; border-style: solid;
                                            resize: both; overflow: auto; float: left;
-                                           max-width: 50%;">
+                                           max-width: 50%; max-height: 65%">
         <!--Elements are added to this to simulate gameplay.-->
     
-    </div>
-    <textarea id = "TextInputWindow" style = "width: 49%; height: 75%; max-width: 49%;"></textarea>
+    </div> 
+    <textarea id = "TextInputWindow" style = "width: 49%; height: 75%; max-width: 49%; border-style: solid;"></textarea>
     <script src = "js-src/start.js"></script>
     <script src = "js-src/engine-lib.js"></script>
     <script src = "js-src/jquery-3.4.1.js"></script>
-
+    <script src = "codemirror/codemirror/codemirror-5.49.2/lib/codemirror.js"></script>
+    <script src = "codemirror/codemirror/codemirror-5.49.2/mode/javascript/javascript.js"></script>
+    <link href = "codemirror/codemirror/codemirror-5.49.2/lib/codemirror.css" rel = "stylesheet"></link>
     <script>    
-                $(document).ready(function()
-                    {
-                    }
-                )
+            $(document).ready(function()
+                {
+                    var myCodeMirror = CodeMirror.fromTextArea(document.getElementById("TextInputWindow"), {
+                            value: "//Please do not use the 'let' keyword",
+                            mode: "javascript",
+                            indentWithTabs: true,
+                            indentUnit: 4,
+                            lineNumbers: true,
+                            highlightTheme: "material",
+                            htmlMode : true
+                        })
+
+                    SetCodeMirrorEditor(myCodeMirror)
+                }
+            )
     </script>
 
 </body>

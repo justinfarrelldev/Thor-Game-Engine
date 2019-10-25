@@ -24,12 +24,20 @@ function AddButton(text, onclick, id) {
 function GetElemById(id) {
     document.getElementById(id);
 }
-let AppendChildToCorrectElement = (element) => {
-    if (!document.getElementById("GamePreviewWindow")) {
-        document.body.appendChild(element);
-    }
-    else {
-        document.getElementById("GamePreviewWindow").appendChild(element);
-    }
-};
+if (AppendChildToCorrectElement === undefined) {
+    var AppendChildToCorrectElement = (element) => {
+        if (!document.getElementById("GamePreviewWindow")) {
+            document.body.appendChild(element);
+        }
+        else {
+            document.getElementById("GamePreviewWindow").appendChild(element);
+        }
+    };
+}
+//Sets style of given element to a certain style
+if (SetStyle === undefined) {
+    var SetStyle = (element, style) => {
+        element.style = style;
+    };
+}
 //# sourceMappingURL=func-lib.js.map
