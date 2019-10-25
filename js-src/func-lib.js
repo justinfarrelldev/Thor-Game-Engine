@@ -22,7 +22,7 @@ function AddButton(text, onclick, id) {
 }
 //Shorthand
 function GetElemById(id) {
-    document.getElementById(id);
+    return document.getElementById(id);
 }
 if (AppendChildToCorrectElement === undefined) {
     var AppendChildToCorrectElement = (element) => {

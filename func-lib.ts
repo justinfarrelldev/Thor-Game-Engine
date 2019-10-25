@@ -40,7 +40,7 @@ function AddButton(text : string, onclick : any, id? : string)
 //Shorthand
 function GetElemById(id : string)
 {
-    document.getElementById(id)
+    return document.getElementById(id)
 }
 if (AppendChildToCorrectElement === undefined)
 {

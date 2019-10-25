@@ -34,7 +34,6 @@
             $(document).ready(function()
                 {
                     var myCodeMirror = CodeMirror.fromTextArea(document.getElementById("TextInputWindow"), {
-                            value: "//Please do not use the 'let' keyword",
                             mode: "javascript",
                             indentWithTabs: true,
                             indentUnit: 4,
@@ -44,6 +43,8 @@
                         })
 
                     SetCodeMirrorEditor(myCodeMirror)
+
+                    editor.getDoc().setValue("//Please do not use the 'let' keyword\n//Doing so will result in errors upon replay\n")
                 }
             )
     </script>
