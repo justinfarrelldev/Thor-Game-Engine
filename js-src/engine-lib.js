@@ -9,6 +9,27 @@ let LaunchGame = () => {
     let textInputWindowValue = editor.getValue();
     ExecuteGameInEditor(textInputWindowValue);
 };
+//Gets called before the game is packed into a zip.
+//Makes all of the game files and adds them to the
+//game itself to be exported
+let MakeGame = () => {
+    //Doctype needs to be up here as well as charset
+    let outFile = new HTMLFile("test.html", "");
+    let textInputWindowValue = editor.getValue();
+    let title = "Test output game";
+    let html = outFile.MakeElement("html", "", ""); //Outer HTML tag
+    let head = outFile.MakeElement("head", "", "");
+    outFile.NestElement(head, outFile.MakeElement("title", "", title)); //Put the title in the head
+    outFile.contents = outFile.NestElement(html, head).ToString(); //Nest the head in the 
+    //html tag
+    outFile.AddElement("body", "", "");
+    outFile.AddElement("script", "src = \"func-lib.js\"", "");
+    outFile.AddElement("script", "", textInputWindowValue);
+    Game.AddFile(outFile.ToGameFile());
+    let funcLib = new GameFile("func-lib.js", "");
+    funcLib.contents = ReadFileOnServer("js-src/func-lib.js");
+    Game.AddFile(funcLib);
+};
 let ClearGamePreviewWindow = () => {
     document.getElementById("GamePreviewWindow").innerHTML = null;
 };

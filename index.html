@@ -14,30 +14,38 @@
     <title>⚡Thor Game Engine⚡</title>
 </head>
 <body>
-    <button id = "PlayButton" onclick = "LaunchGame()" style = "color: green"
+    <button id = "PlayButton" onclick = "LaunchGame()" style = "color: green; display: inline-block"
     title = "Play the game in the preview window">▶</button>
     <button id = "DownloadButton" onclick = "DownloadGame()" 
-    title = "Download the game to your computer">📥</button>
+    title = "Download the game to your computer" style = "display: inline-block">📥</button>
+    <div class = "DropdownDiv" style = "display: inline-block;">
+        <ul class = "Dropdown">
+            <li style = "position: absolute">
+                <button onclick = "DropdownOpenClose('OptionsDropdown')">Options</button>
+                <ul class = "DropdownSubmenu" id = "OptionsDropdown">        
+                    <li class = "DropdownItem1">Option 1</li>
+                    <li class = "DropdownItem1">Option 2</li>
+                </ul>
+            </li>
+        </ul>
+    </div>
     <br>
     <div id = "GamePreviewWindow">
         <!--Elements are added to this to simulate gameplay.-->
     
     </div> 
     <textarea id = "TextInputWindow"></textarea>
+
+    <div id = "ErrorWindow">
+        <p>Errors will show up here when they occur.</p>
+    </div>
+
     <link href = "codemirror/codemirror/codemirror-5.49.2/lib/codemirror.css" rel = "stylesheet"></link>
     <link href = "thor-style.css" rel = "stylesheet"></link>
 
     <script src = "js-src/jquery-3.4.1.js"></script>
 
     <script>    
-
-
-        //Can pass in an argument with an array of files and iterate over them 
-        //Can also pass in a single instance of a class for the game with 
-        //subvariables for files ('game.files = []')
-        //Will I be using the class for the game often? Likely
-        //These classes will not need to be exported
-
         let MakeGameZip = () => 
         {
             var zip = new JSZip()
@@ -57,45 +65,27 @@
         //Downloads the game as an HTML file
         let DownloadGame = () =>
         {
-
-            //Doctype needs to be up here as well as charset
-
-            let outFile = new HTMLFile("test.html", "")
-            
-            let textInputWindowValue = editor.getValue()
-
-            let title = "Test output game"
-
-            let html = outFile.MakeElement("html", "", "") //Outer HTML tag
-
-            let head = outFile.MakeElement("head", "", "")
-
-            outFile.NestElement(head,
-                                outFile.MakeElement("title", "", title)) //Put the title in the head
-
-            outFile.contents = outFile.NestElement(html, head).ToString() //Nest the head in the 
-                                                                          //html tag
-
-            outFile.AddElement("body", "", "");
-
-            outFile.AddElement("script", "src = \"func-lib.js\"", "")
-
-            outFile.AddElement("script", "", textInputWindowValue)
-
-            Game.AddFile(outFile.ToGameFile())
-
-            let funcLib = new GameFile("func-lib.js", "")
-
-            funcLib.contents = ReadFileOnServer("js-src/func-lib.js")
-
-            Game.AddFile(funcLib)
+            MakeGame()
 
             MakeGameZip() //FINALLY THIS WORKS
             
         }
+
+        var DropdownOpenClose = (id) =>
+        {
+            //Opens and closes dropdown 
+            $(document).ready(function(){
+                $("#" + id).slideToggle(50, () => {
+
+                })
+            })
+  
+        }
  
             $(document).ready(function()
                 {
+                    $('.DropdownSubmenu').hide()
+
 
                     var myCodeMirror = CodeMirror.fromTextArea(document.getElementById("TextInputWindow"), {
                             mode: "javascript",
@@ -104,7 +94,7 @@
                             lineNumbers: true,
                             highlightTheme: "material",
                             htmlMode : true
-                        })
+                    })
 
 
                     let SetCodeMirrorEditor = (input) => 
