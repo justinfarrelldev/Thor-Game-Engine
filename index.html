@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <head>
     <!--
         Purpose: swift development of simple idle games, which will 
@@ -9,6 +10,7 @@
         to test your game. It will interface with Javascript 
         and a special syntax which was made for this engine. 
     -->
+    <meta charset = "UTF-8">
     <title>⚡Thor Game Engine⚡</title>
 </head>
 <body>
@@ -17,22 +19,84 @@
     <button id = "DownloadButton" onclick = "DownloadGame()" 
     title = "Download the game to your computer">📥</button>
     <br>
-    <div id = "GamePreviewWindow" style = "width: 50%; height: 75%; border-style: solid;
-                                           resize: both; overflow: auto; float: left;
-                                           max-width: 50%; max-height: 65%">
+    <div id = "GamePreviewWindow">
         <!--Elements are added to this to simulate gameplay.-->
     
     </div> 
-    <textarea id = "TextInputWindow" style = "width: 49%; height: 75%; max-width: 49%; border-style: solid;"></textarea>
-    <script src = "js-src/start.js"></script>
-    <script src = "js-src/engine-lib.js"></script>
-    <script src = "js-src/jquery-3.4.1.js"></script>
-    <script src = "codemirror/codemirror/codemirror-5.49.2/lib/codemirror.js"></script>
-    <script src = "codemirror/codemirror/codemirror-5.49.2/mode/javascript/javascript.js"></script>
+    <textarea id = "TextInputWindow"></textarea>
     <link href = "codemirror/codemirror/codemirror-5.49.2/lib/codemirror.css" rel = "stylesheet"></link>
+    <link href = "thor-style.css" rel = "stylesheet"></link>
+
+    <script src = "js-src/jquery-3.4.1.js"></script>
+
     <script>    
+
+
+        //Can pass in an argument with an array of files and iterate over them 
+        //Can also pass in a single instance of a class for the game with 
+        //subvariables for files ('game.files = []')
+        //Will I be using the class for the game often? Likely
+        //These classes will not need to be exported
+
+        let MakeGameZip = () => 
+        {
+            var zip = new JSZip()
+
+            for (let i = 0; i < Game.files.length; i++)
+            {
+                zip.file(Game.files[i].fileName, Game.files[i].contents)
+            }
+            zip.generateAsync({type: "blob"}).then(
+                function(content)
+                {
+                    DownloadGameFile(content, "test.zip")
+                }
+            )
+        }
+        
+        //Downloads the game as an HTML file
+        let DownloadGame = () =>
+        {
+
+            //Doctype needs to be up here as well as charset
+
+            let outFile = new HTMLFile("test.html", "")
+            
+            let textInputWindowValue = editor.getValue()
+
+            let title = "Test output game"
+
+            let html = outFile.MakeElement("html", "", "") //Outer HTML tag
+
+            let head = outFile.MakeElement("head", "", "")
+
+            outFile.NestElement(head,
+                                outFile.MakeElement("title", "", title)) //Put the title in the head
+
+            outFile.contents = outFile.NestElement(html, head).ToString() //Nest the head in the 
+                                                                          //html tag
+
+            outFile.AddElement("body", "", "");
+
+            outFile.AddElement("script", "src = \"func-lib.js\"", "")
+
+            outFile.AddElement("script", "", textInputWindowValue)
+
+            Game.AddFile(outFile.ToGameFile())
+
+            let funcLib = new GameFile("func-lib.js", "")
+
+            funcLib.contents = ReadFileOnServer("js-src/func-lib.js")
+
+            Game.AddFile(funcLib)
+
+            MakeGameZip() //FINALLY THIS WORKS
+            
+        }
+ 
             $(document).ready(function()
                 {
+
                     var myCodeMirror = CodeMirror.fromTextArea(document.getElementById("TextInputWindow"), {
                             mode: "javascript",
                             indentWithTabs: true,
@@ -42,11 +106,22 @@
                             htmlMode : true
                         })
 
+
+                    let SetCodeMirrorEditor = (input) => 
+                    {
+                        editor = input
+                    }
+
                     SetCodeMirrorEditor(myCodeMirror)
 
                     editor.getDoc().setValue("//Please do not use the 'let' keyword\n//Doing so will result in errors upon replay\n")
                 }
             )
-    </script>
-
+    </script> 
+    <script src = "jszip/dist/jszip.min.js"></script>
+    <script src = "js-src/engine-types.js"></script>
+    <script src = "js-src/start.js"></script>
+    <script src = "js-src/engine-lib.js"></script>
+    <script src = "codemirror/codemirror/codemirror-5.49.2/lib/codemirror.js"></script>
+    <script src = "codemirror/codemirror/codemirror-5.49.2/mode/javascript/javascript.js"></script>
 </body>

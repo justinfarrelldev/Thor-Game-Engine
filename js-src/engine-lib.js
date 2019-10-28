@@ -9,17 +9,6 @@ let LaunchGame = () => {
     let textInputWindowValue = editor.getValue();
     ExecuteGameInEditor(textInputWindowValue);
 };
-//Downloads the game as an HTML file
-let DownloadGame = () => {
-    let textInputWindowValue = editor.getValue();
-    let title = "Test output game";
-    //The skeleton for the file output
-    let out = "<head><title>" + title + "</title></head><body>" +
-        "<script>" + ReadFileOnServer("js-src/func-lib.js") + "</script>" +
-        "<script>"
-        + textInputWindowValue + "</script></body>";
-    DownloadGameFile(out, "test.html");
-};
 let ClearGamePreviewWindow = () => {
     document.getElementById("GamePreviewWindow").innerHTML = null;
 };

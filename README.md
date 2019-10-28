@@ -7,30 +7,30 @@ visual novels). I plan to expand it as I work on more projects inside of Thor, s
 in the future it will likely have many more features.
 
 # Features
-**27th Oct, 2019**
-- Can export games to a new webpage (.html file) with a single custom script included
+**28th Oct, 2019**
+- Can export games to a new webpage (.zip file with HTML file inside) with a single custom script included
 - Can test games inside of Thor's game window (left side) using the play button
 - Can use a custom script (Javascript) to control the game
 - Thor includes a few library functions which you can use to quickly develop new games (see below)
 
 # Update Notes
-**27th Oct, 2019**
-- Updated this document
+**28th Oct, 2019**
+- Added support for .zip file export. This will allow further expansion of the engine with image support and support for multiple scripts without one massive HTML file.
 
 # To-Do
-**As of 27th Oct, 2019**
+**Updated 28th Oct, 2019**
+- Fix vulnerabilities
 - Add support for multiple (not just one) script
-- Make the CodeMirror code viewport properly recognize functions defined in the function library.
-- Add support for exporting as a .zip file (so that images can be included in exported games)
 - Add support for uploading custom images to Thor (similar to Unity's file viewer)
 - Add more library functions (especially for making UI and WebGL)
 - Fix warnings about using XMLHttpRequest (not an immediate priority)
 - Add configuration options for Thor (likely stored in the browser cache)
 - Add JQuery support to exported games
+- Possibly add support for Typescript
 
-# Function Library (as of Oct 27th, 2019)
+# Function Library (Updated Oct 27th, 2019)
 Thor includes a function library which can be used to create your game quickly and with 
-minimal effort. The functions are listed below (for now): 
+minimal effort. The functions are listed below (? means that an argument is optional): 
 
 - AddElem(type, innerHTML, ?id)     [returns the element]
   - Adds a new element to the scene of type "type" which has the inner HTML "innerHTML" 
