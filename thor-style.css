@@ -7,6 +7,7 @@ html, body {
     width: 49%; 
     height: 75%; 
     max-width: 49%; 
+    max-height: 75%;
     border-style: solid;
 }
 
