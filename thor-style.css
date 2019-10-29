@@ -34,6 +34,21 @@ html, body {
     height: 24%
 }
 
+#ErrorWindow p {
+    margin-left: 2.5%;
+    overflow-y: auto;
+}
+
+.ErrorText {
+    color: red;
+    font-weight: bold;
+}
+
+.ErrorFix {
+    color: blue;
+    font-style: italic;
+}
+
 ul {
     list-style: none;
     margin: 0;
@@ -44,20 +59,22 @@ ul.Dropdown {
     position: relative
 }
 
-li button {
-    color: purple;
-    font-weight: bold;
-    display: inline-block;
+button {
+    height: 1.75em;
 }
 
-ul.Dropdown li {
-    background-color: gray;
+li button {
+    font-weight: bold;
+}
+
+ul.Dropdown li.DropdownItem1 {
+    background-color: lightgray;
     border-style: solid;
     border-width: 1px;
     border-color: black;
     text-align: center;
-    color: red;
     top: 0px;
+    cursor: default;
     padding-top: 0px;
     margin-top: 0px;
 }

@@ -2,8 +2,6 @@
 //own risk.
 //Launches the game
 let LaunchGame = () => {
-    //Launches in new browser window
-    console.log("Launching in new browser window.");
     //Grab the stuff written in the text window and check
     //if it works as Javascript 
     let textInputWindowValue = editor.getValue();
@@ -33,6 +31,23 @@ let MakeGame = () => {
 let ClearGamePreviewWindow = () => {
     document.getElementById("GamePreviewWindow").innerHTML = null;
 };
+let ThrowScriptError = (error) => {
+    let el = document.createElement("p");
+    el.innerHTML = error.name + ": " + error.message;
+    el.className = "ErrorText";
+    document.getElementById("ErrorWindow").appendChild(el);
+    WarnOfCommonErrors(error);
+};
+let WarnOfCommonErrors = (error) => {
+    var advice = "";
+    if (error.message.toLowerCase() === "addelem is not defined") {
+        advice += "Did you mean 'AddElem(type : string, innerHTML : string, id? : string)'?";
+    }
+    let el = document.createElement("p");
+    el.innerHTML = advice;
+    el.className = "ErrorFix";
+    document.getElementById("ErrorWindow").appendChild(el);
+};
 //Executes the game inside the editor itself (in the game preview window)
 let ExecuteGameInEditor = (textInputWindowValue) => {
     if (document.getElementById("FuncLibScript")) {
@@ -49,6 +64,8 @@ let ExecuteGameInEditor = (textInputWindowValue) => {
     s.type = 'text/javascript';
     funcLib.type = 'text/javascript';
     var code = textInputWindowValue;
+    let userScriptText = "try {\n" + textInputWindowValue + "\n} catch (error) { ThrowScriptError(error) }";
+    code = userScriptText;
     var funcLibCode = ReadFileOnServer("js-src/func-lib.js");
     try {
         s.appendChild(document.createTextNode(code));
@@ -81,6 +98,7 @@ let DownloadGameFile = (data, fileName) => {
 let ReadFileOnServer = (path) => {
     let result = null;
     let XMLHttp = new XMLHttpRequest();
+    //Possibly use fetch?
     XMLHttp.open("GET", path, false);
     XMLHttp.send();
     if (XMLHttp.status === 200) {

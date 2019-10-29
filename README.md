@@ -17,12 +17,20 @@ in the future it will likely have many more features.
 **28th Oct, 2019**
 - Added support for .zip file export. This will allow further expansion of the engine with image support and support for multiple scripts without one massive HTML file.
 
+# How to Use Thor
+As of right now, Thor can work client-side correctly for testing out games. However, it cannot
+save or download the game unless it is launched within a server. My favorite way to start a server and launch Thor is to download Visual Studio Code and get the Live Server
+extension, then open index.html in VS Code and right click anywhere. You should see 
+an option to open the file in your default browser with Live Server. This will allow you to 
+download your game. 
+
 # To-Do
 **Updated 28th Oct, 2019**
 - Fix vulnerabilities
 - Add support for multiple (not just one) script
 - Add support for uploading custom images to Thor (similar to Unity's file viewer)
 - Add more library functions (especially for making UI and WebGL)
+- Make Thor download files correctly while not launched on a server
 - Fix warnings about using XMLHttpRequest (not an immediate priority)
 - Add configuration options for Thor (likely stored in the browser cache)
 - Add JQuery support to exported games

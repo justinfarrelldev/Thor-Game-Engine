@@ -14,26 +14,37 @@
     <title>⚡Thor Game Engine⚡</title>
 </head>
 <body>
-    <button id = "PlayButton" onclick = "LaunchGame()" style = "color: green; display: inline-block"
+
+    <button id = "PlayButton" onclick = "LaunchGame()" style = "color: green; display: inline-block;
+    vertical-align: top;"
     title = "Play the game in the preview window">▶</button>
+
     <button id = "DownloadButton" onclick = "DownloadGame()" 
-    title = "Download the game to your computer" style = "display: inline-block">📥</button>
-    <div class = "DropdownDiv" style = "display: inline-block;">
-        <ul class = "Dropdown">
+    title = "Download the game to your computer" style = "display: inline-block;
+     vertical-align: top;">📥</button>
+
+    <!--Dropdown for options menu-->
+    <div class = "DropdownDiv" style = "display: inline-block; vertical-align: top;">
+        <ul class = "Dropdown" onselectstart = "return false;">
             <li style = "position: absolute">
                 <button onclick = "DropdownOpenClose('OptionsDropdown')">Options</button>
                 <ul class = "DropdownSubmenu" id = "OptionsDropdown">        
-                    <li class = "DropdownItem1">Option 1</li>
-                    <li class = "DropdownItem1">Option 2</li>
+                    <li class = "DropdownItem1" onclick = "">Export Options</li>
+                    <li class = "DropdownItem1" onclick = "">Option 2</li>
+                    <li class = "DropdownItem1" onclick = "">Option 3</li>
+                    <li class = "DropdownItem1" onclick = "">Option 4</li>
+                    <li class = "DropdownItem1" onclick = "">Option 5</li>
+
                 </ul>
             </li>
         </ul>
     </div>
+    <!--End of dropdown for options menu-->
     <br>
     <div id = "GamePreviewWindow">
         <!--Elements are added to this to simulate gameplay.-->
     
-    </div> 
+    </div>
     <textarea id = "TextInputWindow"></textarea>
 
     <div id = "ErrorWindow">
@@ -46,10 +57,16 @@
     <script src = "js-src/jquery-3.4.1.js"></script>
 
     <script>    
+
+        //Makes the zip from the Game variable's files.
+        //The final step in the build process.
         let MakeGameZip = () => 
         {
+            //Make a new zip
             var zip = new JSZip()
 
+            //Iterate through files added to Game build and add them
+            //to the zip
             for (let i = 0; i < Game.files.length; i++)
             {
                 zip.file(Game.files[i].fileName, Game.files[i].contents)
@@ -66,52 +83,54 @@
         let DownloadGame = () =>
         {
             MakeGame()
-
             MakeGameZip() //FINALLY THIS WORKS
             
         }
 
+        //Opens and closes dropdowns given an ID
         var DropdownOpenClose = (id) =>
         {
-            //Opens and closes dropdown 
             $(document).ready(function(){
                 $("#" + id).slideToggle(50, () => {
-
                 })
             })
-  
         }
  
-            $(document).ready(function()
+        $(document).ready(function()
+            {
+
+                $('.DropdownSubmenu').hide() //hide all dropdowns
+
+                //initialize the codemirror variable
+                var myCodeMirror = CodeMirror.fromTextArea(document.getElementById("TextInputWindow"), {
+                        mode: "javascript",
+                        indentWithTabs: true,
+                        indentUnit: 4,
+                        lineNumbers: true,
+                        highlightTheme: "material",
+                        htmlMode : true
+                })
+
+                //Sets the codemirror editor (a workaround for scoping)
+                let SetCodeMirrorEditor = (input) => 
                 {
-                    $('.DropdownSubmenu').hide()
-
-
-                    var myCodeMirror = CodeMirror.fromTextArea(document.getElementById("TextInputWindow"), {
-                            mode: "javascript",
-                            indentWithTabs: true,
-                            indentUnit: 4,
-                            lineNumbers: true,
-                            highlightTheme: "material",
-                            htmlMode : true
-                    })
-
-
-                    let SetCodeMirrorEditor = (input) => 
-                    {
-                        editor = input
-                    }
-
-                    SetCodeMirrorEditor(myCodeMirror)
-
-                    editor.getDoc().setValue("//Please do not use the 'let' keyword\n//Doing so will result in errors upon replay\n")
+                    editor = input
                 }
-            )
+
+                //Sets the editor to the initialized codemirror editor
+                SetCodeMirrorEditor(myCodeMirror)
+
+                //Sets the text to display upon codemirror initialization
+                editor.getDoc().setValue(CodeMirrorDefaultCode)
+            }
+        )
+
     </script> 
     <script src = "jszip/dist/jszip.min.js"></script>
     <script src = "js-src/engine-types.js"></script>
     <script src = "js-src/start.js"></script>
     <script src = "js-src/engine-lib.js"></script>
+    <script src = "js-src/constants.js"></script>
     <script src = "codemirror/codemirror/codemirror-5.49.2/lib/codemirror.js"></script>
     <script src = "codemirror/codemirror/codemirror-5.49.2/mode/javascript/javascript.js"></script>
 </body>
