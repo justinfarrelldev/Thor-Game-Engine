@@ -27,7 +27,8 @@
     <div class = "DropdownDiv" style = "display: inline-block; vertical-align: top;">
         <ul class = "Dropdown" onselectstart = "return false;">
             <li style = "position: absolute">
-                <button onclick = "DropdownOpenClose('OptionsDropdown')">Options</button>
+                <button onclick = "DropdownOpenClose('OptionsDropdown')" title = 
+                "Options for the current project.">Options</button>
                 <ul class = "DropdownSubmenu" id = "OptionsDropdown">        
                     <li class = "DropdownItem1" onclick = "">Export Options</li>
                     <li class = "DropdownItem1" onclick = "">Option 2</li>
@@ -43,6 +44,21 @@
     <br>
     <div id = "GamePreviewWindow">
         <!--Elements are added to this to simulate gameplay.-->
+
+            <!--Dropdown for options menu-->
+            <div class = "DropdownDiv" style = " vertical-align: top;
+            float: right; height: 1.75em; width: 2.2em; margin-right: 5.5%; margin-top: 1.5%;">
+                    <ul class = "Dropdown" onselectstart = "return false;">
+                        <li style = "position: absolute">
+                            <button onclick = "DropdownOpenClose('Window1Dropdown')" title = 
+                            "Switch this window's mode.">↩️</button>
+                            <ul class = "DropdownSubmenu" id = "Window1Dropdown">        
+                                <li class = "DropdownItem1" onclick = "">Game Preview</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <!--End of dropdown for options menu-->
     
     </div>
     <textarea id = "TextInputWindow"></textarea>

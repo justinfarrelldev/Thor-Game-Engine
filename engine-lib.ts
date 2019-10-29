@@ -147,6 +147,7 @@ let DownloadGameFile = (data : string, fileName : string) =>
 let ReadFileOnServer = (path : string) : string => 
 {
     let result = null
+    
     let XMLHttp = new XMLHttpRequest()
     //Possibly use fetch?
     XMLHttp.open("GET", path, false)
@@ -155,6 +156,6 @@ let ReadFileOnServer = (path : string) : string =>
     {
         result = XMLHttp.responseText
     }
-
+    
     return result
 }
