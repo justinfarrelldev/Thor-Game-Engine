@@ -74,6 +74,12 @@ let WarnOfCommonErrors = (error) =>
         advice += "Did you mean 'AddElem(type : string, innerHTML : string, id? : string)'?"
     }
 
+    if (error.name === "ContextNameError")
+    {
+        advice += "In the first argument of AddCanvas(), a name is supplied for " + 
+        "the Canvas' context. The name used is taken. Try supplying a different name."
+    }
+
     let el = document.createElement("p")
     el.innerHTML = advice
     el.className = "ErrorFix"

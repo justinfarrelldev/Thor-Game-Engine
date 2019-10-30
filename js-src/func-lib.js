@@ -20,6 +20,28 @@ function AddButton(text, onclick, id) {
     AppendChildToCorrectElement(el);
     return el;
 }
+//Adds canvas with optional context as well
+function AddCanvas(contextName, mode, style) {
+    let canvas = AddElem("canvas", 'Your browser does not support canvas.');
+    if (contextName != null || contextName != undefined) {
+        if (window[contextName] != undefined || window[contextName] === null) {
+            console.error(ContextNameError.message);
+            ThrowScriptError(ContextNameError);
+            return;
+        }
+        window[contextName] = null;
+        if (mode != null || mode != undefined) {
+            window[contextName] = canvas.getContext(mode);
+        }
+        else {
+            window[contextName] = canvas.getContext('2d');
+        }
+    }
+    if (style != null || style != undefined) {
+        SetStyle(canvas, style);
+    }
+    return canvas;
+}
 //Shorthand
 function GetElemById(id) {
     return document.getElementById(id);

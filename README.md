@@ -35,6 +35,7 @@ download your game.
 - Add configuration options for Thor (likely stored in the browser cache)
 - Add JQuery support to exported games
 - Possibly add support for Typescript
+- Incorporate shortcut keys to hide UI elements
 
 # Function Library (Updated Oct 27th, 2019)
 Thor includes a function library which can be used to create your game quickly and with 

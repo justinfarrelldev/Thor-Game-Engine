@@ -35,17 +35,34 @@
                     <li class = "DropdownItem1" onclick = "">Option 3</li>
                     <li class = "DropdownItem1" onclick = "">Option 4</li>
                     <li class = "DropdownItem1" onclick = "">Option 5</li>
-
                 </ul>
             </li>
         </ul>
     </div>
-    <!--End of dropdown for options menu-->
+    <!--Dropdown for text area menu-->
+    <div class = "DropdownDiv" style = "vertical-align: top; float: right;
+    margin-right: 2.5%">
+            <ul class = "Dropdown" onselectstart = "return false;">
+                <li style = "position: absolute">
+                    <button onclick = "DropdownOpenClose('Window2Dropdown')" title = 
+                    "Options for the current project.">↩️</button>
+                    <ul class = "DropdownSubmenu" id = "Window2Dropdown">        
+                        <li class = "DropdownItem1" onclick = "">Export Options</li>
+                        <li class = "DropdownItem1" onclick = "">Option 2</li>
+                        <li class = "DropdownItem1" onclick = "">Option 3</li>
+                        <li class = "DropdownItem1" onclick = "">Option 4</li>
+                        <li class = "DropdownItem1" onclick = "">Option 5</li>
+    
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    <!--End of dropdown for text area menu-->
     <br>
-    <div id = "GamePreviewWindow">
+    <div id = "GamePreviewWindow" class = "Window">
         <!--Elements are added to this to simulate gameplay.-->
 
-            <!--Dropdown for options menu-->
+            <!--Dropdown for preview menu-->
             <div class = "DropdownDiv" style = " vertical-align: top;
             float: right; height: 1.75em; width: 2.2em; margin-right: 5.5%; margin-top: 1.5%;">
                     <ul class = "Dropdown" onselectstart = "return false;">
@@ -58,12 +75,25 @@
                         </li>
                     </ul>
                 </div>
-                <!--End of dropdown for options menu-->
+                <!--End of dropdown for preview menu-->
     
     </div>
-    <textarea id = "TextInputWindow"></textarea>
-
-    <div id = "ErrorWindow">
+    <textarea id = "TextInputWindow" class = "Window"></textarea>
+    <div id = "ErrorWindow" class = "Window">
+        <!--Dropdown for preview menu-->
+        <div class = "DropdownDiv" style = " vertical-align: top;
+        float: right; height: 1.75em; width: 2.2em; margin-right: 5.5%; margin-top: 1.5%;">
+                <ul class = "Dropdown" onselectstart = "return false;">
+                    <li style = "position: absolute">
+                        <button onclick = "DropdownOpenClose('Window3Dropdown')" title = 
+                        "Switch this window's mode.">↩️</button>
+                        <ul class = "DropdownSubmenu" id = "Window3Dropdown">        
+                            <li class = "DropdownItem1" onclick = "">Error Log</li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <!--End of dropdown for preview menu-->
         <p>Errors will show up here when they occur.</p>
     </div>
 
@@ -114,7 +144,6 @@
  
         $(document).ready(function()
             {
-
                 $('.DropdownSubmenu').hide() //hide all dropdowns
 
                 //initialize the codemirror variable

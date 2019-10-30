@@ -3,12 +3,21 @@ html, body {
     min-height: 100%;
 }
 
+.CodeMirror {
+    position: relative;
+    z-index: 1;
+}
+
+.Window {
+    border-color: gray;
+    border-style: solid;
+}
+
 #TextInputWindow {
     width: 49%; 
     height: 75%; 
     max-width: 49%; 
     max-height: 75%;
-    border-style: solid;
     resize: both;
     overflow: auto !important;
 }
@@ -16,7 +25,6 @@ html, body {
 #GamePreviewWindow {
     width: 50%; 
     height: 75%; 
-    border-style: solid;
     resize: both; 
     overflow: auto; 
     float: left;
@@ -26,7 +34,6 @@ html, body {
 
 #ErrorWindow {
     width: 99%;
-    border-style: solid;
     max-width: 99%;
     max-height: 24%;
     resize: both;
@@ -37,6 +44,7 @@ html, body {
 #ErrorWindow p {
     margin-left: 2.5%;
     overflow-y: auto;
+    font-family: monospace;
 }
 
 .ErrorText {
@@ -77,6 +85,7 @@ ul.Dropdown li.DropdownItem1 {
     cursor: default;
     padding-top: 0px;
     margin-top: 0px;
+    font-family: monospace;
     z-index: 10;
 }
 
