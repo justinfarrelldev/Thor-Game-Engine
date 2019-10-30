@@ -36,24 +36,35 @@ download your game.
 - Add JQuery support to exported games
 - Possibly add support for Typescript
 - Incorporate shortcut keys to hide UI elements
+- Swap the AddCanvas arguments so that the mode is first and the context name is second
 
 # Function Library (Updated Oct 27th, 2019)
 Thor includes a function library which can be used to create your game quickly and with 
 minimal effort. The functions are listed below (? means that an argument is optional): 
 
-- AddElem(type, innerHTML, ?id)     [returns the element]
+- AddElem(type, innerHTML, id?)     [returns the element]
   - Adds a new element to the scene of type "type" which has the inner HTML "innerHTML" 
 with an optional id "id". For example, to create a new heading, write the following: 
   ```
   AddElem("h1", "Hello world")
   ```
 
-- AddButton(text, onclick, ?id)     [returns the button]
+- AddButton(text, onclick, id?)     [returns the button]
   - Adds a new button to the scene with text "text" and which has a handler of "onclick"
   and an optional id "id". For example, to make a new button which says "Click me" 
   and which calls a function "DoStuff()", write the following: 
   ```
   AddButton("Click me", DoStuff)
+  ```
+
+- AddCanvas(contextName?, mode?, style?)     [returns the element]
+  - Adds a new Canvas to the scene for rendering use. The optional contextName argument will
+  name a context to be optionally added to the scene. The optional mode argument will set
+  the mode between 2D and 3D variants. The optional style argument can be used to supply 
+  a CSS styling to the Canvas. For example, to create a new Canvas with a context named
+  "ctx", a type of "2d", and a solid border, write the following:
+  ```
+  AddCanvas('ctx', '2d', 'border-style: solid')
   ```
   
 - GetElemById(id)                 [returns the requested element]
