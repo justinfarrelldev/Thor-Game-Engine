@@ -76,6 +76,7 @@ li button {
 }
 
 ul.Dropdown li.DropdownItem1 {
+    position: relative;
     background-color: lightgray;
     border-style: solid;
     border-width: 1px;

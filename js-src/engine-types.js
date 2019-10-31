@@ -1,4 +1,5 @@
 //Holds important classes for the engine, such as the GameFiles and File types
+//NOT included in game builds
 class GameFiles {
     constructor() {
         this.files = [];
@@ -65,6 +66,24 @@ class HTMLFile extends GameFile {
         let file = new GameFile(this.fileName, this.relFilePath);
         file.contents = this.contents;
         return file;
+    }
+}
+class UserScript {
+    constructor(name) {
+        if (name != null) {
+            this.name = name;
+        }
+        else {
+            this.name = "UserScript" + UserScripts.length.toString();
+        }
+        this.executionOrder = UserScripts.length;
+        this.index = UserScripts.length;
+        $(document).ready(() => {
+            let mid = Math.round($('#Window2Dropdown li').length);
+            $('#Window2Dropdown li:nth-child(' + mid + ')').after('<li class = "DropdownItem1">' + this.name + '</li>');
+        });
+        UserScripts.push(this);
+        console.log(UserScripts);
     }
 }
 //# sourceMappingURL=engine-types.js.map

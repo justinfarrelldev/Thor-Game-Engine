@@ -7,14 +7,14 @@ visual novels). I plan to expand it as I work on more projects inside of Thor, s
 in the future it will likely have many more features.
 
 # Features
-**28th Oct, 2019**
+**31st Oct, 2019**
 - Can export games to a new webpage (.zip file with HTML file inside) with a single custom script included
 - Can test games inside of Thor's game window (left side) using the play button
 - Can use a custom script (Javascript) to control the game
 - Thor includes a few library functions which you can use to quickly develop new games (see below)
 
 # Update Notes
-**28th Oct, 2019**
+**31st Oct, 2019**
 - Added support for .zip file export. This will allow further expansion of the engine with image support and support for multiple scripts without one massive HTML file.
 
 # How to Use Thor
@@ -25,9 +25,9 @@ an option to open the file in your default browser with Live Server. This will a
 download your game. 
 
 # To-Do
-**Updated 28th Oct, 2019**
+**Updated 31st Oct, 2019**
 - Fix vulnerabilities
-- Add support for multiple (not just one) script
+- Finish adding support for multiple scripts
 - Add support for uploading custom images to Thor (similar to Unity's file viewer)
 - Add more library functions (especially for making UI and WebGL)
 - Make Thor download files correctly while not launched on a server
@@ -37,8 +37,9 @@ download your game.
 - Possibly add support for Typescript
 - Incorporate shortcut keys to hide UI elements
 - Swap the AddCanvas arguments so that the mode is first and the context name is second
+- Split the function library into multiple files and only include files which are actually used
 
-# Function Library (Updated Oct 27th, 2019)
+# Function Library (Updated 31st Oct, 2019)
 Thor includes a function library which can be used to create your game quickly and with 
 minimal effort. The functions are listed below (? means that an argument is optional): 
 

@@ -1,5 +1,6 @@
 //This is the function library for Thor. 
 //It is used for common functions and to make syntax simple. 
+//It is included with every build
 function AddElem(type, innerHTML, id) {
     let el = document.createElement(type);
     el.innerHTML = innerHTML;
@@ -44,6 +45,10 @@ function AddCanvas(contextName, mode, style) {
 }
 //Shorthand
 function GetElemById(id) {
+    return document.getElementById(id);
+}
+//Also shorthand
+function GetById(id) {
     return document.getElementById(id);
 }
 if (AppendChildToCorrectElement === undefined) {

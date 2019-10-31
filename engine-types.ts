@@ -1,4 +1,5 @@
 //Holds important classes for the engine, such as the GameFiles and File types
+//NOT included in game builds
 
 class GameFiles
 {
@@ -115,5 +116,47 @@ class HTMLFile extends GameFile
         file.contents = this.contents
 
         return file
+    }
+}
+
+class UserScript 
+{
+    /**
+     * For scripts defined by the user
+     */
+
+    index : Number //The spot it has in the list of scripts displayed to the user
+                   //USED SOLELY for display purposes - execution order is handled
+                   //by the execution order member (starts at 0)
+    text : string //The text inside of the script
+    filePath : string //The path to the script
+    executionOrder : Number //The number in the list in which this script is executed
+                            //(starts at 0)
+    name : string //The name of the script
+    constructor(name? :string) 
+    {    
+        if (name != null)
+        {
+            this.name = name
+        }
+        else
+        {
+            this.name = "UserScript" + UserScripts.length.toString()
+        }
+
+        this.executionOrder = UserScripts.length
+
+        this.index = UserScripts.length
+
+        $(document).ready(() => {
+            let mid = Math.round($('#Window2Dropdown li').length)
+            $('#Window2Dropdown li:nth-child(' + mid + ')').after(
+                '<li class = "DropdownItem1">' + this.name + '</li>'
+                )
+        })
+
+        UserScripts.push(this)
+
+        console.log(UserScripts)
     }
 }

@@ -50,6 +50,12 @@ let MakeGame = () =>
     funcLib.contents = ReadFileOnServer("js-src/func-lib.js")
 
     Game.AddFile(funcLib)
+
+    let typeLib = new GameFile("type-lib.js", "")
+
+    typeLib.contents = ReadFileOnServer("js-src/type-lib.js")
+
+    Game.AddFile(typeLib)
 }
 
 let ClearGamePreviewWindow = () => 
@@ -86,6 +92,14 @@ let WarnOfCommonErrors = (error) =>
     document.getElementById("ErrorWindow").appendChild(el)
 }
 
+//Adds a user script to the list of user scripts
+let AddUserScript = (name?) : UserScript =>
+{
+    console.log("Adding a user script.")
+
+    return new UserScript(name)
+}
+
 //Executes the game inside the editor itself (in the game preview window)
 let ExecuteGameInEditor = (textInputWindowValue : string) => 
 {
@@ -93,6 +107,11 @@ let ExecuteGameInEditor = (textInputWindowValue : string) =>
     if (document.getElementById("FuncLibScript"))
     {
         document.getElementById("FuncLibScript").parentNode.removeChild(document.getElementById("FuncLibScript"))
+    }
+
+    if (document.getElementById("TypeLibScript"))
+    {
+        document.getElementById("TypeLibScript").parentNode.removeChild(document.getElementById("TypeLibScript"))
     }
 
     if (document.getElementById("TextInputWindowValueScript"))
@@ -106,8 +125,11 @@ let ExecuteGameInEditor = (textInputWindowValue : string) =>
     s.id = "TextInputWindowValueScript"
     let funcLib = document.createElement("script")
     funcLib.id = "FuncLibScript"
+    let typeLib = document.createElement("script")
+    typeLib.id = "TypeLibScript"
     s.type = 'text/javascript'
     funcLib.type = 'text/javascript'
+    typeLib.type = 'text/javascript'
 
     var code = textInputWindowValue
 
@@ -115,10 +137,13 @@ let ExecuteGameInEditor = (textInputWindowValue : string) =>
 
     code = userScriptText
     var funcLibCode = ReadFileOnServer("js-src/func-lib.js")
+    var typeLibCode = ReadFileOnServer("js-src/type-lib.js")
     try 
     {
         s.appendChild(document.createTextNode(code))
         funcLib.appendChild(document.createTextNode(funcLibCode))
+        typeLib.appendChild(document.createTextNode(typeLibCode))
+        document.getElementById("GamePreviewWindow").appendChild(typeLib)
         document.getElementById("GamePreviewWindow").appendChild(funcLib)
         document.getElementById("GamePreviewWindow").appendChild(s)
     }
@@ -126,6 +151,8 @@ let ExecuteGameInEditor = (textInputWindowValue : string) =>
     {
         s.text = code
         funcLib.text = funcLibCode
+        typeLib.text = typeLibCode
+        document.getElementById("GamePreviewWindow").appendChild(typeLib)
         document.getElementById("GamePreviewWindow").appendChild(funcLib)
         document.getElementById("GamePreviewWindow").appendChild(s)
     }
