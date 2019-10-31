@@ -7,6 +7,7 @@ let UserScripts = []; //Creates an array of userscripts
 //inline userscript which will be
 //included in the build's HTML 
 //file
+let CurrentUserScript = 0; //Goes by index
 new UserScript('Inline Script');
 let Start = () => {
     console.log("Thor Game Engine is initialized and starting.");

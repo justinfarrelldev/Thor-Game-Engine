@@ -7,10 +7,12 @@ var Game = new GameFiles() //The files to be built
 let Windows = document.getElementsByClassName("Window")
 
 let UserScripts : UserScript[] = [] //Creates an array of userscripts
-                                                                   //with a default constant 
-                                                                   //inline userscript which will be
-                                                                   //included in the build's HTML 
-                                                                   //file
+                                    //with a default constant 
+                                    //inline userscript which will be
+                                    //included in the build's HTML 
+                                    //file
+
+let CurrentUserScript : number = 0; //Goes by index
 
 new UserScript('Inline Script')
 

@@ -13,7 +13,6 @@ let LaunchGame = () => {
 let MakeGame = () => {
     //Doctype needs to be up here as well as charset
     let outFile = new HTMLFile("test.html", "");
-    let textInputWindowValue = editor.getValue();
     let title = "Test output game";
     let html = outFile.MakeElement("html", "", ""); //Outer HTML tag
     let head = outFile.MakeElement("head", "", "");
@@ -21,8 +20,21 @@ let MakeGame = () => {
     outFile.contents = outFile.NestElement(html, head).ToString(); //Nest the head in the 
     //html tag
     outFile.AddElement("body", "", "");
+    outFile.AddElement("script", "src = \"type-lib.js\"", "");
     outFile.AddElement("script", "src = \"func-lib.js\"", "");
-    outFile.AddElement("script", "", textInputWindowValue);
+    let biggest = 0;
+    let scriptsInExecutionOrder = [];
+    for (let i = 1; i < UserScripts.length; i++) {
+        if (UserScripts[i].executionOrder > biggest) {
+            scriptsInExecutionOrder.push(UserScripts[i]);
+            biggest = UserScripts[i].executionOrder;
+        }
+    }
+    for (let i = 0; i < scriptsInExecutionOrder.length; i++) {
+        //Add elements to link the userscripts up
+        outFile.AddElement("script", "src = \"" + scriptsInExecutionOrder[i].name + ".js\"", "");
+    }
+    outFile.AddElement("script", "", UserScripts[0].text); //Add the inline script
     Game.AddFile(outFile.ToGameFile());
     let funcLib = new GameFile("func-lib.js", "");
     funcLib.contents = ReadFileOnServer("js-src/func-lib.js");
@@ -30,6 +42,11 @@ let MakeGame = () => {
     let typeLib = new GameFile("type-lib.js", "");
     typeLib.contents = ReadFileOnServer("js-src/type-lib.js");
     Game.AddFile(typeLib);
+    for (let i = 0; i < scriptsInExecutionOrder.length; i++) {
+        let file = new GameFile(scriptsInExecutionOrder[i].name + ".js", "");
+        file.contents = scriptsInExecutionOrder[i].text;
+        Game.AddFile(file);
+    }
 };
 let ClearGamePreviewWindow = () => {
     document.getElementById("GamePreviewWindow").innerHTML = null;
@@ -59,6 +76,22 @@ let WarnOfCommonErrors = (error) => {
 let AddUserScript = (name) => {
     console.log("Adding a user script.");
     return new UserScript(name);
+};
+//Changes the current user script in the CodeMirror to being 
+//the script the user selects.
+let ChangeUserScript = (index) => {
+    SaveUserScriptText();
+    editor.getDoc().setValue(UserScripts[index].text);
+    CurrentUserScript = index;
+    return null;
+};
+//Saves the user script text in the CodeMirror to a variable
+//for the user script it corresponds to
+let SaveUserScriptText = () => {
+    if (editor.getValue() === CodeMirrorDefaultCode) {
+        return;
+    }
+    UserScripts[CurrentUserScript].text = editor.getValue();
 };
 //Executes the game inside the editor itself (in the game preview window)
 let ExecuteGameInEditor = (textInputWindowValue) => {

@@ -78,9 +78,10 @@ class UserScript {
         }
         this.executionOrder = UserScripts.length;
         this.index = UserScripts.length;
+        this.text = CodeMirrorDefaultCode;
         $(document).ready(() => {
             let mid = Math.round($('#Window2Dropdown li').length);
-            $('#Window2Dropdown li:nth-child(' + mid + ')').after('<li class = "DropdownItem1">' + this.name + '</li>');
+            $('#Window2Dropdown li:nth-child(' + mid + ')').after('<li class = "DropdownItem1" onclick = "ChangeUserScript(' + this.index + ')">' + this.name + '</li>');
         });
         UserScripts.push(this);
         console.log(UserScripts);

@@ -3,7 +3,6 @@
 //other such structures and classes
 //Currently excluded due to glitchiness
 
-
 /*
 
 class LinkedListNode

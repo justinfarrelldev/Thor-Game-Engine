@@ -123,6 +123,7 @@
         //Downloads the game as an HTML file
         let DownloadGame = () =>
         {
+            SaveUserScriptText()
             MakeGame()
             MakeGameZip() //FINALLY THIS WORKS
             
@@ -155,6 +156,10 @@
                 let SetCodeMirrorEditor = (input) => 
                 {
                     editor = input
+                    /*
+                    editor.on("change", () => {
+                        SaveUserScriptText()
+                    })*/
                 }
 
                 //Sets the editor to the initialized codemirror editor
@@ -167,10 +172,10 @@
 
     </script> 
     <script src = "jszip/dist/jszip.min.js"></script>
+    <script src = "js-src/constants.js"></script>
     <script src = "js-src/engine-types.js"></script>
     <script src = "js-src/start.js"></script>
     <script src = "js-src/engine-lib.js"></script>
-    <script src = "js-src/constants.js"></script>
     <script src = "codemirror/codemirror/codemirror-5.49.2/lib/codemirror.js"></script>
     <script src = "codemirror/codemirror/codemirror-5.49.2/mode/javascript/javascript.js"></script>
 </body>
