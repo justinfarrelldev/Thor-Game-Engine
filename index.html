@@ -142,6 +142,11 @@
             {
                 $('.DropdownSubmenu').hide() //hide all dropdowns
 
+                $(document).click(() => 
+                {
+                    $('.DropdownSubmenu').hide()
+                })
+
                 //initialize the codemirror variable
                 var myCodeMirror = CodeMirror.fromTextArea(document.getElementById("TextInputWindow"), {
                         mode: "javascript",

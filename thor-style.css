@@ -90,6 +90,14 @@ ul.Dropdown li.DropdownItem1 {
     z-index: 10;
 }
 
+ul.Dropdown li.DropdownItem1:hover {
+    color: gray;
+}
+
+ul.Dropdown li.DropdownItem1:active {
+    color: yellow;
+}
+
 .DropdownDiv {
 }
 

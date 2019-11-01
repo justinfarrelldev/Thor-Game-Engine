@@ -109,6 +109,11 @@ let WarnOfCommonErrors = (error) =>
         "the Canvas' context. The name used is taken. Try supplying a different name."
     }
 
+    if (error.message.toLowerCase() === "addstyle is not defined")
+    {
+        advice += "Did you mean 'SetStyle(element : any, style : string)'?"
+    }
+
     let el = document.createElement("p")
     el.innerHTML = advice
     el.className = "ErrorFix"

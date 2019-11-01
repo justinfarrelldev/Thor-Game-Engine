@@ -1,5 +1,5 @@
 # Thor Game Engine
- The Thor Game Engine, created with Typescript. 
+ The Thor web-based Game Engine, created with Typescript. 
 
 # Purpose
 Thor is meant to be used to create small, lightweight web games (such as gacha games and 
@@ -7,16 +7,17 @@ visual novels). I plan to expand it as I work on more projects inside of Thor, s
 in the future it will likely have many more features.
 
 # Features
-**31st Oct, 2019**
-- Can export games to a new webpage (.zip file with HTML file and scripts inside) with a single custom script included
+**1st Nov, 2019**
+- Can export games to a new webpage (.zip file with HTML file and scripts inside) with multiple 
+custom scripts included
 - Can test games inside of Thor's game window (left side) using the play button
 - Can use multiple custom scripts (Javascript) to control the game
 - Thor includes a few library functions which you can use to quickly develop new games (see below)
 
 # Update Notes
-**31st Oct, 2019**
-- Added support for multiple scripts on build (in-engine support for multiple scripts is very
-limited and does not work most of the time - stick with the inline script)
+**1st Nov, 2019**
+- Added support for multiple scripts on build, now fully functional in-editor and at build time.
+More options and better support coming soon.
 
 # How to Use Thor
 As of right now, Thor can work client-side correctly for testing out games. However, it cannot
@@ -26,9 +27,8 @@ an option to open the file in your default browser with Live Server. This will a
 download your game. 
 
 # To-Do
-**Updated 31st Oct, 2019**
+**Updated 1st Nov, 2019**
 - Fix vulnerabilities
-- Finish adding support for multiple scripts
 - Add support for uploading custom images to Thor (similar to Unity's file viewer)
 - Add more library functions (especially for making UI and WebGL)
 - Make Thor download files correctly while not launched on a server
