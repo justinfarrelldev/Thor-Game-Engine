@@ -150,6 +150,7 @@ let SaveUserScriptText = () =>
 //Executes the game inside the editor itself (in the game preview window)
 let ExecuteGameInEditor = (textInputWindowValue : string) => 
 {
+    SaveUserScriptText()
 
     if (document.getElementById("FuncLibScript"))
     {
@@ -161,47 +162,105 @@ let ExecuteGameInEditor = (textInputWindowValue : string) =>
         document.getElementById("TypeLibScript").parentNode.removeChild(document.getElementById("TypeLibScript"))
     }
 
-    if (document.getElementById("TextInputWindowValueScript"))
+    for (let i = 0; i < document.getElementsByClassName('RuntimeUserScript').length; i++)
     {
-        document.getElementById("TextInputWindowValueScript").parentNode.removeChild(document.getElementById("TextInputWindowValueScript"))
+        document.getElementsByClassName('RuntimeUserScript')[i].parentNode.removeChild(
+            document.getElementsByClassName('RuntimeUserScript')[i]
+        )
     }
 
     ClearGamePreviewWindow()
 
-    let s = document.createElement("script")
-    s.id = "TextInputWindowValueScript"
+    //Add dependencies first
+    AddDependenciesInEditor()
+
+    //Then add user scripts in execution order
+    AddUserScriptsInEditor()
+}
+
+let AddUserScriptsInEditor = () => 
+{
+    //Make this with respect to script execution order
+
+    let scriptsInExecutionOrder = []
+    let biggest = 0;
+
+    for (let i = 1; i < UserScripts.length; i++)
+    {
+        if (UserScripts[i].executionOrder > biggest)
+        {
+            scriptsInExecutionOrder.push(UserScripts[i])
+            biggest = UserScripts[i].executionOrder
+        }
+    }
+    for (let i = 0; i < scriptsInExecutionOrder.length; i++)
+    {
+        //Add elements to link the userscripts up
+        let script = document.createElement("script")
+        script.id = scriptsInExecutionOrder[i].name
+        script.setAttribute('class', 'RuntimeUserScript')
+        script.type = 'text/javascript'
+        let userScriptText = "try {\n" + scriptsInExecutionOrder[i].text + "\n} catch (error) { ThrowScriptError(error) }"
+        let code = userScriptText
+
+        try
+        {
+            script.appendChild(document.createTextNode(code))
+            document.getElementById("GamePreviewWindow").appendChild(script)
+        } 
+        catch(error)
+        {
+            script.text = code
+            document.getElementById("GamePreviewWindow").appendChild(script)
+        }
+    }
+
+    //Deal with inline script last as it always executes last
+    let script = document.createElement("script")
+    script.id = UserScripts[0].name
+    script.setAttribute('class', 'RuntimeUserScript')
+    script.type = 'text/javascript'
+    let userScriptText = "try {\n" + UserScripts[0].text + "\n} catch (error) { ThrowScriptError(error) }"
+    let code = userScriptText
+
+    try
+    {
+        script.appendChild(document.createTextNode(code))
+        document.getElementById("GamePreviewWindow").appendChild(script)
+    } 
+    catch(error)
+    {
+        script.text = code
+        document.getElementById("GamePreviewWindow").appendChild(script)
+    }
+}
+
+//Adds engine dependencies in while still in-engine
+let AddDependenciesInEditor = () => 
+{
+    
     let funcLib = document.createElement("script")
     funcLib.id = "FuncLibScript"
     let typeLib = document.createElement("script")
     typeLib.id = "TypeLibScript"
-    s.type = 'text/javascript'
     funcLib.type = 'text/javascript'
     typeLib.type = 'text/javascript'
 
-    var code = textInputWindowValue
-
-    let userScriptText = "try {\n" + textInputWindowValue + "\n} catch (error) { ThrowScriptError(error) }"
-
-    code = userScriptText
     var funcLibCode = ReadFileOnServer("js-src/func-lib.js")
     var typeLibCode = ReadFileOnServer("js-src/type-lib.js")
     try 
     {
-        s.appendChild(document.createTextNode(code))
         funcLib.appendChild(document.createTextNode(funcLibCode))
         typeLib.appendChild(document.createTextNode(typeLibCode))
         document.getElementById("GamePreviewWindow").appendChild(typeLib)
         document.getElementById("GamePreviewWindow").appendChild(funcLib)
-        document.getElementById("GamePreviewWindow").appendChild(s)
     }
     catch (error)
     {
-        s.text = code
         funcLib.text = funcLibCode
         typeLib.text = typeLibCode
         document.getElementById("GamePreviewWindow").appendChild(typeLib)
         document.getElementById("GamePreviewWindow").appendChild(funcLib)
-        document.getElementById("GamePreviewWindow").appendChild(s)
     }
 }
 
