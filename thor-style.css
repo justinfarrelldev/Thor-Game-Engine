@@ -75,7 +75,7 @@ li button {
     font-weight: bold;
 }
 
-ul.Dropdown li.DropdownItem1 {
+ul.Dropdown li.DropdownItem1, .DropdownItem2 {
     position: relative;
     background-color: lightgray;
     border-style: solid;
@@ -90,11 +90,11 @@ ul.Dropdown li.DropdownItem1 {
     z-index: 10;
 }
 
-ul.Dropdown li.DropdownItem1:hover {
+ul.Dropdown li.DropdownItem1:hover, .DropdownItem2:hover {
     color: gray;
 }
 
-ul.Dropdown li.DropdownItem1:active {
+ul.Dropdown li.DropdownItem1:active, .DropdownItem2:active {
     color: yellow;
 }
 

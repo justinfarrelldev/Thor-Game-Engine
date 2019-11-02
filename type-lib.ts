@@ -3,14 +3,14 @@
 //other such structures and classes
 //Currently excluded due to glitchiness
 
-/*
+
 
 class LinkedListNode
 {
     /**
      * A node for the Linked List data structure
      */
-    /*
+    
     next : LinkedListNode
     previous : LinkedListNode
     data : any
@@ -30,7 +30,7 @@ class LinkedList
     /**
      * A class for the Linked List data structure
      */
-    /*
+    
     nodes : LinkedListNode[]
     constructor(initialState? : LinkedListNode[]) {
         if (initialState != null)
@@ -76,4 +76,3 @@ class LinkedList
         }
     }
 }
-*/

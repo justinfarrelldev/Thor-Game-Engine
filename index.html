@@ -41,13 +41,13 @@
     </div>
     <!--Dropdown for text area menu-->
     <div class = "DropdownDiv" style = "vertical-align: top; float: right;
-    margin-right: 4.5%">
+    margin-right: 6.5%">
             <ul class = "Dropdown" onselectstart = "return false;">
                 <li style = "position: absolute">
                     <button onclick = "DropdownOpenClose('Window2Dropdown')" title = 
-                    "Options for the current project.">↩️</button>
+                    "Add or edit UserScripts.">📝</button>
                     <ul class = "DropdownSubmenu" id = "Window2Dropdown">        
-                        <li class = "DropdownItem1" onclick = "AddUserScript()" style = "color: blue">Add Script...</li>
+                        <li class = "DropdownItem2" onclick = "AddUserScript()" style = "color: blue">Add Script...</li>
                     </ul>
                 </li>
             </ul>
@@ -142,9 +142,12 @@
             {
                 $('.DropdownSubmenu').hide() //hide all dropdowns
 
-                $(document).click(() => 
+                $(document).click((e) => 
                 {
-                    $('.DropdownSubmenu').hide()
+                    if (!$(e.target).hasClass('DropdownItem2'))
+                    {
+                        $('.DropdownSubmenu').hide()
+                    }
                 })
 
                 //initialize the codemirror variable
@@ -161,10 +164,6 @@
                 let SetCodeMirrorEditor = (input) => 
                 {
                     editor = input
-                    /*
-                    editor.on("change", () => {
-                        SaveUserScriptText()
-                    })*/
                 }
 
                 //Sets the editor to the initialized codemirror editor
