@@ -80,7 +80,7 @@ function GetElemById(id : string)
 function GetById(id : string)
 {
     return document.getElementById(id)
-}
+} 
 
 if (AppendChildToCorrectElement === undefined)
 {

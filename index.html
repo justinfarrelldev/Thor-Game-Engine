@@ -14,7 +14,6 @@
     <title>⚡Thor Game Engine⚡</title>
 </head>
 <body>
-
     <button id = "PlayButton" onclick = "LaunchGame()" style = "color: green; display: inline-block;
     vertical-align: top;"
     title = "Play the game in the preview window">▶</button>
@@ -92,10 +91,28 @@
         <p>Errors will show up here when they occur.</p>
     </div>
 
-    <link href = "codemirror/codemirror/codemirror-5.49.2/lib/codemirror.css" rel = "stylesheet"></link>
-    <link href = "thor-style.css" rel = "stylesheet"></link>
+    <!--The window for the file explorer testing-->
+    <div class = "Window" id = "File_Explorer"  style = "height: 30%">
+                <!--Dropdown for img upload-->
+                <div class = "DropdownDiv" style = " vertical-align: top;
+                float: right; height: 1.75em; width: 2.2em; margin-right: 5.5%; margin-top: 1.5%;">
+                        <ul class = "Dropdown" onselectstart = "return false;">
+                            <li style = "position: absolute">
+                                <button onclick = "DropdownOpenClose('Window3Dropdown')" title = 
+                                "Upload an image to use.">📷</button>
+                                <ul class = "DropdownSubmenu" id = "Window3Dropdown">        
+                                    <li class = "DropdownItem1" onclick = "">Error Log</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                    <!--End of dropdown for image upload-->
+    </div>
 
-    <script src = "js-src/jquery-3.4.1.js"></script>
+    <link href = "codemirror/codemirror/codemirror-5.49.2/lib/codemirror.css" rel = "stylesheet"></link>
+    <link href = "/public/css/thor-style.css" rel = "stylesheet"></link>
+
+    <script src = "js-src/jquery-3.4.1.js"></script> 
 
     <script>    
 
@@ -135,11 +152,12 @@
             $(document).ready(function(){
                 $("#" + id).slideToggle(50, () => {
                 })
-            })
+            }) 
         }
  
         $(document).ready(function()
             {
+
                 $('.DropdownSubmenu').hide() //hide all dropdowns
 
                 $(document).click((e) => 

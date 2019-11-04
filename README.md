@@ -30,6 +30,7 @@ download your game.
 **Updated 1st Nov, 2019**
 - Fix vulnerabilities
 - Add support for uploading custom images to Thor (similar to Unity's file viewer)
+- Create a file viewer with Javascript (similar to Unity's project file viewer) with drag and drop capability
 - Add more library functions (especially for making UI and WebGL)
 - Make Thor download files correctly while not launched on a server
 - Fix warnings about using XMLHttpRequest (not an immediate priority)

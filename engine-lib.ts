@@ -303,3 +303,8 @@ let ReadFileOnServer = (path : string) : string =>
     
     return result
 }
+
+let GetFileOnServer = (dir : string) =>
+{
+
+}

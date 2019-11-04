@@ -206,4 +206,6 @@ let ReadFileOnServer = (path) => {
     }
     return result;
 };
+let GetFileOnServer = (dir) => {
+};
 //# sourceMappingURL=engine-lib.js.map
