@@ -15,22 +15,17 @@ custom scripts included
 - Thor includes a few library functions which you can use to quickly develop new games (see below)
 
 # Update Notes
-**1st Nov, 2019**
-- Added support for multiple scripts on build, now fully functional in-editor and at build time.
-More options and better support coming soon.
+**4th Nov, 2019**
+- The entire engine is now a fully-fledged Node.JS server (this is my first time making a server, I am quite proud). You can run the server the old way (double click index.html) or by running a Node server and using index.js instead. In the future, the only way to properly run it will be with a server. This will likely be the last update where the engine will still function the old way.
 
 # How to Use Thor
-As of right now, Thor can work client-side correctly for testing out games. However, it cannot
-save or download the game unless it is launched within a server. My favorite way to start a server and launch Thor is to download Visual Studio Code and get the Live Server
-extension, then open index.html in VS Code and right click anywhere. You should see 
-an option to open the file in your default browser with Live Server. This will allow you to 
-download your game. 
+As of right now, Thor can work client-side correctly for testing out games (double click index.html). However, it cannot save or download the game unless it is launched within a NodeJS server.
 
 # To-Do
-**Updated 1st Nov, 2019**
+**Updated 4th Nov, 2019**
 - Fix vulnerabilities
 - Add support for uploading custom images to Thor (similar to Unity's file viewer)
-- Create a file viewer with Javascript (similar to Unity's project file viewer) with drag and drop capability
+- Create a file viewer with Javascript (similar to Unity's project file viewer) with drag and drop capability. This will be so much easier with the engine now being a server.
 - Add more library functions (especially for making UI and WebGL)
 - Make Thor download files correctly while not launched on a server
 - Fix warnings about using XMLHttpRequest (not an immediate priority)
