@@ -21,3 +21,9 @@ app.listen(PORT, () =>
 { 
     console.log("Server started on port " + PORT)
 })
+
+
+fs.readdir(__dirname + '/', (err, items) => 
+{
+    console.log(items)
+})
