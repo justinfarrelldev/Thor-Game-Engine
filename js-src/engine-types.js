@@ -84,7 +84,6 @@ class UserScript {
             $('#Window2Dropdown li:nth-child(' + mid + ')').after('<li class = "DropdownItem2" onclick = "ChangeUserScript(' + this.index + ')">' + this.name + '</li>');
         });
         UserScripts.push(this);
-        console.log(UserScripts);
     }
 }
 //# sourceMappingURL=engine-types.js.map
