@@ -92,17 +92,28 @@
     </div>
 
     <!--The window for the file explorer testing-->
-    <div class = "Window" id = "File_Explorer"  style = "height: 30%; display: none">
+    <div class = "Window" id = "File_Explorer"  style = "height: 30%;">
                 <!--Dropdown for img upload-->
                 <div class = "DropdownDiv" style = " vertical-align: top;
                 float: right; height: 1.75em; width: 2.2em; margin-right: 5.5%; margin-top: 1.5%;">
                         <ul class = "Dropdown" onselectstart = "return false;">
                             <li style = "position: absolute">
                                 <button onclick = "DropdownOpenClose('Window4Dropdown')" title = 
-                                "Upload an image to use.">📷</button>
+                                "Switch this window's mode.">↩️</button>
                                 <ul class = "DropdownSubmenu" id = "Window4Dropdown">        
                                     <li class = "DropdownItem1" onclick = "">File Explorer</li>
                                 </ul>
+                            </li>
+                        </ul>
+                    </div>
+                    <!--End of dropdown for image upload-->
+                    <!--Dropdown for img upload-->
+                <div class = "DropdownDiv" style = " vertical-align: top;
+                float: right; height: 1.75em; width: 2.2em; margin-top: 1.5%;">
+                        <ul class = "Dropdown" onselectstart = "return false;">
+                            <li style = "position: absolute">
+                                <button onclick = "UploadFileToResources()" title = 
+                                "Upload an image to use.">📁</button>
                             </li>
                         </ul>
                     </div>
@@ -111,9 +122,10 @@
 
     <link href = "codemirror/codemirror/codemirror-5.49.2/lib/codemirror.css" rel = "stylesheet"></link>
     <link href = "/thor-style.css" rel = "stylesheet"></link>
-
+    <form action = '/' enctype="multipart/form-data" method="post">
+        <input id = "file_dialog" type = "file" style = "display: none"></input>
+    </form>
     <script src = "js-src/jquery-3.4.1.js"></script> 
-
     <script>    
 
         //Makes the zip from the Game variable's files.
@@ -153,6 +165,35 @@
                 $("#" + id).slideToggle(50, () => {
                 })
             }) 
+        }
+
+        var UploadFileToResources = () => 
+        {
+            $(document).ready(() => 
+            {
+                $('#file_dialog').on('change', (event) =>
+                {
+                    var result = event.target.files
+                    let data = new FormData()
+
+                    data.append('resources', result[0])
+                    console.log(data)
+                    try{
+                        //This took forever, God helped me through lol
+                        const response = fetch('./upload/resources', {method: 'POST', body: data})
+                        const reply = response.then((result) => 
+                        {
+                            console.log("Success: " + JSON.stringify(reply))
+                        })
+                    } 
+                    catch(error) 
+                    {
+                        console.error("Error: " + error)
+
+                    }
+                })
+                $('#file_dialog').trigger("click")
+            })
         }
  
         $(document).ready(function()

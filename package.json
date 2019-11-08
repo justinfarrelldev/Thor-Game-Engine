@@ -17,6 +17,8 @@
   },
   "homepage": "https://github.com/VortrusDev/Thor-Game-Engine#readme",
   "dependencies": {
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "formidable": "^1.2.1",
+    "mkdirp": "^0.5.1"
   }
 }
