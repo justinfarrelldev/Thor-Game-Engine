@@ -122,9 +122,11 @@
 
     <link href = "codemirror/codemirror/codemirror-5.49.2/lib/codemirror.css" rel = "stylesheet"></link>
     <link href = "/thor-style.css" rel = "stylesheet"></link>
-    <form action = '/' enctype="multipart/form-data" method="post">
+
+    <form action = '/' enctype="multipart/form-data" method="put">
         <input id = "file_dialog" type = "file" style = "display: none"></input>
     </form>
+
     <script src = "js-src/jquery-3.4.1.js"></script> 
     <script>    
 
@@ -171,26 +173,45 @@
         {
             $(document).ready(() => 
             {
+                $('#file_dialog').unbind('change')
                 $('#file_dialog').on('change', (event) =>
                 {
                     var result = event.target.files
                     let data = new FormData()
 
                     data.append('resources', result[0])
-                    console.log(data)
-                    try{
-                        //This took forever, God helped me through lol
-                        const response = fetch('./upload/resources', {method: 'POST', body: data})
-                        const reply = response.then((result) => 
-                        {
-                            console.log("Success: " + JSON.stringify(reply))
-                        })
-                    } 
-                    catch(error) 
-                    {
-                        console.error("Error: " + error)
 
-                    }
+                    //This took so long, God helped me through lol
+                    fetch('/upload/resources', 
+                        {
+                            method: 'PUT', 
+                            body: data
+                        }
+                        )
+                        .then((Response) => 
+                        {
+                            if (Response.ok)
+                            {
+                                console.log("The response is a-okay!")
+                                                    
+                                //Adding element for images
+                                let el = document.createElement('img')
+                                el.src = '/upload/resources/' + event.target.files[0].name
+                                el.style = "width: auto; height: 33%"
+                                el.alt = event.target.files[0].name
+                                el.title = event.target.files[0].name
+                                document.getElementById('File_Explorer').appendChild(el)
+                            }
+                            else
+                            {
+                                console.error("It's a bad response: " + Response.status)
+                            }
+                        }
+                        )
+                        .catch((err) => 
+                        {
+                            console.error(err)
+                        })
                 })
                 $('#file_dialog').trigger("click")
             })
