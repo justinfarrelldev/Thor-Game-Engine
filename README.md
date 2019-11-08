@@ -15,18 +15,23 @@ custom scripts included
 - Thor includes a few library functions which you can use to quickly develop new games (see below)
 
 # Update Notes
-**4th Nov, 2019**
-- The entire engine is now a fully-fledged Node.JS server (this is my first time making a server, I am quite proud). You can run the server the old way (double click index.html) or by running a Node server and using index.js instead. In the future, the only way to properly run it will be with a server. This will likely be the last update where the engine will still function the old way.
+**8th Nov, 2019**
+- After many hours struggling to do so, the engine now has the ability to have images uploaded to it. 
+The images unfortunately cannot be used for builds yet (or deleted yet without the help of file 
+explorer) but they can be messed around with in play mode. Good things are planned for the 
+future! Very good things!
 
 # How to Use Thor
 As of right now, Thor can work client-side correctly for testing out games (double click index.html). However, it cannot save or download the game unless it is launched within a NodeJS server.
 
 # To-Do
-**Updated 4th Nov, 2019**
+**Updated 8th Nov, 2019**
 - Fix vulnerabilities
-- Add support for uploading custom images to Thor (similar to Unity's file viewer)
-- Create a file viewer with Javascript (similar to Unity's project file viewer) with drag and drop capability. This will be so much easier with the engine now being a server.
-- Add more library functions (especially for making UI and WebGL)
+- Add support for using custom images uploaded to the engine in exported games
+- Add support for deletion of images from the engine (as well as an interface to do so)
+- Enhance the file viewer (similar to Unity's project file viewer) with drag and drop capability
+as well as more interactability. 
+- Add more library functions (especially for making UI and WebGL, as well as images)
 - Make Thor download files correctly while not launched on a server
 - Fix warnings about using XMLHttpRequest (not an immediate priority)
 - Add configuration options for Thor (likely stored in the browser cache)
