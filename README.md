@@ -15,11 +15,13 @@ custom scripts included
 - Thor includes a few library functions which you can use to quickly develop new games (see below)
 
 # Update Notes
-**8th Nov, 2019**
-- After many hours struggling to do so, the engine now has the ability to have images uploaded to it. 
-The images unfortunately cannot be used for builds yet (or deleted yet without the help of file 
-explorer) but they can be messed around with in play mode. Good things are planned for the 
-future! Very good things!
+**15th Nov, 2019**
+- After a full week of hard work, I can proudly say that the images are no longer able to 
+upload like they were a week ago (but that's for the sake of progress!). The server can
+now look into the /uploads/resources folder and see all files in there (and their filenames),
+so once I work out the HTTP requests for the images everything will be in place for 
+using images in builds. Exciting! (Also coding this stuff is painful, I have never 
+done anything like this before)
 
 # How to Use Thor
 As of right now, Thor can work client-side correctly for testing out games (double click index.html). However, it cannot save or download the game unless it is launched within a NodeJS server.

@@ -211,17 +211,14 @@
                     let formdata = new FormData()
 
                     
-                    formdata.append('resources', result[0])
-                    console.log("Name: " + result[0].name)
-
+                    formdata.append('resources', result[0], result[0].name)
                     
                     //This took so long, God helped me through lol
-                    fetch('/upload/resources', 
+                    fetch('/upload/resources',
                         {
-                            method: 'PUT', 
+                            method: 'POST', 
                             body: result[0],
-                            data : formdata,
-                            name : result[0].name
+                            data: formdata,
                         }
                         )
                         .then((Response) => 

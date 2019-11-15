@@ -34,104 +34,45 @@ app.listen(PORT, () =>
     console.log("Server started on port " + PORT)
 })
 
-app.put('/upload/resources',upload.single('resources'), (req, res) => 
+app.post('/upload/resources',upload.single('resources'), (req, res) => 
 { 
+
+    //Very VERY temporary code. The image will display for now as long as 
+    //you name the file 'temp.jpg', but it will still never download. 
+    //I am currently working on a way to add the image file name to the 
+    //request, but it looks like I will have to make another request entirely
     
-    var form = new formidable.IncomingForm()
-
-    console.log("Got a new form")
-
     let data = [Buffer.alloc(0)]
     let fullData
 
-    let prom = new Promise(async (res, rej) => 
+    new Promise(async (resolve, rej) => 
     {
         req.on('data', (d) => 
         {
-            //console.log(d)
             data.push(d)
         })
 
+        console.log(req.body)
+
         req.on('end', () => 
         {
-            res(data)
+            
+            resolve(data)
 
         })
     }).then((val) => 
     {
         fullData = Buffer.concat(data)
 
-        console.log(fullData)
-
-        fs.writeFile(__dirname + '/upload/resources/' + 'Battlefield.jpg', fullData, {}, (err) => 
+        fs.writeFile(__dirname + '/upload/resources/' + 'temp.jpg', fullData, {}, (err) => 
         {
             if (err)
             {
                 console.error(err)
             }
-            console.log(__dirname + '/uploads/resources/Battlefield.jpg')
         })
     })
-
-    
-    //console.log(req)
-    
-    //fs.writeFile()
-    
-
-    /*
-    
-    form.parse(req, (err, field, file) => 
-    {
-        if (err)
-        {
-            console.error(err)
-        }
-        console.log("It's parsing it")
-    })
-
-    form.on('fileBegin', (name, file) => 
-    {
-        console.log("beginning file parse")
-        if (file.name.indexOf(' ') >= 0)
-        {
-            //Has spaces, so replace spaces with %20
-            file.name.replace(' ', '%20')
-        }
-        file.path = __dirname + '/upload/resources/' + file.name
-    })
-
-    
-    form.on('file', (name, file) => 
-    {
-        console.log("Uploaded " + file.name)
-        return res
-    })
-    */
-
-       /*
-    fs.writeFile(__dirname + '/upload/resources/' + req.fileName, req.body, {}, () => 
-    {
-        console.log("Wrote it")
-    })
-*/
-
-    if (req.file)
-    {
-        console.log("There is a file")
-    }
-
     res.sendFile(__dirname + "/index.html")
-    
-
-    /*
-    console.log("It's made its way into the request")
-    if (req.file)
-    {
-        console.log("It's working")
-        console.log(req.file)
-    }
-    */
 })
 
 app.post('/download', (req, res) => 
