@@ -25,10 +25,11 @@ future! Very good things!
 As of right now, Thor can work client-side correctly for testing out games (double click index.html). However, it cannot save or download the game unless it is launched within a NodeJS server.
 
 # To-Do
-**Updated 8th Nov, 2019**
+**Updated 10th Nov, 2019**
 - Fix vulnerabilities
 - Add support for using custom images uploaded to the engine in exported games
 - Add support for deletion of images from the engine (as well as an interface to do so)
+- Add support for switching windows to the selected types
 - Enhance the file viewer (similar to Unity's project file viewer) with drag and drop capability
 as well as more interactability. 
 - Add more library functions (especially for making UI and WebGL, as well as images)

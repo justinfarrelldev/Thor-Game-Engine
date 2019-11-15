@@ -17,7 +17,7 @@ let LaunchGame = () =>
 //Gets called before the game is packed into a zip.
 //Makes all of the game files and adds them to the
 //game itself to be exported
-let MakeGame = () => 
+let MakeGame = async () => 
 {
     //Doctype needs to be up here as well as charset
 
@@ -73,12 +73,85 @@ let MakeGame = () =>
 
     Game.AddFile(typeLib)
 
-    for (let i = 0; i < scriptsInExecutionOrder.length; i++)
+    console.log("Making game")
+
+    /*
+    return await GetImageOnServer().then((res) => 
     {
-        let file = new GameFile(scriptsInExecutionOrder[i].name + ".js", "")
-        file.contents = scriptsInExecutionOrder[i].text
-        Game.AddFile(file)
+        console.log(res);
+        Game.AddFile(res)
+            
+        for (let i = 0; i < scriptsInExecutionOrder.length; i++)
+        {
+            let file = new GameFile(scriptsInExecutionOrder[i].name + ".js", "")
+            file.contents = scriptsInExecutionOrder[i].text
+            Game.AddFile(file)
+        }
+    })
+    */
+
+    GetImagesOnServer('upload/resources')
+}
+
+async function GetImagesOnServer(path : string) //Gets images from server with path
+{
+
+    const pathForm = new FormData()
+    pathForm.append("path", path)
+
+    console.log("Pathform: ")
+    for (var key of pathForm.entries())
+    {
+        console.log(key[1])
     }
+
+    let result = await fetch('/imgfiles', { 
+        method: "POST",
+        body: pathForm
+    }).then((response) => 
+    {
+        console.log(response.headers.get('files'));
+        /*
+        for (let i = 0; i < response.headers.keys.length; i++)
+        {
+            console.log(response.headers.get(response.headers.keys[i]));
+        }*/
+    })
+    /*
+    await GetImageOnServer().then((res) => 
+    {
+        console.log(res);
+        Game.AddFile(res)
+            
+        for (let i = 0; i < scriptsInExecutionOrder.length; i++)
+        {
+            let file = new GameFile(scriptsInExecutionOrder[i].name + ".js", "")
+            file.contents = scriptsInExecutionOrder[i].text
+            Game.AddFile(file)
+        }
+    })*/
+}
+
+async function GetImageOnServer(name : string, directory : string) 
+{
+    return await new Promise(async (resolve, reject) => 
+    {
+        let imgTest = new GameFile(name, directory)
+
+        //  upload/resources/name.jpg
+        if (directory[directory.length - 1] != '/') //If it doesn't end in a slash
+        {
+            directory += '/'                        //add one so that the name can be appended
+        }
+
+        if (directory[0] == '/')    //If the first char is a slash, it should be removed
+        {
+            directory = directory.substr(1) //Broken... for now
+        }
+        imgTest.contents = await ReadImageOnServer(directory + name)
+
+        resolve(imgTest)
+    })
 }
 
 let ClearGamePreviewWindow = () => 
@@ -290,6 +363,7 @@ let DownloadGameFile = (data : string, fileName : string) =>
 
 let ReadFileOnServer = (path : string) : string => 
 {
+    
     let result = null
     
     let XMLHttp = new XMLHttpRequest()
@@ -302,6 +376,37 @@ let ReadFileOnServer = (path : string) : string =>
     }
     
     return result
+}
+
+async function ReadImageOnServer (path: string)
+{
+
+    let getData = await fetch(path).then(async (response) => 
+    {
+        return await response.blob()
+    }).catch(async (err) => 
+    {
+        console.error("Error happened: " + err)
+        return null
+    })
+    
+    let reader = new FileReader()
+    reader.readAsArrayBuffer(getData)  //1st
+
+    let res = new Promise(async (resolve) => 
+    {
+        reader.addEventListener("loadend",async () => 
+        {
+            resolve(await reader.result)
+            return reader.result
+        })
+    }).catch((reason) => 
+    {
+        console.error("Promise did not resolve: " + reason)
+    })
+
+    return await res
+
 }
 
 let GetFileOnServer = (dir : string) =>

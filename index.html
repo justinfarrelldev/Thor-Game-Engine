@@ -18,9 +18,9 @@
     vertical-align: top;"
     title = "Play the game in the preview window">▶</button>
 
-    <button id = "DownloadButton" onclick = "DownloadGame()" 
-    title = "Download the game to your computer" style = "display: inline-block;
-     vertical-align: top;">📥</button>
+        <button id = "DownloadButton" onclick = "DownloadGame()" 
+        title = "Download the game to your computer" style = "display: inline-block;
+        vertical-align: top;">📥</button>
 
     <!--Dropdown for options menu-->
     <div class = "DropdownDiv" style = "display: inline-block; vertical-align: top;">
@@ -127,13 +127,20 @@
         <input id = "file_dialog" type = "file" style = "display: none"></input>
     </form>
 
+    <!--
+    <form action = '/upload/resources' enctype="multipart/form-data" method = "post">
+        <input id = 'uploadResource' type = "file" name = 'resources' style = "display: none"
+        onclick = 'console.log("Ive been clicked")'/>
+    </form>
+-->
     <script src = "js-src/jquery-3.4.1.js"></script> 
     <script>    
 
         //Makes the zip from the Game variable's files.
         //The final step in the build process.
-        let MakeGameZip = () => 
+        let MakeGameZip = async () => 
         {
+            console.log("Making a zip")
             //Make a new zip
             var zip = new JSZip()
 
@@ -146,18 +153,35 @@
             zip.generateAsync({type: "blob"}).then(
                 function(content)
                 {
+                    console.log("It's trying to download it")
                     DownloadGameFile(content, "test.zip")
                 }
             )
         }
         
         //Downloads the game as an HTML file
-        let DownloadGame = () =>
+        let DownloadGame = async () =>
         {
             SaveUserScriptText()
-            MakeGame()
-            MakeGameZip() //FINALLY THIS WORKS
-            
+
+            await fetch('/download', {
+                method: "POST"
+            }).then(async (response) => 
+            {
+                console.log("It's making the game download")
+                let gameMade = await new Promise(async (resolve) =>
+                {
+                    resolve(await MakeGame())
+                }).then((val) => 
+                {
+                    MakeGameZip() //FINALLY THIS WORKS
+                })
+
+                //Need a promise for MakeGame() to resolve to continue once 
+                //images are downloaded
+                
+            })
+
         }
 
         //Opens and closes dropdowns given an ID
@@ -176,16 +200,28 @@
                 $('#file_dialog').unbind('change')
                 $('#file_dialog').on('change', (event) =>
                 {
+
+                    /*
+                    $('#uploadResource').trigger('click').on('click', () => 
+                    {
+                        console.log("Hi it was clicked");
+                    })*/
+
                     var result = event.target.files
-                    let data = new FormData()
+                    let formdata = new FormData()
 
-                    data.append('resources', result[0])
+                    
+                    formdata.append('resources', result[0])
+                    console.log("Name: " + result[0].name)
 
+                    
                     //This took so long, God helped me through lol
                     fetch('/upload/resources', 
                         {
                             method: 'PUT', 
-                            body: data
+                            body: result[0],
+                            data : formdata,
+                            name : result[0].name
                         }
                         )
                         .then((Response) => 
@@ -212,6 +248,7 @@
                         {
                             console.error(err)
                         })
+                        
                 })
                 $('#file_dialog').trigger("click")
             })

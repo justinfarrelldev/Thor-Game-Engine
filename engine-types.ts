@@ -13,7 +13,7 @@ class GameFiles
     }
 
     //Pushes a file to the Game Files array
-    AddFile(file : GameFile)
+    AddFile(file : any)
     {
         this.files.push(file)
     }
@@ -39,7 +39,7 @@ class GameFile
      */
     fileName : string
     relFilePath : string
-    contents : string
+    contents : any
     constructor(fileName, relFilePath) 
     {
         this.fileName = fileName
