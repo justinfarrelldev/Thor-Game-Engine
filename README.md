@@ -7,21 +7,19 @@ visual novels). I plan to expand it as I work on more projects inside of Thor, s
 in the future it will likely have many more features.
 
 # Features
-**1st Nov, 2019**
+**20th Nov, 2019**
 - Can export games to a new webpage (.zip file with HTML file and scripts inside) with multiple 
-custom scripts included
+custom scripts included as well as multiple uploaded images
 - Can test games inside of Thor's game window (left side) using the play button
 - Can use multiple custom scripts (Javascript) to control the game
 - Thor includes a few library functions which you can use to quickly develop new games (see below)
 
 # Update Notes
-**15th Nov, 2019**
-- After a full week of hard work, I can proudly say that the images are no longer able to 
-upload like they were a week ago (but that's for the sake of progress!). The server can
-now look into the /uploads/resources folder and see all files in there (and their filenames),
-so once I work out the HTTP requests for the images everything will be in place for 
-using images in builds. Exciting! (Also coding this stuff is painful, I have never 
-done anything like this before)
+**20th Nov, 2019**
+- Images can now be uploaded to the server and downloaded in builds of games. They can be 
+controlled within your scripts as well (for example, using them as a Canvas image).
+Images uploaded to the engine are stored in /upload/resources during development on 
+the server as well as during build time.
 
 # How to Use Thor
 As of right now, Thor can work client-side correctly for testing out games (double click index.html). However, it cannot save or download the game unless it is launched within a NodeJS server.
@@ -29,12 +27,12 @@ As of right now, Thor can work client-side correctly for testing out games (doub
 # To-Do
 **Updated 10th Nov, 2019**
 - Fix vulnerabilities
-- Add support for using custom images uploaded to the engine in exported games
+- Fix image bugginess involving spaces
 - Add support for deletion of images from the engine (as well as an interface to do so)
 - Add support for switching windows to the selected types
 - Enhance the file viewer (similar to Unity's project file viewer) with drag and drop capability
 as well as more interactability. 
-- Add more library functions (especially for making UI and WebGL, as well as images)
+- Add more library functions (especially for interaction with images and more game interactability)
 - Make Thor download files correctly while not launched on a server
 - Fix warnings about using XMLHttpRequest (not an immediate priority)
 - Add configuration options for Thor (likely stored in the browser cache)
