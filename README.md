@@ -28,6 +28,7 @@ As of right now, Thor can work client-side correctly for testing out games (doub
 **Updated 10th Nov, 2019**
 - Fix vulnerabilities
 - Fix image bugginess involving spaces
+- Improve the function library with use of chaining 
 - Add support for deletion of images from the engine (as well as an interface to do so)
 - Add support for switching windows to the selected types
 - Enhance the file viewer (similar to Unity's project file viewer) with drag and drop capability

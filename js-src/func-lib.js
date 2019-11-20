@@ -43,6 +43,20 @@ function AddCanvas(contextName, mode, style) {
     }
     return canvas;
 }
+//Adds an image to a canvas and renders it on load
+function AddCanvasImage(contextName, imgName, x, y) {
+    var img = new Image();
+    img.src = 'upload/resources/' + imgName;
+    img.onload = () => {
+        window[contextName].drawImage(img, (x == null) ? 0 : x, (y == null) ? 0 : y);
+    };
+}
+//Adds an image to the page
+function AddImage(imgName, marginLeft, marginTop) {
+    var el = AddElem('img', '');
+    el.src = 'upload/resources/' + imgName;
+    SetStyle(el, 'margin-left: ' + marginLeft + '; margin-top: ' + marginTop);
+}
 //Shorthand
 function GetElemById(id) {
     return document.getElementById(id);
@@ -50,6 +64,15 @@ function GetElemById(id) {
 //Also shorthand
 function GetById(id) {
     return document.getElementById(id);
+}
+//Sets background image given the name of an uploaded image
+function SetBackgroundImage(imgName) {
+    document.body.style.backgroundImage = 'url(upload/resources/' + imgName + ')';
+    document.body.style.backgroundSize = '100% 100%';
+}
+//Shorthand for SetBackgroundImage()
+function BGImg(imgName) {
+    SetBackgroundImage(imgName);
 }
 if (AppendChildToCorrectElement === undefined) {
     var AppendChildToCorrectElement = (element) => {
