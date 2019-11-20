@@ -23,6 +23,7 @@ class GameFile {
         this.fileName = fileName;
         this.relFilePath = relFilePath;
         this.contents;
+        this.type = "";
     }
 }
 //Verbose to avoid redefinition

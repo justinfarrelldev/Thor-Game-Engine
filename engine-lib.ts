@@ -75,22 +75,52 @@ let MakeGame = async () =>
 
     console.log("Making game")
 
-    /*
-    return await GetImageOnServer().then((res) => 
+    await new Promise(async (res, rej) => 
     {
-        console.log(res);
-        Game.AddFile(res)
-            
-        for (let i = 0; i < scriptsInExecutionOrder.length; i++)
+        await GetImagesFileData().then(() => res())
+    })
+
+}
+
+async function GetImagesFileData()
+{
+    let imgs = await GetImagesOnServer('upload/resources')
+
+    return await new Promise(async (resolve, rej) => 
+    {
+        let imgCount = 0
+        for (let i = 0; i < (imgs as any).length; i++) //Trick typescript because we know 
+        //no matter what this will be string[]
         {
-            let file = new GameFile(scriptsInExecutionOrder[i].name + ".js", "")
-            file.contents = scriptsInExecutionOrder[i].text
-            Game.AddFile(file)
+            let imgFile = new GameFile(imgs[i], '/imgs/')
+            imgs[i] = imgs[i].replace(' ', '')
+            fetch('/upload/resources/' + imgs[i],
+            {
+                method: "GET"
+            })
+            .then(async (res) => 
+            {
+                let resBlob = await res.blob()
+
+                console.log(imgs[i])
+
+                imgFile.contents = resBlob
+
+                imgFile.type = "image"
+
+                Game.AddFile(imgFile)
+
+                imgCount++
+
+                if (imgCount == (imgs as any).length)
+                {
+                    console.log('resolving')
+                    resolve()
+                }
+            })
         }
     })
-    */
 
-    GetImagesOnServer('upload/resources')
 }
 
 async function GetImagesOnServer(path : string) //Gets images from server with path
@@ -104,19 +134,34 @@ async function GetImagesOnServer(path : string) //Gets images from server with p
     {
         console.log(key[1])
     }
-
-    let result = await fetch('/imgfiles', { 
-        method: "POST",
-        body: pathForm
-    }).then((response) => 
+    return await new Promise(async (resolve, reject) => 
     {
-        console.log(response.headers.get('files'));
-        /*
-        for (let i = 0; i < response.headers.keys.length; i++)
+        let result = await fetch('/imgfiles', { 
+            method: "POST",
+            body: pathForm
+        }).then((response) => 
         {
-            console.log(response.headers.get(response.headers.keys[i]));
-        }*/
+            let f = response.headers.get('files')
+            let fsplit = f.split(',')
+    
+            for (let i = 0; i < fsplit.length; i++)
+            {
+     
+                fsplit[i] = fsplit[i].replace(' ', '')
+    
+                if (fsplit[i] == 'keep.gitkeep')
+                {
+                    console.log("It's found that array: " + fsplit[i]);
+                    fsplit.splice(i, 1)
+                }
+            }
+    
+            let images = fsplit
+
+            resolve(images)
+        })
     })
+
     /*
     await GetImageOnServer().then((res) => 
     {

@@ -148,7 +148,19 @@
             //to the zip
             for (let i = 0; i < Game.files.length; i++)
             {
-                zip.file(Game.files[i].fileName, Game.files[i].contents)
+                console.log(Game.files[i].fileName + '; ')
+                if (Game.files[i].type === "")
+                {
+                    zip.file(Game.files[i].fileName, Game.files[i].contents)
+                }
+                else if (Game.files[i].type === "image") //Keeping images inside of 
+                                                         //the /upload/resources 
+                                                         //folder for simplicity purposes
+                {
+                    zip.folder('upload').folder('resources').file(
+                        Game.files[i].fileName, Game.files[i].contents
+                    )
+                }
             }
             zip.generateAsync({type: "blob"}).then(
                 function(content)
@@ -200,21 +212,34 @@
                 $('#file_dialog').unbind('change')
                 $('#file_dialog').on('change', (event) =>
                 {
-
-                    /*
-                    $('#uploadResource').trigger('click').on('click', () => 
-                    {
-                        console.log("Hi it was clicked");
-                    })*/
-
                     var result = event.target.files
                     let formdata = new FormData()
+                    let nameFormData = new FormData()
 
-                    
                     formdata.append('resources', result[0], result[0].name)
-                    
-                    //This took so long, God helped me through lol
-                    fetch('/upload/resources',
+                    nameFormData.append('resource-name', result[0].name)
+
+                    console.log("Fetching")
+                    fetch('/upload/resource', {
+                        method: 'POST',
+                        body: result[0].name,
+                        data: nameFormData
+                    }).then((response) => 
+                    {
+                        if (response.ok)
+                        {
+                            PostRequestResource()
+                        }
+                        else
+                        {
+                            console.error("Bad response: " + response.status)
+                        }
+                    })
+
+                    function PostRequestResource()
+                    {
+                        console.log("post requesting")
+                        fetch('/upload/resources',
                         {
                             method: 'POST', 
                             body: result[0],
@@ -245,7 +270,8 @@
                         {
                             console.error(err)
                         })
-                        
+                    }
+                    //This took so long, God helped me through lol
                 })
                 $('#file_dialog').trigger("click")
             })
@@ -253,7 +279,6 @@
  
         $(document).ready(function()
             {
-
                 $('.DropdownSubmenu').hide() //hide all dropdowns
 
                 $(document).click((e) => 

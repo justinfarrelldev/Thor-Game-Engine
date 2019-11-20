@@ -13,7 +13,8 @@ var app = express()
 
 var upload = multer({dest: '/upload/resources'})
 
-//app.use(upload.array())
+var lastUploadName;
+
 app.use(bodyParser.urlencoded({extended: false}))
 app.use(bodyParser.json())
 app.use(express.static(path.join(__dirname, '/')))
@@ -24,14 +25,34 @@ app.get('/', (req, res) =>
     res.sendFile(__dirname + '/index.html')
 })
 
-app.get('/upload/resources/',upload.single('/upload/resources'), (req, res) => 
+app.get('/upload/resources/:fileName', async (req, res) => 
 { 
-    console.log("It's asking for that resource");
+    res.send(res.data)
 })
 
 app.listen(PORT, () =>
 { 
     console.log("Server started on port " + PORT)
+})
+
+app.post('/upload/resource', upload.single('resource-name'), (req, res) => 
+{
+    new Promise(async(resolve, reject) => 
+    {
+        req.on('data', (d) => 
+        {
+            lastUploadName = d
+        })
+
+        req.on('end', () => 
+        {
+            resolve(lastUploadName)
+        })
+    }).then((val) => 
+    {
+        res.end()
+    })
+
 })
 
 app.post('/upload/resources',upload.single('resources'), (req, res) => 
@@ -45,14 +66,13 @@ app.post('/upload/resources',upload.single('resources'), (req, res) =>
     let data = [Buffer.alloc(0)]
     let fullData
 
+
     new Promise(async (resolve, rej) => 
     {
         req.on('data', (d) => 
         {
             data.push(d)
         })
-
-        console.log(req.body)
 
         req.on('end', () => 
         {
@@ -64,7 +84,7 @@ app.post('/upload/resources',upload.single('resources'), (req, res) =>
     {
         fullData = Buffer.concat(data)
 
-        fs.writeFile(__dirname + '/upload/resources/' + 'temp.jpg', fullData, {}, (err) => 
+        fs.writeFile(__dirname + '/upload/resources/' + lastUploadName, fullData, {}, (err) => 
         {
             if (err)
             {
@@ -104,7 +124,6 @@ app.post('/imgfiles',upload.array('path'), (req, res) =>
 
     new Promise(async (resolve, rej) => 
     {
-        
         files = await readDirectory(req.body.path)
 
         if (files != null && files != undefined)
@@ -116,14 +135,12 @@ app.post('/imgfiles',upload.array('path'), (req, res) =>
             rej(new Error("Could not find files in that directory."))
         }
     }).then((val) => 
-    {
-        console.log("From POST")
+    { 
         console.log(val)
- 
         res.append('files', val)
         res.end()
     }).catch((e) => 
-    console.error(e)
+        console.error(e)
     )
 
 })
