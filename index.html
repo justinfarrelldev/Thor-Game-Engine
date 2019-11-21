@@ -140,7 +140,7 @@
         //The final step in the build process.
         let MakeGameZip = async () => 
         {
-            console.log("Making a zip")
+            console.log("Making the build into a zip file.")
             //Make a new zip
             var zip = new JSZip()
 
@@ -148,7 +148,6 @@
             //to the zip
             for (let i = 0; i < Game.files.length; i++)
             {
-                console.log(Game.files[i].fileName + '; ')
                 if (Game.files[i].type === "")
                 {
                     zip.file(Game.files[i].fileName, Game.files[i].contents)
@@ -161,11 +160,12 @@
                         Game.files[i].fileName, Game.files[i].contents
                     )
                 }
+                console.log('"' + Game.files[i].fileName + '" has been added to the zip file.')
             }
             zip.generateAsync({type: "blob"}).then(
                 function(content)
                 {
-                    console.log("It's trying to download it")
+                    console.log("BUILD FINISHED: The download is starting.")
                     DownloadGameFile(content, "test.zip")
                 }
             )
@@ -180,7 +180,7 @@
                 method: "POST"
             }).then(async (response) => 
             {
-                console.log("It's making the game download")
+                console.log("GAME IS BEING BUILT AND PREPARED FOR DOWNLOAD")
                 let gameMade = await new Promise(async (resolve) =>
                 {
                     resolve(await MakeGame())
@@ -188,10 +188,6 @@
                 {
                     MakeGameZip() //FINALLY THIS WORKS
                 })
-
-                //Need a promise for MakeGame() to resolve to continue once 
-                //images are downloaded
-                
             })
 
         }
@@ -253,12 +249,16 @@
                                 console.log("The response is a-okay!")
                                                     
                                 //Adding element for images
+
+                                let imgIcon = new ImageFileIcon(String(event.target.files[0].name).replace(/ /g, '-'))
+                                /*
                                 let el = document.createElement('img')
-                                el.src = '/upload/resources/' + event.target.files[0].name
+                                el.src = '/upload/resources/' + String(event.target.files[0].name).replace(/ /g, '-')
                                 el.style = "width: auto; height: 33%; margin: 1%"
-                                el.alt = event.target.files[0].name
-                                el.title = event.target.files[0].name
+                                el.alt = String(event.target.files[0].name).replace(/ /g, '-')
+                                el.title = String(event.target.files[0].name).replace(/ /g, '-')
                                 document.getElementById('File_Explorer').appendChild(el)
+                                */
                             }
                             else
                             {

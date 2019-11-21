@@ -21,6 +21,8 @@ let MakeGame = async () =>
 {
     //Doctype needs to be up here as well as charset
 
+    console.log("Starting build process...")
+
     let outFile = new HTMLFile("test.html", "")
 
     let title = "Test output game"
@@ -41,6 +43,8 @@ let MakeGame = async () =>
 
     outFile.AddElement("script", "src = \"func-lib.js\"", "")
 
+    console.log("HTML file constructed in memory. Adding user scripts to build.")
+
     let biggest = 0;
     let scriptsInExecutionOrder = [];
     for (let i = 1; i < UserScripts.length; i++)
@@ -49,17 +53,23 @@ let MakeGame = async () =>
         {
             scriptsInExecutionOrder.push(UserScripts[i])
             biggest = UserScripts[i].executionOrder
+            console.log(UserScripts[i].name + " has been added to the list of scripts in execution order.")
         }
     }
     for (let i = 0; i < scriptsInExecutionOrder.length; i++)
     {
         //Add elements to link the userscripts up
         outFile.AddElement("script", "src = \"" + scriptsInExecutionOrder[i].name + ".js\"", "")
+        console.log(scriptsInExecutionOrder[i].name + " has had a script tag added in the HTML file.")
     }
 
     outFile.AddElement("script", "", UserScripts[0].text) //Add the inline script
 
+    console.log("The inline script has been added to the HTML file.")
+
     Game.AddFile(outFile.ToGameFile())
+
+    console.log("The HTML file has been added to the game build.")
 
     let funcLib = new GameFile("func-lib.js", "")
 
@@ -67,13 +77,15 @@ let MakeGame = async () =>
 
     Game.AddFile(funcLib)
 
+    console.log("The function library file (func-lib.js) has been added to the game build.")
+
     let typeLib = new GameFile("type-lib.js", "")
 
     typeLib.contents = ReadFileOnServer("js-src/type-lib.js")
 
     Game.AddFile(typeLib)
 
-    console.log("Making game")
+    console.log("The type library file (type-lib.js) has been added to the game build.")
 
     await new Promise(async (res, rej) => 
     {
@@ -92,9 +104,9 @@ async function GetImagesFileData()
         for (let i = 0; i < (imgs as any).length; i++) //Trick typescript because we know 
         //no matter what this will be string[]
         {
+            imgs[i] = imgs[i].replace(/ /g, '')
             let imgFile = new GameFile(imgs[i], '/imgs/')
-            imgs[i] = imgs[i].replace(' ', '')
-            fetch('/upload/resources/' + imgs[i],
+            fetch('/upload/resources/' + imgs[i], 
             {
                 method: "GET"
             })
@@ -102,7 +114,7 @@ async function GetImagesFileData()
             {
                 let resBlob = await res.blob()
 
-                console.log(imgs[i])
+                console.log('"' + imgs[i] + '" has had its data recieved from the server.')
 
                 imgFile.contents = resBlob
 
@@ -114,7 +126,7 @@ async function GetImagesFileData()
 
                 if (imgCount == (imgs as any).length)
                 {
-                    console.log('resolving')
+                    console.log('All images have had their data recieved from the server.')
                     resolve()
                 }
             })
@@ -128,21 +140,19 @@ async function GetImagesOnServer(path : string) //Gets images from server with p
 
     const pathForm = new FormData()
     pathForm.append("path", path)
-
-    console.log("Pathform: ")
-    for (var key of pathForm.entries())
-    {
-        console.log(key[1])
-    }
     return await new Promise(async (resolve, reject) => 
     {
+        console.log("Sending a POST request to the server for the image files present.")
         let result = await fetch('/imgfiles', { 
             method: "POST",
             body: pathForm
         }).then((response) => 
         {
+            console.log("POST request has been answered.")
             let f = response.headers.get('files')
             let fsplit = f.split(',')
+
+            console.log("The files have been gotten from the response headers.")
     
             for (let i = 0; i < fsplit.length; i++)
             {
@@ -151,30 +161,17 @@ async function GetImagesOnServer(path : string) //Gets images from server with p
     
                 if (fsplit[i] == 'keep.gitkeep')
                 {
-                    console.log("It's found that array: " + fsplit[i]);
+                    console.log("keep.gitkeep has been culled from the build.")
                     fsplit.splice(i, 1)
                 }
             }
     
             let images = fsplit
 
+            console.log("Image files prepared.")
             resolve(images)
         })
     })
-
-    /*
-    await GetImageOnServer().then((res) => 
-    {
-        console.log(res);
-        Game.AddFile(res)
-            
-        for (let i = 0; i < scriptsInExecutionOrder.length; i++)
-        {
-            let file = new GameFile(scriptsInExecutionOrder[i].name + ".js", "")
-            file.contents = scriptsInExecutionOrder[i].text
-            Game.AddFile(file)
-        }
-    })*/
 }
 
 async function GetImageOnServer(name : string, directory : string) 
@@ -412,7 +409,7 @@ let ReadFileOnServer = (path : string) : string =>
     let result = null
     
     let XMLHttp = new XMLHttpRequest()
-    //Possibly use fetch?
+    //For now, leaving as XMLHttpRequest. Will become fetch in the future.
     XMLHttp.open("GET", path, false)
     XMLHttp.send()
     if (XMLHttp.status === 200)

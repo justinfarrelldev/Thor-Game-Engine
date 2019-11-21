@@ -7,13 +7,11 @@ const bodyParser = require('body-parser')
 const multer = require('multer')
 const path = require('path')
 const PORT = 1337
-const formidable = require('formidable')
 
 var app = express()
-
 var upload = multer({dest: '/upload/resources'})
 
-var lastUploadName;
+var lastUploadName; //The last name of the last image uploaded. 
 
 app.use(bodyParser.urlencoded({extended: false}))
 app.use(bodyParser.json())
@@ -57,15 +55,8 @@ app.post('/upload/resource', upload.single('resource-name'), (req, res) =>
 
 app.post('/upload/resources',upload.single('resources'), (req, res) => 
 { 
-
-    //Very VERY temporary code. The image will display for now as long as 
-    //you name the file 'temp.jpg', but it will still never download. 
-    //I am currently working on a way to add the image file name to the 
-    //request, but it looks like I will have to make another request entirely
-    
     let data = [Buffer.alloc(0)]
     let fullData
-
 
     new Promise(async (resolve, rej) => 
     {
@@ -84,7 +75,7 @@ app.post('/upload/resources',upload.single('resources'), (req, res) =>
     {
         fullData = Buffer.concat(data)
 
-        fs.writeFile(__dirname + '/upload/resources/' + lastUploadName, fullData, {}, (err) => 
+        fs.writeFile(__dirname + '/upload/resources/' + String(lastUploadName).replace(/ /g, '-'), fullData, {}, (err) => 
         {
             if (err)
             {
@@ -96,7 +87,7 @@ app.post('/upload/resources',upload.single('resources'), (req, res) =>
 })
 
 app.post('/download', (req, res) => 
-{
+{8
     console.log("It's downloading the game and reflecting that serverside")
     res.sendStatus(200)
 })
@@ -110,7 +101,7 @@ async function readDirectory(dir)
         {
             if (err)
             {
-                console.error(err)
+                rej(err)
             }
 
             res(files)
@@ -120,8 +111,6 @@ async function readDirectory(dir)
 
 app.post('/imgfiles',upload.array('path'), (req, res) =>  
 {
-    console.log(req.body.path)
-
     new Promise(async (resolve, rej) => 
     {
         files = await readDirectory(req.body.path)
@@ -136,7 +125,6 @@ app.post('/imgfiles',upload.array('path'), (req, res) =>
         }
     }).then((val) => 
     { 
-        console.log(val)
         res.append('files', val)
         res.end()
     }).catch((e) => 

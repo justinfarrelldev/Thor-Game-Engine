@@ -71,7 +71,7 @@ function SetBackgroundImage(imgName) {
     document.body.style.backgroundSize = '100% 100%';
 }
 //Shorthand for SetBackgroundImage()
-function BGImg(imgName) {
+function SetBGImg(imgName) {
     SetBackgroundImage(imgName);
 }
 if (AppendChildToCorrectElement === undefined) {

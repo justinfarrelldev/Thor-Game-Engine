@@ -138,6 +138,57 @@ if (finished === false || finished === undefined)
         }
     }
     (Global as any).LinkedList = LinkedList 
+
+    class VNWebpage
+    {
+        /**
+         *  The template for creating visual novels in a webpage itself 
+         * (with UI handled by actual webpage elements)
+         */
+
+        playspace : HTMLElement
+        textbox : HTMLElement
+        text : HTMLParagraphElement
+        characterHeading : HTMLHeadingElement
+
+        constructor() {
+            this.playspace = AddElem('div', '')
+            this.playspace.style.width = '100%'
+            this.playspace.style.height = '100%'
+            this.playspace.style.overflow = 'hidden'
+
+            this.textbox = AddElem('div', '')
+            this.textbox.style.width = '100%'
+            this.textbox.style.height = '25%'
+            this.playspace.appendChild(this.textbox) //The textbox should be a child of 
+                                                     //the playspace 
+            this.textbox.style.position = 'absolute'
+            this.textbox.style.bottom = '0'
+            this.textbox.style.backgroundColor = 'rgba(132, 0, 255, 0.15)'
+
+            this.characterHeading = AddElem('h2', 'CHARACTER NAME')
+            this.characterHeading.className = 'VNChar' //Access the character name anytime
+            this.textbox.appendChild(this.characterHeading)  
+            this.characterHeading.style.marginLeft = '4%'
+            this.characterHeading.style.marginBottom = '0%'
+            this.characterHeading.style.fontFamily = 'Verdana, sans-serif'
+            this.characterHeading.style.fontWeight = 'bold'
+            this.characterHeading.style.color = 'white'
+            
+            this.text = AddElem('p', 'TEXT WILL APPEAR HERE')
+            this.text.className = 'VNText' //You can access the text at anytime with this 
+                                           //class (class in case more than one is on 
+                                           //the screen at once)
+            this.textbox.appendChild(this.text)
+            this.text.style.marginLeft = '6%'
+            this.text.style.marginTop = '0.5%'
+            this.text.style.fontFamily = 'Verdana, sans-serif'
+            this.text.style.color = '#874BE8'
+
+        }
+    }
+    (Global as any).VNWebpage = VNWebpage
+
 }
 
 

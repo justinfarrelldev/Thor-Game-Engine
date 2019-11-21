@@ -15,11 +15,20 @@ custom scripts included as well as multiple uploaded images
 - Thor includes a few library functions which you can use to quickly develop new games (see below)
 
 # Update Notes
-**20th Nov, 2019**
-- Images can now be uploaded to the server and downloaded in builds of games. They can be 
-controlled within your scripts as well (for example, using them as a Canvas image).
-Images uploaded to the engine are stored in /upload/resources during development on 
-the server as well as during build time.
+**21st Nov, 2019**
+- Some minor changes have been made to the build process and the code has been cleaned up slightly.
+- Display changes to the File Explorer icons have been made (they are now objects themselves).
+- The File Explorer icons now have the file names listed below them as well as when you hover
+over them. 
+- The console now reports every step of the build process as it is happening. 
+- Fixed the issues with spaces in file names. You can now upload images with spaces in the file 
+name and the spaces will be replaced with hyphens (for example, "my image of my dog.jpg" will 
+become "my-image-of-my-dog.jpg" upon upload).
+- Added a visual novel template type. Use it by writing "var template = new VNWebpage()" in 
+your userscript. It will be improved massively in the next few updates.
+- Added a function to set the background image of your game. Use it by calling 
+"SetBGImg('imageName.jpg')" in your userscript. This breaks the game preview as of right now,
+but works as expected in builds. 
 
 # How to Use Thor
 As of right now, Thor can work client-side correctly for testing out games (double click index.html). However, it cannot save or download the game unless it is launched within a NodeJS server.

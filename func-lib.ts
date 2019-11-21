@@ -110,7 +110,7 @@ function SetBackgroundImage(imgName : string)
 }
 
 //Shorthand for SetBackgroundImage()
-function BGImg(imgName : string)
+function SetBGImg(imgName : string)
 {
     SetBackgroundImage(imgName)
 }

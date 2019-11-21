@@ -163,3 +163,48 @@ class UserScript
 
     }
 }
+
+class ImageFileIcon
+{
+    /**
+     * The file icons in the file explorer
+     */
+    name : string
+    constructor(name : string) {
+
+        name = name
+
+        let el = document.createElement('div')
+        el.style.height = '33%'
+        el.style.margin = '2%'
+        el.style.marginBottom = '5%'
+        el.style.display = 'inline-block'
+
+        let img = document.createElement('img')
+        img.src = '/upload/resources/' + name
+        img.style.width = 'auto'
+        img.style.height = '100%'
+        img.style.margin = '1%'
+        img.style.marginBottom = '0%'
+        img.style.marginRight = '2%'
+        img.alt = name
+        img.title = name
+
+        el.appendChild(img)
+
+        let text = document.createElement('p')
+        text.style.width = '13%'
+        text.style.height = '5%'
+        text.style.marginTop = '0%'
+        text.style.fontFamily = 'monospace, sans-serif'
+        text.style.fontSize = '14px'
+        text.style.whiteSpace = 'initial'
+        text.style.position = 'absolute'
+        text.style.wordBreak = 'break-all'
+        text.innerHTML = name
+
+        el.appendChild(text)
+
+        document.getElementById('File_Explorer').appendChild(el)
+    }
+}
