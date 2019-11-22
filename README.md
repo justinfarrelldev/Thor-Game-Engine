@@ -31,7 +31,7 @@ your userscript. It will be improved massively in the next few updates.
 but works as expected in builds. 
 
 # How to Use Thor
-As of right now, Thor can work client-side correctly for testing out games (double click index.html). However, it cannot save or download the game unless it is launched within a NodeJS server.
+To run Thor, install Node.js. Navigate to your download directory in the command line, enter the thor-game-engine folder and use 'node index.js'. This will start the Thor game engine, which you can then use in your browser by navigating to 'localhost:1337'. 
 
 # To-Do
 **Updated 10th Nov, 2019**
