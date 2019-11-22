@@ -1,5 +1,4 @@
 .vscode
-node_modules
 upload/resources/*
 
 !upload/resources/keep.gitkeep
