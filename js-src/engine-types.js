@@ -102,11 +102,12 @@ class ImageFileIcon {
         img.style.margin = '1%';
         img.style.marginBottom = '0%';
         img.style.marginRight = '2%';
+        img.style.textAlign = 'center';
         img.alt = name;
         img.title = name;
         el.appendChild(img);
         let text = document.createElement('p');
-        text.style.width = '13%';
+        text.style.width = '8%';
         text.style.height = '5%';
         text.style.marginTop = '0%';
         text.style.fontFamily = 'monospace, sans-serif';
@@ -117,6 +118,48 @@ class ImageFileIcon {
         text.innerHTML = name;
         el.appendChild(text);
         document.getElementById('File_Explorer').appendChild(el);
+    }
+}
+class EngineWindow {
+    constructor(title, preset, sectionMembers1) {
+        this.title = title;
+        this.preset = preset;
+        this.sectionMembers1 = sectionMembers1;
+        let head = document.createElement('h1');
+        head.innerHTML = title;
+        head.style.fontFamily = 'monospace, sans-serif';
+        let el = document.createElement('div');
+        this.div = el;
+        this.div.style.backgroundColor = 'white';
+        this.div.style.border = '1px solid gray';
+        this.div.style.position = 'absolute';
+        this.div.style.bottom = '25%';
+        this.div.style.width = '45%';
+        this.div.style.left = '25%';
+        this.div.style.zIndex = '11';
+        this.div.style.height = '50%';
+        this.div.appendChild(head);
+        document.body.appendChild(this.div);
+        this.CreatePreset(preset);
+    }
+    CreatePreset(preset) {
+        switch (preset) {
+            case 0:
+                let element = document.createElement('div');
+                element.style.width = '50%';
+                element.style.border = '1px solid black';
+                element.style.height = '72%';
+                element.style.marginBottom = '3%';
+                element.style.marginLeft = '3%';
+                for (let i = 0; i < this.sectionMembers1.length; i++) {
+                    let but = document.createElement('button');
+                    element.appendChild(but);
+                    but.style.width = '100%';
+                    but.innerHTML = this.sectionMembers1[i];
+                }
+                this.div.appendChild(element);
+                break;
+        }
     }
 }
 //# sourceMappingURL=engine-types.js.map

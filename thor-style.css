@@ -29,7 +29,8 @@ html, body {
     overflow: auto; 
     float: left;
     max-width: 50%; 
-    max-height: 65%
+    max-height: 65%;
+    position: relative;
 }
 
 #ErrorWindow {

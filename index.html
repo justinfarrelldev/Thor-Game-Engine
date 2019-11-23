@@ -29,7 +29,7 @@
                 <button onclick = "DropdownOpenClose('OptionsDropdown')" title = 
                 "Options for the current project.">Options</button>
                 <ul class = "DropdownSubmenu" id = "OptionsDropdown">        
-                    <li class = "DropdownItem1" onclick = "">Export Options</li>
+                    <li class = "DropdownItem1" onclick = "OpenWindow(ExportOptions)">Export Options</li>
                     <li class = "DropdownItem1" onclick = "">Option 2</li>
                     <li class = "DropdownItem1" onclick = "">Option 3</li>
                     <li class = "DropdownItem1" onclick = "">Option 4</li>
@@ -127,12 +127,11 @@
         <input id = "file_dialog" type = "file" style = "display: none"></input>
     </form>
 
-    <!--
-    <form action = '/upload/resources' enctype="multipart/form-data" method = "post">
-        <input id = 'uploadResource' type = "file" name = 'resources' style = "display: none"
-        onclick = 'console.log("Ive been clicked")'/>
-    </form>
--->
+    <div id = "THOR-ENGINE-IN-EDITOR"><!--Messing with this will likely make your 
+                                          Thor Engine instance think that the game 
+                                          is not being used in the preview window,
+                                          breaking things slightly. --></div>
+
     <script src = "js-src/jquery-3.4.1.js"></script> 
     <script>    
 
@@ -315,8 +314,8 @@
 
     </script> 
     <script src = "jszip/dist/jszip.min.js"></script>
-    <script src = "js-src/constants.js"></script>
     <script src = "js-src/engine-types.js"></script>
+    <script src = "js-src/constants.js"></script>
     <script src = "js-src/start.js"></script>
     <script src = "js-src/engine-lib.js"></script>
     <script src = "js-src/file-explorer.js"></script>

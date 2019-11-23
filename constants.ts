@@ -7,3 +7,5 @@ let CodeMirrorDefaultCode =
 
 let ContextNameError = new Error('There is already a global variable with the name you are trying to supply to the Canvas context. [ContextNameError]')
 ContextNameError.name = "ContextNameError"
+
+//let ExportOptions = new EngineWindow('Export Options', 0, ['Build Settings', 'Preferences'])

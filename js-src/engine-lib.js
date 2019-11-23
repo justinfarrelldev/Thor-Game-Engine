@@ -56,8 +56,14 @@ let MakeGame = async () => {
 };
 async function GetImagesFileData() {
     let imgs = await GetImagesOnServer('upload/resources');
+    console.log("It has awaited the images on the server.");
     return await new Promise(async (resolve, rej) => {
         let imgCount = 0;
+        console.log("Promise initiated for getting image file data.");
+        if (imgs.length === 0) {
+            console.log("No images found for download. Resolving.");
+            resolve();
+        }
         for (let i = 0; i < imgs.length; i++) //Trick typescript because we know 
          
         //no matter what this will be string[]
@@ -68,6 +74,7 @@ async function GetImagesFileData() {
                 method: "GET"
             })
                 .then(async (res) => {
+                console.log("Fetch request successful. Awaiting blob.");
                 let resBlob = await res.blob();
                 console.log('"' + imgs[i] + '" has had its data recieved from the server.');
                 imgFile.contents = resBlob;
@@ -78,6 +85,8 @@ async function GetImagesFileData() {
                     console.log('All images have had their data recieved from the server.');
                     resolve();
                 }
+            }).catch((reason) => {
+                console.error("Could not fetch image data from server: " + reason);
             });
         }
     });
@@ -129,7 +138,7 @@ let ClearGamePreviewWindow = () => {
 };
 let ThrowScriptError = (error) => {
     let el = document.createElement("p");
-    el.innerHTML = error.name + ": " + error.message;
+    el.innerHTML = error.name + ": " + error.message + '; ' + error.stack;
     el.className = "ErrorText";
     document.getElementById("ErrorWindow").appendChild(el);
     WarnOfCommonErrors(error);
@@ -301,6 +310,7 @@ async function ReadImageOnServer(path) {
     });
     return await res;
 }
-let GetFileOnServer = (dir) => {
+//Displaying options windows, etc.
+let OpenWindow = (window) => {
 };
 //# sourceMappingURL=engine-lib.js.map

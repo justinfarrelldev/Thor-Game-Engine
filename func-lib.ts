@@ -87,7 +87,8 @@ function AddImage(imgName : string, marginLeft? : string, marginTop? : string)
 {
     var el = AddElem('img', '')
     el.src = 'upload/resources/' + imgName
-    SetStyle(el, 'margin-left: ' + marginLeft + '; margin-top: ' + marginTop)
+    SetStyle(el, 'margin-left: ' + ((marginLeft) ? marginLeft : '0px') + '; margin-top: ' + ((marginTop) ? marginTop : '0px'))
+    return el
 }
 
 //Shorthand
@@ -105,8 +106,21 @@ function GetById(id : string)
 //Sets background image given the name of an uploaded image
 function SetBackgroundImage(imgName : string)
 {
-    document.body.style.backgroundImage = 'url(upload/resources/' + imgName + ')'
-    document.body.style.backgroundSize = '100% 100%'
+
+    if (!document.getElementById("THOR-ENGINE-IN-EDITOR"))
+    {
+        document.body.style.backgroundImage = "url(upload/resources/" + imgName + ")"
+        document.body.style.backgroundSize = "100% 100%"
+    }
+    else
+    {
+        let previewWindow = document.getElementById('GamePreviewWindow');
+        (previewWindow) ? previewWindow.style.backgroundImage = "url(upload/resources/" + imgName + ")"
+                        : document.body.style.backgroundImage = "url(upload/resources/" + imgName + ")";
+
+        (previewWindow) ? previewWindow.style.backgroundSize = "100% 100%"
+                        : document.body.style.backgroundSize = "100% 100%"
+    }
 }
 
 //Shorthand for SetBackgroundImage()

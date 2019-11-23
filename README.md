@@ -52,7 +52,7 @@ as well as more interactability.
 - Swap the AddCanvas arguments so that the mode is first and the context name is second
 - Split the function library into multiple files and only include files which are actually used
 
-# Function Library (Updated 31st Oct, 2019)
+# Function Library (Updated 23rd Nov, 2019)
 Thor includes a function library which can be used to create your game quickly and with 
 minimal effort. The functions are listed below (? means that an argument is optional): 
 
@@ -81,6 +81,40 @@ with an optional id "id". For example, to create a new heading, write the follow
   AddCanvas('ctx', '2d', 'border-style: solid')
   ```
   
+- AddCanvasImage(contextName, imgName, x?, y?)
+  - Adds an image to the Canvas with the context contextName. imgName corresponds to the 
+  filename of an image uploaded to Thor using the File Explorer. The optional x and y
+  values are coordinates for Canvas. To add "my-image.png" to a Canvas with a context
+  named "ctx" at coordinates "100, 200", write the following: 
+
+  ```
+  AddCanvasImage('ctx', 'my-image.png', 100, 200)
+  ```
+
+- AddImage(imgName, marginLeft?, marginTop?)      [returns the created image element]
+  - Adds an image to the page with the name imgName (imgName should be the filename of an image uploaded to Thor using the File Explorer). marginLeft will specify the CSS rule for the left margin of the image, and marginTop will do the same for the top (you can use this to position the image).
+  To add an image with the name 'myImage.jpg' with a 15% margin-left attribute and a 20% margin-top
+  attribute, write the following: 
+
+  ```
+  AddImage('myImage.jpg', '15%', '20%')
+  ```
+
+- SetBackgroundImage(imgName)
+  - Sets the background image of the game to the image specified in imgName. imgName should be the 
+  filename of an image uploaded to Thor using the File Explorer. To set an image named "myImg.png"
+  as the background, write the following: 
+
+  ```
+  SetBackgroundImage("myImg.png")
+  ```
+
+- SetBGImg(imgName)
+  -Shorthand for SetBackgroundImage(imgName).
+
 - GetElemById(id)                 [returns the requested element]
   - A shorthand for document.getElementById. Check documentation on that function
   for more info.
+
+- GetById(id)
+  - An even shorter shorthand for GetElemById(id). 

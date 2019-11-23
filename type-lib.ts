@@ -150,8 +150,11 @@ if (finished === false || finished === undefined)
         textbox : HTMLElement
         text : HTMLParagraphElement
         characterHeading : HTMLHeadingElement
+        arcs : VNArc[]
+        constructor(arcs : VNArc[]) {
 
-        constructor() {
+            this.arcs = arcs
+
             this.playspace = AddElem('div', '')
             this.playspace.style.width = '100%'
             this.playspace.style.height = '100%'
@@ -174,6 +177,10 @@ if (finished === false || finished === undefined)
             this.characterHeading.style.fontFamily = 'Verdana, sans-serif'
             this.characterHeading.style.fontWeight = 'bold'
             this.characterHeading.style.color = 'white'
+            this.characterHeading.style.userSelect = 'none'
+            this.characterHeading.style.msUserSelect = 'none'
+            this.characterHeading.style.msTouchSelect = 'none'
+            this.characterHeading.style.webkitUserSelect = 'none'
             
             this.text = AddElem('p', 'TEXT WILL APPEAR HERE')
             this.text.className = 'VNText' //You can access the text at anytime with this 
@@ -184,11 +191,180 @@ if (finished === false || finished === undefined)
             this.text.style.marginTop = '0.5%'
             this.text.style.fontFamily = 'Verdana, sans-serif'
             this.text.style.color = '#874BE8'
+            this.text.style.userSelect = 'none'
+            this.text.style.msUserSelect = 'none'
+            this.text.style.msTouchSelect = 'none'
+            this.text.style.webkitUserSelect = 'none'
 
+            if (arcs[0])
+            {
+                arcs[0].Advance()
+            }
         }
     }
     (Global as any).VNWebpage = VNWebpage
 
+    class VNArc
+    {
+        /**
+         * An arc of the visual novel template
+         * 
+         *   previous choice -> arc dialogue -> next choice option 1 -> another arc 1
+         *                                      next choice option 2 -> another arc 2
+         *                                      next choice option 3 -> another arc 3
+         * 
+         */
+
+        dialogueNodes : VNNode[] = []
+        currentNode : number = 0
+        thisArc : any
+        constructor() {
+            var index = 0;
+            this.thisArc = this
+
+            document.body.addEventListener('click', (mouseEvent)=>
+            {
+                this.Advance()
+            })
+        }
+
+        Advance()
+        {
+            if (this.dialogueNodes.length > 0 && this.dialogueNodes.length > this.currentNode)
+            {
+                if (this.dialogueNodes[this.currentNode - 1])
+                {
+                    if (this.dialogueNodes[this.currentNode - 1].dialogueInterval)
+                    {
+                        clearInterval(this.dialogueNodes[this.currentNode - 1].dialogueInterval)
+                    }
+                }
+                this.dialogueNodes[this.currentNode].ScrollText()
+                
+                for (let i = 0; i < document.getElementsByClassName('VNChar').length; i++)
+                {
+                    document.getElementsByClassName('VNChar')[i].innerHTML =
+                    this.dialogueNodes[this.currentNode].speakerName
+                }
+                if (!document.getElementById("THOR-ENGINE-IN-EDITOR"))
+                {
+                    document.body.style.backgroundImage = "url(upload/resources/" + this.dialogueNodes[this.currentNode].bgImg + ")"
+                    document.body.style.backgroundSize = "100% 100%"
+
+                }
+                else
+                {
+                    let previewWindow = document.getElementById('GamePreviewWindow');
+                    (previewWindow) ? previewWindow.style.backgroundImage = "url(upload/resources/" + this.dialogueNodes[this.currentNode].bgImg + ")"
+                                    : document.body.style.backgroundImage = "url(upload/resources/" + this.dialogueNodes[this.currentNode].bgImg + ")";
+
+                    (previewWindow) ? previewWindow.style.backgroundSize = "100% 100%"
+                                    : document.body.style.backgroundSize = "100% 100%";
+                }
+
+                this.currentNode ++
+            }
+            else 
+            {
+                return
+            }
+        }
+
+        AddNewNode(dialogue : string,
+                   speakerName? : string, 
+                   charImg? : string[],
+                   bgImg? : string)
+        {
+            let node = new VNNode(this, dialogue, speakerName, charImg, bgImg)
+            this.dialogueNodes.push(node)
+        }
+
+        AddNode(node : VNNode)
+        {
+            node.arc = this.thisArc
+            node.indexInArc = this.dialogueNodes.length
+            node.SetNode(node.dialogue, node.speakerName, node.charImg, node.bgImg)
+            this.dialogueNodes.push(node)
+        }
+    }
+    (Global as any).VNArc = VNArc
+
+    class VNNode 
+    {
+        /**
+         * A VN dialogue node with dialogue, character name, a bg image, sounds to play, 
+         * music to play, and character images to display.
+         * 
+         * If it's the same person talking, the character image can be assumed to be the
+         * same. 
+         */
+
+        dialogue : string
+        speakerName : string
+        charImg : string[]
+        bgImg : string
+        arc : VNArc //The arc this is in (set upon creation in arc)
+        indexInArc : number //The place in the arc (set upon creation in arc)
+        thisNode : VNNode
+        dialogueInterval //The setInterval for scrolling text - useful for stopping
+                        //text scroll
+        constructor(arc : VNArc, 
+                    dialogue : string, 
+                    speakerName? : string,
+                    charImg? : string[],
+                    bgImg? : string) 
+        {
+            this.thisNode = this
+            this.SetArc(arc)
+            this.SetNode(dialogue, speakerName, charImg, bgImg)
+        }
+
+        SetArc(arc : VNArc)
+        {
+            this.arc = arc
+            this.indexInArc = arc.dialogueNodes.length
+            return this.thisNode
+        }
+
+        SetNode(
+            dialogue : string,    //The text inside the text box
+            speakerName? : string, //The name of the person talking
+            charImg? : string[],     //The image(s) paths displayed front and center
+            bgImg? : string,       //The background image
+            ) 
+        {
+            this.dialogue = (dialogue) ? dialogue : this.arc.dialogueNodes[this.indexInArc - 1].dialogue
+            this.speakerName = (speakerName) ? speakerName : this.arc.dialogueNodes[this.indexInArc-1].speakerName
+            this.charImg = (charImg) ? charImg : this.arc.dialogueNodes[this.indexInArc-1].charImg
+            this.bgImg = (bgImg) ? bgImg : this.arc.dialogueNodes[this.indexInArc - 1].bgImg
+
+            return this.thisNode
+        }
+
+        ScrollText()
+        {
+            var displayedText = ''
+            var letter : number = 0 //0 to length of string
+            var textWindows = document.getElementsByClassName('VNText')
+
+            this.dialogueInterval = setInterval((handler) => 
+            {
+                if (letter < this.dialogue.length)
+                {
+                    displayedText += this.dialogue[letter++]
+                    for (let i = 0; i < textWindows.length; i++)
+                    {
+                        textWindows[i].innerHTML = displayedText
+                    }
+                }
+                else
+                {
+                    clearInterval(this.dialogueInterval)
+                }
+            }, 50)
+        }
+    }
+    (Global as any).VNNode = VNNode
 }
 
 

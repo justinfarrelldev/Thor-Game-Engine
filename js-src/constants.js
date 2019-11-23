@@ -5,4 +5,5 @@ let CodeMirrorDefaultCode = "/*Please do not use the 'let' keyword, as\ndoing so
     " in the order in \nwhich they are created (for now).\n*/\n\n\n";
 let ContextNameError = new Error('There is already a global variable with the name you are trying to supply to the Canvas context. [ContextNameError]');
 ContextNameError.name = "ContextNameError";
+//let ExportOptions = new EngineWindow('Export Options', 0, ['Build Settings', 'Preferences'])
 //# sourceMappingURL=constants.js.map
