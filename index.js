@@ -6,7 +6,7 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const multer = require('multer')
 const path = require('path')
-const PORT = 1337
+const PORT = 80
 
 var app = express()
 var upload = multer({dest: '/upload/resources'})

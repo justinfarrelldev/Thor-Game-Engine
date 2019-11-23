@@ -92,7 +92,7 @@ if (finished === false || finished === undefined) {
             this.playspace.style.height = '100%';
             this.playspace.style.overflow = 'hidden';
             this.textbox = AddElem('div', '');
-            this.textbox.style.width = '100%';
+            this.textbox.style.width = '99%';
             this.textbox.style.height = '25%';
             this.playspace.appendChild(this.textbox); //The textbox should be a child of 
             //the playspace 
@@ -161,11 +161,14 @@ if (finished === false || finished === undefined) {
                         this.dialogueNodes[this.currentNode].speakerName;
                 }
                 if (!document.getElementById("THOR-ENGINE-IN-EDITOR")) {
+                    document.body.style.backgroundColor = 'black';
                     document.body.style.backgroundImage = "url(upload/resources/" + this.dialogueNodes[this.currentNode].bgImg + ")";
                     document.body.style.backgroundSize = "100% 100%";
                 }
                 else {
                     let previewWindow = document.getElementById('GamePreviewWindow');
+                    (previewWindow) ? previewWindow.style.backgroundColor = 'black'
+                        : document.body.style.backgroundColor = 'black';
                     (previewWindow) ? previewWindow.style.backgroundImage = "url(upload/resources/" + this.dialogueNodes[this.currentNode].bgImg + ")"
                         : document.body.style.backgroundImage = "url(upload/resources/" + this.dialogueNodes[this.currentNode].bgImg + ")";
                     (previewWindow) ? previewWindow.style.backgroundSize = "100% 100%"
@@ -178,6 +181,26 @@ if (finished === false || finished === undefined) {
             }
         }
         AddNewNode(dialogue, speakerName, charImg, bgImg) {
+            if (this.dialogueNodes.length == 0) {
+                console.log("it's running");
+                document.addEventListener('DOMContentLoaded', () => {
+                    console.log("It's loaded all dom content");
+                    /*
+                    let charTexts = document.getElementsByClassName('VNChar')
+                    for (let i = 0; i < charTexts.length; i++)
+                    {
+                        charTexts[i].innerHTML = speakerName
+                    }
+    
+                    let dialogueBoxes = document.getElementsByClassName('VNText')
+                    for (let i = 0; i < dialogueBoxes.length; i++)
+                    {
+                        dialogueBoxes[i].innerHTML = dialogue
+                    }
+                    */
+                    this.Advance();
+                });
+            }
             let node = new VNNode(this, dialogue, speakerName, charImg, bgImg);
             this.dialogueNodes.push(node);
         }
