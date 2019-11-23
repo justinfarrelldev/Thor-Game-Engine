@@ -147,6 +147,12 @@ if (finished === false || finished === undefined) {
             document.body.addEventListener('click', (mouseEvent) => {
                 this.Advance();
             });
+            document.body.addEventListener('keydown', (event) => {
+                if (event.keyCode === 32) {
+                    //space 
+                    this.Advance();
+                }
+            });
         }
         Advance() {
             if (this.dialogueNodes.length > 0 && this.dialogueNodes.length > this.currentNode) {
@@ -182,22 +188,7 @@ if (finished === false || finished === undefined) {
         }
         AddNewNode(dialogue, speakerName, charImg, bgImg) {
             if (this.dialogueNodes.length == 0) {
-                console.log("it's running");
                 document.addEventListener('DOMContentLoaded', () => {
-                    console.log("It's loaded all dom content");
-                    /*
-                    let charTexts = document.getElementsByClassName('VNChar')
-                    for (let i = 0; i < charTexts.length; i++)
-                    {
-                        charTexts[i].innerHTML = speakerName
-                    }
-    
-                    let dialogueBoxes = document.getElementsByClassName('VNText')
-                    for (let i = 0; i < dialogueBoxes.length; i++)
-                    {
-                        dialogueBoxes[i].innerHTML = dialogue
-                    }
-                    */
                     this.Advance();
                 });
             }

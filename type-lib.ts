@@ -226,6 +226,15 @@ if (finished === false || finished === undefined)
             {
                 this.Advance()
             })
+
+            document.body.addEventListener('keydown', (event) => 
+            {
+                if (event.keyCode === 32)
+                {
+                    //space 
+                    this.Advance()
+                }
+            })
         }
 
         Advance()
@@ -282,24 +291,8 @@ if (finished === false || finished === undefined)
         {
             if (this.dialogueNodes.length == 0)
             {
-                console.log("it's running")
                 document.addEventListener('DOMContentLoaded', () => 
                 {
-                    console.log("It's loaded all dom content")
-                    /*
-                    let charTexts = document.getElementsByClassName('VNChar')
-                    for (let i = 0; i < charTexts.length; i++)
-                    {
-                        charTexts[i].innerHTML = speakerName
-                    }
-    
-                    let dialogueBoxes = document.getElementsByClassName('VNText')
-                    for (let i = 0; i < dialogueBoxes.length; i++)
-                    {
-                        dialogueBoxes[i].innerHTML = dialogue
-                    }
-                    */
-
                     this.Advance()
                 })
             }
