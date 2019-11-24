@@ -107,10 +107,12 @@ function GetById(id : string)
 function SetBackgroundImage(imgName : string)
 {
 
+    let sizing = 'cover'
     if (!document.getElementById("THOR-ENGINE-IN-EDITOR"))
     {
         document.body.style.backgroundImage = "url(upload/resources/" + imgName + ")"
-        document.body.style.backgroundSize = "100% 100%"
+        document.body.style.backgroundSize = sizing
+        document.body.style.backgroundPosition = 'center'
     }
     else
     {
@@ -118,8 +120,11 @@ function SetBackgroundImage(imgName : string)
         (previewWindow) ? previewWindow.style.backgroundImage = "url(upload/resources/" + imgName + ")"
                         : document.body.style.backgroundImage = "url(upload/resources/" + imgName + ")";
 
-        (previewWindow) ? previewWindow.style.backgroundSize = "100% 100%"
-                        : document.body.style.backgroundSize = "100% 100%"
+        (previewWindow) ? previewWindow.style.backgroundSize = sizing
+                        : document.body.style.backgroundSize = sizing;
+
+        (previewWindow) ? previewWindow.style.backgroundPosition = 'center'
+                        : document.body.style.backgroundPosition = 'center'
     }
 }
 

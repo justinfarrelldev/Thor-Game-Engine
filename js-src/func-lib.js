@@ -68,16 +68,20 @@ function GetById(id) {
 }
 //Sets background image given the name of an uploaded image
 function SetBackgroundImage(imgName) {
+    let sizing = 'cover';
     if (!document.getElementById("THOR-ENGINE-IN-EDITOR")) {
         document.body.style.backgroundImage = "url(upload/resources/" + imgName + ")";
-        document.body.style.backgroundSize = "100% 100%";
+        document.body.style.backgroundSize = sizing;
+        document.body.style.backgroundPosition = 'center';
     }
     else {
         let previewWindow = document.getElementById('GamePreviewWindow');
         (previewWindow) ? previewWindow.style.backgroundImage = "url(upload/resources/" + imgName + ")"
             : document.body.style.backgroundImage = "url(upload/resources/" + imgName + ")";
-        (previewWindow) ? previewWindow.style.backgroundSize = "100% 100%"
-            : document.body.style.backgroundSize = "100% 100%";
+        (previewWindow) ? previewWindow.style.backgroundSize = sizing
+            : document.body.style.backgroundSize = sizing;
+        (previewWindow) ? previewWindow.style.backgroundPosition = 'center'
+            : document.body.style.backgroundPosition = 'center';
     }
 }
 //Shorthand for SetBackgroundImage()

@@ -190,6 +190,7 @@ if (finished === false || finished === undefined)
             this.text.style.marginLeft = '6%'
             this.text.style.marginTop = '0.5%'
             this.text.style.fontFamily = 'Verdana, sans-serif'
+            this.text.style.fontSize = '1.2em'
             this.text.style.color = '#874BE8'
             this.text.style.userSelect = 'none'
             this.text.style.msUserSelect = 'none'
@@ -222,19 +223,50 @@ if (finished === false || finished === undefined)
             var index = 0;
             this.thisArc = this
 
-            document.body.addEventListener('click', (mouseEvent)=>
+            //If it's not in-editor, then add it to the body
+            if (!document.getElementById('THOR-ENGINE-IN-EDITOR'))
             {
-                this.Advance()
-            })
-
-            document.body.addEventListener('keydown', (event) => 
-            {
-                if (event.keyCode === 32)
+                document.body.addEventListener('click', (mouseEvent)=>
                 {
-                    //space 
                     this.Advance()
+                })
+
+                document.body.addEventListener('keydown', (event) => 
+                {
+                    if (event.keyCode === 32)
+                    {
+                        //space 
+                        this.Advance()
+                    }
+                })
+            }
+            else
+            {
+                //Otherwise, make sure it's clicking in the preview window so that editing 
+                //does not make playtesting a pain
+
+                let advanceOnClick = (e) => 
+                {
+                    let div = document.getElementById('GamePreviewWindow')
+                    if (div.contains(e.target))
+                    {
+                        this.Advance()
+                    }
                 }
-            })
+
+                let advanceOnSpace = (e) =>
+                {
+                    if (e.keyCode === 32)
+                    {
+                        //space 
+                        this.Advance()
+                    }
+                }
+
+                document.body.addEventListener('click', advanceOnClick)
+
+                document.body.addEventListener('keydown', advanceOnSpace)
+            }
         }
 
         Advance()
@@ -289,15 +321,24 @@ if (finished === false || finished === undefined)
                    charImg? : string[],
                    bgImg? : string)
         {
-            if (this.dialogueNodes.length == 0)
-            {
-                document.addEventListener('DOMContentLoaded', () => 
-                {
-                    this.Advance()
-                })
-            }
+
             let node = new VNNode(this, dialogue, speakerName, charImg, bgImg)
             this.dialogueNodes.push(node)
+
+            if (this.dialogueNodes.length == 1)
+            {
+                this.Advance()
+
+                document.addEventListener('DOMContentLoaded', () =>
+                {
+                    let VNC = document.getElementsByClassName('VNChar')
+                    for (let i = 0; i < VNC.length; i++)
+                    {
+                        VNC[i].innerHTML = this.dialogueNodes[0].speakerName
+                    }
+                })
+            }
+
         }
 
         AddNode(node : VNNode)
