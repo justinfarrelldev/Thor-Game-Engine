@@ -217,7 +217,11 @@ async function GetImageOnServer(name : string, directory : string)
 
 let ClearGamePreviewWindow = () => 
 {
-    document.getElementById("GamePreviewWindow").innerHTML = null
+    let el = document.getElementById('GamePreviewWindow')
+
+    el.innerHTML = null
+
+    el.insertAdjacentHTML('afterbegin', CreateWindow('GamePreviewWindowDropdown'))
 }
 
 let ThrowScriptError = (error : Error) => 

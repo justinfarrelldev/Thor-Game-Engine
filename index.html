@@ -49,42 +49,50 @@
         </div>
     <!--End of dropdown for text area menu-->
     <br>
-    <div id = "GamePreviewWindow" class = "Window">
-        <!--Elements are added to this to simulate gameplay.-->
+    <div id = 'Window1Div'>
+        <div id = "GamePreviewWindow" class = "Window">
+            <!--Elements are added to this to simulate gameplay.-->
 
+                <!--Dropdown for preview menu-->
+                <div class = "DropdownDiv">
+                        <ul class = "Dropdown" onselectstart = "return false;">
+                            <li style = "position: absolute">
+                                <button onclick = "DropdownOpenClose('Window1Dropdown')" title = 
+                                "Switch this window's mode.">↩️</button>
+                                <ul class = "DropdownSubmenu" id = "Window1Dropdown">        
+                                    <li class = "DropdownItem1" onclick = "ChangeWindow('GamePreview', 'Window1Div')">Game Preview</li>
+                                    <li class = "DropdownItem1" onclick = "ChangeWindow('ErrorLog', 'Window1Div')">Error Log</li>
+                                </ul>
+                            </li>
+                        </ul>
+                </div>
+                <!--End of dropdown for preview menu-->
+        
+        </div>
+    </div>
+    <textarea id = "TextInputWindow" class = "Window">
+        <!--Created with CodeMirror-->
+    </textarea>
+
+    <div id = 'Window2Div' style = 'height: auto;'>
+        <div id = "ErrorWindow" class = "Window">
             <!--Dropdown for preview menu-->
             <div class = "DropdownDiv" style = " vertical-align: top;
             float: right; height: 1.75em; width: 2.2em; margin-right: 5.5%; margin-top: 1.5%;">
                     <ul class = "Dropdown" onselectstart = "return false;">
                         <li style = "position: absolute">
-                            <button onclick = "DropdownOpenClose('Window1Dropdown')" title = 
+                            <button onclick = "DropdownOpenClose('Window3Dropdown')" title = 
                             "Switch this window's mode.">↩️</button>
-                            <ul class = "DropdownSubmenu" id = "Window1Dropdown">        
-                                <li class = "DropdownItem1" onclick = "">Game Preview</li>
+                            <ul class = "DropdownSubmenu" id = "Window3Dropdown">        
+                                <li class = "DropdownItem1" onclick = "ChangeWindow('ErrorLog', 'Window2Div')">Error Log</li>
+                                <li class = "DropdownItem1" onclick = "ChangeWindow('GamePreview', 'Window2Div')">Game Preview</li>
                             </ul>
                         </li>
                     </ul>
                 </div>
                 <!--End of dropdown for preview menu-->
-    
-    </div>
-    <textarea id = "TextInputWindow" class = "Window"></textarea>
-    <div id = "ErrorWindow" class = "Window">
-        <!--Dropdown for preview menu-->
-        <div class = "DropdownDiv" style = " vertical-align: top;
-        float: right; height: 1.75em; width: 2.2em; margin-right: 5.5%; margin-top: 1.5%;">
-                <ul class = "Dropdown" onselectstart = "return false;">
-                    <li style = "position: absolute">
-                        <button onclick = "DropdownOpenClose('Window3Dropdown')" title = 
-                        "Switch this window's mode.">↩️</button>
-                        <ul class = "DropdownSubmenu" id = "Window3Dropdown">        
-                            <li class = "DropdownItem1" onclick = "">Error Log</li>
-                        </ul>
-                    </li>
-                </ul>
-            </div>
-            <!--End of dropdown for preview menu-->
-        <p>Errors will show up here when they occur.</p>
+            <p>Errors will show up here when they occur.</p>
+        </div>
     </div>
 
     <!--The window for the file explorer testing-->
@@ -247,14 +255,6 @@
                                 //Adding element for images
 
                                 let imgIcon = new ImageFileIcon(String(event.target.files[0].name).replace(/ /g, '-'))
-                                /*
-                                let el = document.createElement('img')
-                                el.src = '/upload/resources/' + String(event.target.files[0].name).replace(/ /g, '-')
-                                el.style = "width: auto; height: 33%; margin: 1%"
-                                el.alt = String(event.target.files[0].name).replace(/ /g, '-')
-                                el.title = String(event.target.files[0].name).replace(/ /g, '-')
-                                document.getElementById('File_Explorer').appendChild(el)
-                                */
                             }
                             else
                             {
@@ -387,4 +387,7 @@
     <script src = "codemirror/codemirror/codemirror-5.49.2/mode/javascript/javascript.js"></script>
     <script src = 'codemirror/codemirror/codemirror-5.49.2/addon/hint/show-hint.js'></script>
     <script src = 'codemirror/codemirror/codemirror-5.49.2/addon/hint/javascript-hint.js'></script>
+    <script src = "js-src/generate-windows.js"></script>
+    <script src = "js-src/change-windows.js"></script>
+
 </body>

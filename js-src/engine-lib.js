@@ -138,7 +138,9 @@ async function GetImageOnServer(name, directory) {
     });
 }
 let ClearGamePreviewWindow = () => {
-    document.getElementById("GamePreviewWindow").innerHTML = null;
+    let el = document.getElementById('GamePreviewWindow');
+    el.innerHTML = null;
+    el.insertAdjacentHTML('afterbegin', CreateWindow('GamePreviewWindowDropdown'));
 };
 let ThrowScriptError = (error) => {
     let el = document.createElement("p");
