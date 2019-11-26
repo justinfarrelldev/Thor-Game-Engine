@@ -50,6 +50,7 @@ function AddCanvasImage(contextName, imgName, x, y) {
     img.onload = () => {
         window[contextName].drawImage(img, (x == null) ? 0 : x, (y == null) ? 0 : y);
     };
+    return img;
 }
 //Adds an image to the page
 function AddImage(imgName, marginLeft, marginTop) {

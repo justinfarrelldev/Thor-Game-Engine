@@ -30,10 +30,6 @@
                 "Options for the current project.">Options</button>
                 <ul class = "DropdownSubmenu" id = "OptionsDropdown">        
                     <li class = "DropdownItem1" onclick = "OpenWindow(ExportOptions)">Export Options</li>
-                    <li class = "DropdownItem1" onclick = "">Option 2</li>
-                    <li class = "DropdownItem1" onclick = "">Option 3</li>
-                    <li class = "DropdownItem1" onclick = "">Option 4</li>
-                    <li class = "DropdownItem1" onclick = "">Option 5</li>
                 </ul>
             </li>
         </ul>
@@ -121,6 +117,7 @@
     </div>
 
     <link href = "codemirror/codemirror/codemirror-5.49.2/lib/codemirror.css" rel = "stylesheet"></link>
+    <link href = "codemirror/codemirror/codemirror-5.49.2/addon/hint/show-hint.css" rel = "stylesheet"></link>
     <link href = "/thor-style.css" rel = "stylesheet"></link>
 
     <form action = '/' enctype="multipart/form-data" method="put">
@@ -298,6 +295,72 @@
                         htmlMode : true
                 })
 
+                var excludedKeys =
+                {
+                    "8": "backspace",
+                    "9": "tab",
+                    "13": "enter",
+                    "16": "shift",
+                    "17": "ctrl",
+                    "18": "alt",
+                    "19": "pause",
+                    "20": "capslock",
+                    "27": "escape",
+                    "33": "pageup",
+                    "34": "pagedown",
+                    "35": "end",
+                    "36": "home",
+                    "37": "left",
+                    "38": "up",
+                    "39": "right",
+                    "40": "down",
+                    "45": "insert",
+                    "46": "delete",
+                    "91": "left window key",
+                    "92": "right window key",
+                    "93": "select",
+                    "107": "add",
+                    "109": "subtract",
+                    "110": "decimal point",
+                    "111": "divide",
+                    "112": "f1",
+                    "113": "f2",
+                    "114": "f3",
+                    "115": "f4",
+                    "116": "f5",
+                    "117": "f6",
+                    "118": "f7",
+                    "119": "f8",
+                    "120": "f9",
+                    "121": "f10",
+                    "122": "f11",
+                    "123": "f12",
+                    "144": "numlock",
+                    "145": "scrolllock",
+                    "186": "semicolon",
+                    "187": "equalsign",
+                    "188": "comma",
+                    "189": "dash",
+                    "190": "period",
+                    "191": "slash",
+                    "192": "graveaccent",
+                    "220": "backslash",
+                    "222": "quote"
+                }
+
+                myCodeMirror.on('keyup', (editor, event) => 
+                {
+                    var curs = editor.getDoc().getCursor();
+                    var tok = editor.getTokenAt(curs);
+
+                    if (!editor.state.completionActive &&
+                        !excludedKeys[(event.keyCode || event.which).toString()] &&
+                        (tok.type == "tag" || tok.string == " " || tok.string == "<" || tok.string == "/"))
+                    {
+                        CodeMirror.commands.autocomplete(editor, null, { completeSingle: false });
+                    }
+                })
+
                 //Sets the codemirror editor (a workaround for scoping)
                 let SetCodeMirrorEditor = (input) => 
                 {
@@ -313,6 +376,7 @@
         )
 
     </script> 
+
     <script src = "jszip/dist/jszip.min.js"></script>
     <script src = "js-src/engine-types.js"></script>
     <script src = "js-src/constants.js"></script>
@@ -321,4 +385,6 @@
     <script src = "js-src/file-explorer.js"></script>
     <script src = "codemirror/codemirror/codemirror-5.49.2/lib/codemirror.js"></script>
     <script src = "codemirror/codemirror/codemirror-5.49.2/mode/javascript/javascript.js"></script>
+    <script src = 'codemirror/codemirror/codemirror-5.49.2/addon/hint/show-hint.js'></script>
+    <script src = 'codemirror/codemirror/codemirror-5.49.2/addon/hint/javascript-hint.js'></script>
 </body>

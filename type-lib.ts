@@ -1,3 +1,5 @@
+import { Interface } from "readline"
+
 //The library for types to be included in every build
 //These will be useful data structure types and 
 //other such structures and classes
@@ -139,7 +141,99 @@ if (finished === false || finished === undefined)
     }
     (Global as any).LinkedList = LinkedList 
 
-    class VNWebpage
+    class VNCharacterImages
+    {
+        /**
+         * The images for a VN character with a map
+         */
+
+        characterImages: { [name : string]: string } = {} //name to correspond to image name
+        constructor(characterImages?: {[name : string] : string}) {
+        if (characterImages)
+            this.characterImages = characterImages
+        }
+
+        GetImage(nickname : string) : string
+        {
+            return this.characterImages[nickname]
+        }
+
+        AddImage(nickname : string, imageName : string) : VNCharacterImages
+        {
+            this.characterImages[nickname] = imageName
+
+            return this
+        }
+    }
+    (Global as any).VNCharacterImages = VNCharacterImages
+
+    class VNCharacter 
+    {
+        /**
+         * Information about a particular character in a VN
+         */
+
+        theme : VNTheme
+        name : string
+        characterImages : VNCharacterImages
+        constructor(name : string, theme? : VNTheme, images? : VNCharacterImages) {
+            this.name = name
+            this.theme = theme
+            this.characterImages = images
+        }
+
+        AddImage(nickname : string, imageName : string) : VNCharacter
+        {
+            this.characterImages.AddImage(nickname, imageName)
+
+            return this
+        }
+    }
+    (Global as any).VNCharacter = VNCharacter
+
+    class VNTheme
+    {
+        /**
+         * A general theme for a VN which can be set on the fly
+         * within each node or within a character
+         */
+        charTextColor : string //The styling for the character text.
+        dialogueTextColor : string //The styling for the dialogue text
+        textBGColor : string
+        constructor(charTextColor : string, dialogueTextColor : string, textBGColor : string) {
+            this.charTextColor = charTextColor
+            this.dialogueTextColor = dialogueTextColor
+            this.textBGColor = textBGColor
+        }
+ 
+        //Makes the theme apply when called
+        ApplyTheme() : VNTheme
+        {
+            let VNChars = document.getElementsByClassName('VNChar') as HTMLCollectionOf<HTMLElement>
+            for (let i = 0; i < VNChars.length; i++)
+            {
+                VNChars[i].style.color = this.charTextColor
+            }
+
+            let VNTexts = document.getElementsByClassName('VNText') as HTMLCollectionOf<HTMLElement>
+            for (let i = 0; i < VNTexts.length; i++)
+            {
+                VNTexts[i].style.color = this.dialogueTextColor
+            }
+
+            let VNTextboxes = document.getElementsByClassName('VNTextbox') as HTMLCollectionOf<HTMLElement>
+            for (let i = 0; i < VNTextboxes.length; i++)
+            {
+                VNTextboxes[i].style.backgroundColor = this.textBGColor
+            }
+
+            return this
+        }
+    }
+    (Global as any).VNTheme = VNTheme
+
+    //A visual novel template which is based in a webpage, not a canvas.
+    class PageVN
     {
         /**
          *  The template for creating visual novels in a webpage itself 
@@ -151,7 +245,9 @@ if (finished === false || finished === undefined)
         text : HTMLParagraphElement
         characterHeading : HTMLHeadingElement
         arcs : VNArc[]
-        constructor(arcs : VNArc[]) {
+        constructor(arcs : VNArc[], startingTheme? : VNTheme) {
+
+            let defaultTheme = new VNTheme('white', '#874BE8', 'rgba(132, 0, 255, 0.15)')
 
             this.arcs = arcs
 
@@ -161,13 +257,14 @@ if (finished === false || finished === undefined)
             this.playspace.style.overflow = 'hidden'
 
             this.textbox = AddElem('div', '')
+            this.textbox.className = 'VNTextbox'
             this.textbox.style.width = '99%'
             this.textbox.style.height = '25%'
             this.playspace.appendChild(this.textbox) //The textbox should be a child of 
                                                      //the playspace 
             this.textbox.style.position = 'absolute'
             this.textbox.style.bottom = '0'
-            this.textbox.style.backgroundColor = 'rgba(132, 0, 255, 0.15)'
+            this.textbox.style.backgroundColor = defaultTheme.textBGColor
 
             this.characterHeading = AddElem('h2', 'CHARACTER NAME')
             this.characterHeading.className = 'VNChar' //Access the character name anytime
@@ -176,7 +273,7 @@ if (finished === false || finished === undefined)
             this.characterHeading.style.marginBottom = '0%'
             this.characterHeading.style.fontFamily = 'Verdana, sans-serif'
             this.characterHeading.style.fontWeight = 'bold'
-            this.characterHeading.style.color = 'white'
+            this.characterHeading.style.color = defaultTheme.charTextColor
             this.characterHeading.style.userSelect = 'none'
             this.characterHeading.style.msUserSelect = 'none'
             this.characterHeading.style.msTouchSelect = 'none'
@@ -191,7 +288,7 @@ if (finished === false || finished === undefined)
             this.text.style.marginTop = '0.5%'
             this.text.style.fontFamily = 'Verdana, sans-serif'
             this.text.style.fontSize = '1.2em'
-            this.text.style.color = '#874BE8'
+            this.text.style.color = defaultTheme.dialogueTextColor
             this.text.style.userSelect = 'none'
             this.text.style.msUserSelect = 'none'
             this.text.style.msTouchSelect = 'none'
@@ -200,10 +297,19 @@ if (finished === false || finished === undefined)
             if (arcs[0])
             {
                 arcs[0].Advance()
+
+                if ((arcs[0].dialogueNodes[0].speaker as any).name)
+                {
+                    //It's a character 
+                    if ((arcs[0].dialogueNodes[0].speaker as any).theme)
+                    {
+                        (arcs[0].dialogueNodes[0].speaker as any).ApplyTheme()
+                    }
+                }
             }
         }
     }
-    (Global as any).VNWebpage = VNWebpage
+    (Global as any).PageVN = PageVN
 
     class VNArc
     {
@@ -269,7 +375,9 @@ if (finished === false || finished === undefined)
             }
         }
 
-        Advance()
+        //Advances the dialogue to the next node and starts printing it to the 
+        //screen with scrolling. Returns the arc to allow for chaining
+        Advance() : VNArc
         {
             if (this.dialogueNodes.length > 0 && this.dialogueNodes.length > this.currentNode)
             {
@@ -284,8 +392,23 @@ if (finished === false || finished === undefined)
                 
                 for (let i = 0; i < document.getElementsByClassName('VNChar').length; i++)
                 {
-                    document.getElementsByClassName('VNChar')[i].innerHTML =
-                    this.dialogueNodes[this.currentNode].speakerName
+                    if ((this.dialogueNodes[this.currentNode].speaker as any).name)
+                    {
+                        //If it's a character
+                        document.getElementsByClassName('VNChar')[i].innerHTML =
+                        (this.dialogueNodes[this.currentNode].speaker as any).name
+
+                        if ((this.dialogueNodes[this.currentNode].speaker as any).theme)
+                        {
+                            (this.dialogueNodes[this.currentNode].speaker as any).theme.ApplyTheme()
+                        }
+                    }
+                    else
+                    {
+                        //If it's a string
+                        document.getElementsByClassName('VNChar')[i].innerHTML =
+                        (this.dialogueNodes[this.currentNode].speaker as any)
+                    }
                 }
 
                 if (!document.getElementById("THOR-ENGINE-IN-EDITOR"))
@@ -309,20 +432,29 @@ if (finished === false || finished === undefined)
                 }
 
                 this.currentNode ++
+
+                return this
             }
             else 
             {
-                return
+                return this
             }
         }
 
+        //Adds a new dialogue node to the arc. Returns the arc to allow for chaining.
         AddNewNode(dialogue : string,
-                   speakerName? : string, 
-                   charImg? : string[],
-                   bgImg? : string)
+                   speaker? : string | VNCharacter, 
+                   charImg? : VNCharacterImages,
+                   bgImg? : string) : VNArc
         {
-
-            let node = new VNNode(this, dialogue, speakerName, charImg, bgImg)
+            if (speaker)
+            {
+                if ((speaker as any).theme != null && (speaker as any).theme != undefined) //If this isn't null, apply it
+                {
+                    (speaker as any).theme.ApplyTheme()
+                }
+            }
+            let node = new VNNode(this, dialogue, speaker, charImg, bgImg)
             this.dialogueNodes.push(node)
 
             if (this.dialogueNodes.length == 1)
@@ -334,19 +466,33 @@ if (finished === false || finished === undefined)
                     let VNC = document.getElementsByClassName('VNChar')
                     for (let i = 0; i < VNC.length; i++)
                     {
-                        VNC[i].innerHTML = this.dialogueNodes[0].speakerName
+                        if ((this.dialogueNodes[0].speaker as any).name) //If it's a VNCharacter
+                        {
+                            VNC[i].innerHTML = (this.dialogueNodes[0].speaker as any).name
+                        }
+                        else //It's a string
+                        {
+                            VNC[i].innerHTML = (this.dialogueNodes[0].speaker as any)
+                        }
                     }
+
+                    return this
                 })
             }
+            
+            return this
 
         }
 
-        AddNode(node : VNNode)
+        //Returns the arc to allow for chaining. Adds an existing VNNode to 
+        //the arc
+        AddNode(node : VNNode) : VNArc
         {
             node.arc = this.thisArc
             node.indexInArc = this.dialogueNodes.length
-            node.SetNode(node.dialogue, node.speakerName, node.charImg, node.bgImg)
+            node.SetNode(node.dialogue, node.speaker, node.charImg, node.bgImg)
             this.dialogueNodes.push(node)
+            return this
         }
     }
     (Global as any).VNArc = VNArc
@@ -362,8 +508,8 @@ if (finished === false || finished === undefined)
          */
 
         dialogue : string
-        speakerName : string
-        charImg : string[]
+        speaker : string | VNCharacter
+        charImg : VNCharacterImages
         bgImg : string
         arc : VNArc //The arc this is in (set upon creation in arc)
         indexInArc : number //The place in the arc (set upon creation in arc)
@@ -372,38 +518,41 @@ if (finished === false || finished === undefined)
                         //text scroll
         constructor(arc : VNArc, 
                     dialogue : string, 
-                    speakerName? : string,
-                    charImg? : string[],
+                    speaker? : string | VNCharacter,
+                    charImg? : VNCharacterImages,
                     bgImg? : string) 
         {
             this.thisNode = this
             this.SetArc(arc)
-            this.SetNode(dialogue, speakerName, charImg, bgImg)
+            this.SetNode(dialogue, speaker, charImg, bgImg)
         }
 
-        SetArc(arc : VNArc)
+        //Sets the arc of this node. Returns this node to allow for chaining.
+        SetArc(arc : VNArc) : VNNode
         {
             this.arc = arc
             this.indexInArc = arc.dialogueNodes.length
             return this.thisNode
         }
 
+        //Sets the node's properties. Returns the node to allow for chaining.
         SetNode(
             dialogue : string,    //The text inside the text box
-            speakerName? : string, //The name of the person talking
-            charImg? : string[],     //The image(s) paths displayed front and center
+            speaker? : string | VNCharacter, //The name of the person talking
+            charImg? : VNCharacterImages,     //The image(s) paths displayed front and center
             bgImg? : string,       //The background image
-            ) 
+            ) : VNNode
         {
             this.dialogue = (dialogue) ? dialogue : this.arc.dialogueNodes[this.indexInArc - 1].dialogue
-            this.speakerName = (speakerName) ? speakerName : this.arc.dialogueNodes[this.indexInArc-1].speakerName
+            this.speaker = (speaker) ? speaker : this.arc.dialogueNodes[this.indexInArc-1].speaker
             this.charImg = (charImg) ? charImg : this.arc.dialogueNodes[this.indexInArc-1].charImg
             this.bgImg = (bgImg) ? bgImg : this.arc.dialogueNodes[this.indexInArc - 1].bgImg
 
             return this.thisNode
         }
 
-        ScrollText()
+        ScrollText() : VNNode //Scrolls the text along the screen in the elements with class "VNText".
+                            //Returns this node to allow for chaining.
         {
             var displayedText = ''
             var letter : number = 0 //0 to length of string
@@ -424,6 +573,8 @@ if (finished === false || finished === undefined)
                     clearInterval(this.dialogueInterval)
                 }
             }, 50)
+
+            return this
         }
     }
     (Global as any).VNNode = VNNode

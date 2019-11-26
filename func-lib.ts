@@ -2,9 +2,9 @@
 //It is used for common functions and to make syntax simple. 
 //It is included with every build
 
-function AddElem(type : string, innerHTML : string)
+function AddElem(type : string, innerHTML : string) : any
 
-function AddElem(type : string, innerHTML : string, id? : string)
+function AddElem(type : string, innerHTML : string, id? : string) : any
 {
     let el = document.createElement(type)
     el.innerHTML = innerHTML
@@ -19,9 +19,9 @@ function AddElem(type : string, innerHTML : string, id? : string)
     return el
 }
 
-function AddButton(text : string, onclick : string)
+function AddButton(text : string, onclick : string) : HTMLButtonElement
 //Shorthand
-function AddButton(text : string, onclick : any, id? : string)
+function AddButton(text : string, onclick : any, id? : string) : HTMLButtonElement
 {
     let el = document.createElement("button")
     el.innerHTML = text
@@ -39,7 +39,7 @@ function AddButton(text : string, onclick : any, id? : string)
 }
 
 //Adds canvas with optional context as well
-function AddCanvas(contextName? : string, mode? : string, style? : string)
+function AddCanvas(contextName? : string, mode? : string, style? : string) : HTMLCanvasElement
 {
     let canvas = AddElem("canvas", 'Your browser does not support canvas.')
 
@@ -71,7 +71,7 @@ function AddCanvas(contextName? : string, mode? : string, style? : string)
 }
 
 //Adds an image to a canvas and renders it on load
-function AddCanvasImage(contextName : string, imgName : string, x? : number, y? : number)
+function AddCanvasImage(contextName : string, imgName : string, x? : number, y? : number) : HTMLImageElement
 {
     var img = new Image()
     img.src = 'upload/resources/' + imgName
@@ -80,10 +80,12 @@ function AddCanvasImage(contextName : string, imgName : string, x? : number, y? 
     {
         window[contextName].drawImage(img, (x == null) ? 0 : x, (y == null) ? 0 : y)
     }
+
+    return img
 }
 
 //Adds an image to the page
-function AddImage(imgName : string, marginLeft? : string, marginTop? : string)
+function AddImage(imgName : string, marginLeft? : string, marginTop? : string) : HTMLImageElement
 {
     var el = AddElem('img', '')
     el.src = 'upload/resources/' + imgName
@@ -92,13 +94,13 @@ function AddImage(imgName : string, marginLeft? : string, marginTop? : string)
 }
 
 //Shorthand
-function GetElemById(id : string)
+function GetElemById(id : string) : HTMLElement
 {
     return document.getElementById(id)
 }
 
 //Also shorthand
-function GetById(id : string)
+function GetById(id : string) : HTMLElement
 {
     return document.getElementById(id)
 } 

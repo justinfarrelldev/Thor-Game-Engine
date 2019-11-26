@@ -11,4 +11,4 @@ arc1.AddNewNode("The second dialogue node will require only the dialogue to be s
 
 //Add more dialogue nodes here to make a story! 
 
-var temp = new VNWebpage(arc1)
+var temp = new PageVN(arc1)

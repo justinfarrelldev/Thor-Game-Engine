@@ -37,6 +37,10 @@ let MakeGame = async () => {
         //Add elements to link the userscripts up
         outFile.AddElement("script", "src = \"" + scriptsInExecutionOrder[i].name + ".js\"", "");
         console.log(scriptsInExecutionOrder[i].name + " has had a script tag added in the HTML file.");
+        let script = new GameFile(scriptsInExecutionOrder[i].name + '.js', '');
+        script.contents = scriptsInExecutionOrder[i].text;
+        Game.AddFile(script);
+        console.log(scriptsInExecutionOrder[i].name + " has had its file added to the build.");
     }
     outFile.AddElement("script", "", UserScripts[0].text); //Add the inline script
     console.log("The inline script has been added to the HTML file.");
