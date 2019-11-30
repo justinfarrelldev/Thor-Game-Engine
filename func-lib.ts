@@ -136,6 +136,22 @@ function SetBGImg(imgName : string)
     SetBackgroundImage(imgName)
 }
 
+//Writing special functionality to console.log if it's in the editor
+if (!(window as any).old_console_log)
+{
+    (window as any).old_console_log = console.log
+}
+console.log = (contents) => 
+{
+    (window as any).old_console_log(contents) //Report as usual
+
+    if (document.getElementById('THOR-ENGINE-IN-EDITOR'))
+    {
+        //It is in the editor - write the info to the error log too
+        PrintToConsole(contents)
+    }
+}
+
 if (AppendChildToCorrectElement === undefined)
 {
     var AppendChildToCorrectElement = (element : any) => 

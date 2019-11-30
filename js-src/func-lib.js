@@ -89,6 +89,17 @@ function SetBackgroundImage(imgName) {
 function SetBGImg(imgName) {
     SetBackgroundImage(imgName);
 }
+//Writing special functionality to console.log if it's in the editor
+if (!window.old_console_log) {
+    window.old_console_log = console.log;
+}
+console.log = (contents) => {
+    window.old_console_log(contents); //Report as usual
+    if (document.getElementById('THOR-ENGINE-IN-EDITOR')) {
+        //It is in the editor - write the info to the error log too
+        PrintToConsole(contents);
+    }
+};
 if (AppendChildToCorrectElement === undefined) {
     var AppendChildToCorrectElement = (element) => {
         if (!document.getElementById("GamePreviewWindow")) {

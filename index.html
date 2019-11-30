@@ -14,39 +14,41 @@
     <title>⚡Thor Game Engine⚡</title>
 </head>
 <body>
-    <button id = "PlayButton" onclick = "LaunchGame()" style = "color: green; display: inline-block;
-    vertical-align: top;"
-    title = "Play the game in the preview window">▶</button>
+    <div style = 'display: inline-block; border: 1px solid black; width: 100%'>
+
+        <button id = "PlayButton" onclick = "LaunchGame()" style = "color: green; display: inline-block;
+        vertical-align: top;"
+        title = "Play the game in the preview window">▶</button>
 
         <button id = "DownloadButton" onclick = "DownloadGame()" 
         title = "Download the game to your computer" style = "display: inline-block;
         vertical-align: top;">📥</button>
 
-    <!--Dropdown for options menu-->
-    <div class = "DropdownDiv" style = "display: inline-block; vertical-align: top;">
-        <ul class = "Dropdown" onselectstart = "return false;">
-            <li style = "position: absolute">
-                <button onclick = "DropdownOpenClose('OptionsDropdown')" title = 
-                "Options for the current project.">Options</button>
-                <ul class = "DropdownSubmenu" id = "OptionsDropdown">        
-                    <li class = "DropdownItem1" onclick = "OpenWindow(ExportOptions)">Export Options</li>
-                </ul>
-            </li>
-        </ul>
-    </div>
-    <!--Dropdown for text area menu-->
-    <div class = "DropdownDiv" style = "vertical-align: top; float: right;
-    margin-right: 6.5%">
+        <!--Dropdown for options menu-->
+        <div class = "DropdownDiv" style = "display: inline-block; vertical-align: top;">
             <ul class = "Dropdown" onselectstart = "return false;">
                 <li style = "position: absolute">
-                    <button onclick = "DropdownOpenClose('Window2Dropdown')" title = 
-                    "Add or edit UserScripts.">📝</button>
-                    <ul class = "DropdownSubmenu" id = "Window2Dropdown">        
-                        <li class = "DropdownItem2" onclick = "AddUserScript()" style = "color: blue">Add Script...</li>
+                    <button onclick = "DropdownOpenClose('OptionsDropdown')" title = 
+                    "Options for the current project.">Options</button>
+                    <ul class = "DropdownSubmenu" id = "OptionsDropdown">        
+                        <li class = "DropdownItem1" onclick = "OpenWindow(ExportOptions)">Export Options</li>
                     </ul>
                 </li>
             </ul>
         </div>
+        <!--Dropdown for text area menu-->
+        <div class = "DropdownDiv" style = "vertical-align: top; float: right; margin-right: 0px">
+                <ul class = "Dropdown" onselectstart = "return false;">
+                    <li style = "position: absolute">
+                        <button onclick = "DropdownOpenClose('Window2Dropdown')" title = 
+                        "Add or edit UserScripts.">📝</button>
+                        <ul class = "DropdownSubmenu" id = "Window2Dropdown">        
+                            <li class = "DropdownItem2" onclick = "AddUserScript()" style = "color: blue">Add Script...</li>
+                        </ul>
+                    </li>
+                </ul>
+        </div>
+    </div>
     <!--End of dropdown for text area menu-->
     <br>
     <div id = 'Window1Div'>
@@ -74,7 +76,7 @@
         <!--Created with CodeMirror-->
     </textarea>
 
-    <div id = 'Window2Div' style = 'height: auto;'>
+    <div id = 'Window2Div' style = 'height: 14%;'>
         <div id = "ErrorWindow" class = "Window">
             <!--Dropdown for preview menu-->
             <div class = "DropdownDiv" style = " vertical-align: top;
@@ -91,7 +93,7 @@
                     </ul>
                 </div>
                 <!--End of dropdown for preview menu-->
-            <p>Errors will show up here when they occur.</p>
+            <p>Errors and console logs will show up here when they occur.</p>
         </div>
     </div>
 

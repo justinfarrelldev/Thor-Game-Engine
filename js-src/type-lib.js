@@ -141,6 +141,10 @@ if (finished === false || finished === undefined) {
     //A visual novel template which is based in a webpage, not a canvas.
     class PageVN {
         constructor(arcs, startingTheme) {
+            if (!arcs.length) {
+                console.error("The 'arc' argument of the PageVN type is not an array.");
+                ThrowScriptError(new Error("The 'arc' argument of the PageVN type is not an array."));
+            }
             let defaultTheme = new VNTheme('white', '#874BE8', 'rgba(132, 0, 255, 0.15)');
             this.arcs = arcs;
             this.playspace = AddElem('div', '');
@@ -177,19 +181,83 @@ if (finished === false || finished === undefined) {
             this.text.style.marginTop = '0.5%';
             this.text.style.fontFamily = 'Verdana, sans-serif';
             this.text.style.fontSize = '1.2em';
+            this.text.style.display = 'inline';
             this.text.style.color = defaultTheme.dialogueTextColor;
             this.text.style.userSelect = 'none';
             this.text.style.msUserSelect = 'none';
             this.text.style.msTouchSelect = 'none';
             this.text.style.webkitUserSelect = 'none';
-            if (arcs[0]) {
-                arcs[0].Advance();
+            for (let i = 0; i < arcs.length; i++) {
+                this.arcs[i].page = this;
+            }
+            if (this.arcs[0]) {
+                this.currentArc = arcs[0];
+                this.currentArc.page = this;
                 if (arcs[0].dialogueNodes[0].speaker.name) {
                     //It's a character 
                     if (arcs[0].dialogueNodes[0].speaker.theme) {
-                        arcs[0].dialogueNodes[0].speaker.ApplyTheme();
+                        arcs[0].dialogueNodes[0].speaker.theme.ApplyTheme();
                     }
                 }
+                const char = document.getElementsByClassName('VNChar');
+                for (let i = 0; i < char.length; i++) {
+                    if (this.currentArc.dialogueNodes[this.currentArc.currentNode].speaker.name) {
+                        //If it's a character type
+                        char[i].innerHTML = this.currentArc.dialogueNodes[this.currentArc.currentNode].speaker.name;
+                    }
+                    else {
+                        //If it's just a string
+                        char[i].innerHTML = this.currentArc.dialogueNodes[this.currentArc.currentNode].speaker;
+                    }
+                }
+                this.currentArc.Advance();
+            }
+            this.CheckForInput();
+        }
+        CheckForInput() {
+            let advanceChoice = () => {
+                this.currentArc.Advance();
+                if (this.currentArc.currentNode == this.currentArc.dialogueNodes.length + 1) {
+                    this.currentArc.choiceNode.CreateButtons();
+                }
+            };
+            //If it's not in-editor, then add it to the body
+            if (!document.getElementById('THOR-ENGINE-IN-EDITOR')) {
+                document.body.addEventListener('click', (mouseEvent) => {
+                    if (mouseEvent.target.className != 'ChoiceButton') {
+                        advanceChoice();
+                    }
+                });
+                document.body.addEventListener('keydown', (event) => {
+                    if (event.keyCode === 32) {
+                        //space 
+                        if (event.target.className != 'ChoiceButton') {
+                            advanceChoice();
+                        }
+                    }
+                });
+            }
+            else {
+                //Otherwise, make sure it's clicking in the preview window so that editing 
+                //does not make playtesting a pain
+                let advanceOnClick = (e) => {
+                    let div = document.getElementById('GamePreviewWindow');
+                    if (div.contains(e.target)) {
+                        if (e.target.className != 'ChoiceButton') {
+                            advanceChoice();
+                        }
+                    }
+                };
+                let advanceOnSpace = (e) => {
+                    if (e.keyCode === 32) {
+                        //space 
+                        if (e.target.className != 'ChoiceButton') {
+                            advanceChoice();
+                        }
+                    }
+                };
+                document.body.addEventListener('click', advanceOnClick);
+                document.body.addEventListener('keydown', advanceOnSpace);
             }
         }
     }
@@ -208,36 +276,6 @@ if (finished === false || finished === undefined) {
             this.currentNode = 0;
             var index = 0;
             this.thisArc = this;
-            //If it's not in-editor, then add it to the body
-            if (!document.getElementById('THOR-ENGINE-IN-EDITOR')) {
-                document.body.addEventListener('click', (mouseEvent) => {
-                    this.Advance();
-                });
-                document.body.addEventListener('keydown', (event) => {
-                    if (event.keyCode === 32) {
-                        //space 
-                        this.Advance();
-                    }
-                });
-            }
-            else {
-                //Otherwise, make sure it's clicking in the preview window so that editing 
-                //does not make playtesting a pain
-                let advanceOnClick = (e) => {
-                    let div = document.getElementById('GamePreviewWindow');
-                    if (div.contains(e.target)) {
-                        this.Advance();
-                    }
-                };
-                let advanceOnSpace = (e) => {
-                    if (e.keyCode === 32) {
-                        //space 
-                        this.Advance();
-                    }
-                };
-                document.body.addEventListener('click', advanceOnClick);
-                document.body.addEventListener('keydown', advanceOnSpace);
-            }
         }
         //Advances the dialogue to the next node and starts printing it to the 
         //screen with scrolling. Returns the arc to allow for chaining
@@ -282,6 +320,7 @@ if (finished === false || finished === undefined) {
                 return this;
             }
             else {
+                this.currentNode++;
                 return this;
             }
         }
@@ -296,7 +335,6 @@ if (finished === false || finished === undefined) {
             let node = new VNNode(this, dialogue, speaker, charImg, bgImg);
             this.dialogueNodes.push(node);
             if (this.dialogueNodes.length == 1) {
-                this.Advance();
                 document.addEventListener('DOMContentLoaded', () => {
                     let VNC = document.getElementsByClassName('VNChar');
                     for (let i = 0; i < VNC.length; i++) {
@@ -314,6 +352,17 @@ if (finished === false || finished === undefined) {
             }
             return this;
         }
+        AddNewChoice(buttonDialogues, buttonArcChoices, charImg, bgImg) {
+            for (let i = 0; i < buttonArcChoices.length; i++) {
+                buttonArcChoices[i].page = this.page;
+            }
+            const choice = new VNChoice(this, buttonDialogues, buttonArcChoices, charImg, bgImg);
+            this.choiceNode = choice;
+        }
+        AddChoice(node) {
+            this.choiceNode = node;
+            this.choiceNode.arc = this;
+        }
         //Returns the arc to allow for chaining. Adds an existing VNNode to 
         //the arc
         AddNode(node) {
@@ -325,6 +374,56 @@ if (finished === false || finished === undefined) {
         }
     }
     Global.VNArc = VNArc;
+    class VNChoice {
+        constructor(arc, //Must have an arc bound to it 
+        buttonDialogues, buttonArcChoices, charImg, bgImg) {
+            this.buttonDialogues = buttonDialogues;
+            this.buttonArcChoices = buttonArcChoices;
+            this.charImg = charImg;
+            this.bgImg = bgImg;
+            this.arc = arc;
+        }
+        CreateButtons() {
+            var textWindows = document.getElementsByClassName('VNText');
+            clearInterval(this.arc.dialogueNodes[this.arc.currentNode - 2].dialogueInterval);
+            let chars = document.getElementsByClassName('VNChar');
+            for (let i = 0; i < chars.length; i++) {
+                chars[i].innerHTML = ' ';
+            }
+            for (let j = 0; j < textWindows.length; j++) {
+                textWindows[j].innerHTML = ''; //Clear the text on the text windows
+                for (let i = 0; i < this.buttonDialogues.length; i++) {
+                    let but = document.createElement('button');
+                    but.innerHTML = this.buttonDialogues[i];
+                    but.style.display = 'block';
+                    but.style.marginTop = '1%';
+                    but.style.marginLeft = '1%';
+                    but.className = 'ChoiceButton';
+                    but.onclick = () => {
+                        //Activate another arc which this button corresponds to
+                        this.arc.page.currentArc = this.buttonArcChoices[i];
+                        this.arc.currentNode = 1;
+                        this.arc.page.currentArc.dialogueNodes[0].ScrollText();
+                        let char = document.getElementsByClassName('VNChar');
+                        for (let i = 0; i < char.length; i++) {
+                            let speaker = this.arc.page.currentArc.dialogueNodes[0].speaker;
+                            char[i].innerHTML =
+                                (speaker.name) ?
+                                    speaker.name :
+                                    speaker;
+                            if (speaker.theme) {
+                                //It has a theme
+                                speaker.theme.ApplyTheme();
+                            }
+                        }
+                    };
+                    textWindows[j].appendChild(but);
+                }
+            }
+            return this;
+        }
+    }
+    Global.VNChoice = VNChoice;
     class VNNode {
         //text scroll
         constructor(arc, dialogue, speaker, charImg, bgImg) {

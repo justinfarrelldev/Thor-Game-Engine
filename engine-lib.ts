@@ -233,6 +233,14 @@ let ThrowScriptError = (error : Error) =>
     WarnOfCommonErrors(error)
 }
 
+let PrintToConsole = (content : string) => 
+{
+    let el = document.createElement('p')
+    el.innerHTML = content
+    el.className = 'ConsoleText'
+    document.getElementById('ErrorWindow').appendChild(el)
+}
+
 let WarnOfCommonErrors = (error) => 
 {
     var advice = "";
