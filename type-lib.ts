@@ -456,8 +456,9 @@ if (finished === false || finished === undefined)
                         clearInterval(this.dialogueNodes[this.currentNode - 1].dialogueInterval)
                     }
                 }
+                    
                 this.dialogueNodes[this.currentNode].ScrollText()
-                
+
                 for (let i = 0; i < document.getElementsByClassName('VNChar').length; i++)
                 {
                     if ((this.dialogueNodes[this.currentNode].speaker as any).name)
