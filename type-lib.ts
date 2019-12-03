@@ -149,20 +149,27 @@ if (finished === false || finished === undefined)
          */
 
         characterImages: { [name : string]: string } = {} //name to correspond to image name
-        constructor(characterImages?: {[name : string] : string}) {
-        if (characterImages)
-            this.characterImages = characterImages
+        nicknames : string[] = []
+        constructor() {
+
         }
 
         GetImage(nickname : string) : string
         {
+            console.log("Nickname passed: ")
+            console.log(nickname)
+
+            console.log(this.characterImages)
+            console.log(this.characterImages[nickname])
             return this.characterImages[nickname]
         }
 
         AddImage(nickname : string, imageName : string) : VNCharacterImages
         {
             this.characterImages[nickname] = imageName
-
+            this.nicknames.push(nickname)
+            console.log(this.nicknames)
+            console.log(this.characterImages)
             return this
         }
     }
@@ -247,6 +254,8 @@ if (finished === false || finished === undefined)
         characterHeading : HTMLHeadingElement
         arcs : VNArc[]
         currentArc : VNArc
+        imagebox : HTMLElement
+        charImg : HTMLElement[] //The actual images of the characters
         constructor(arcs : VNArc[], startingTheme? : VNTheme) {
 
             if (!arcs.length)
@@ -265,6 +274,13 @@ if (finished === false || finished === undefined)
             this.playspace.style.width = '100%'
             this.playspace.style.height = '100%'
             this.playspace.style.overflow = 'hidden'
+
+            this.imagebox = AddElem('div', '')
+            this.imagebox.style.width = '100%'
+            this.imagebox.style.height = '100%'
+            this.imagebox.style.position = 'relative'
+            this.imagebox.style.border = 'solid 1px red'
+            this.playspace.appendChild(this.imagebox)
 
             this.textbox = AddElem('div', '')
             this.textbox.className = 'VNTextbox'
@@ -288,7 +304,25 @@ if (finished === false || finished === undefined)
             this.characterHeading.style.msUserSelect = 'none'
             this.characterHeading.style.msTouchSelect = 'none'
             this.characterHeading.style.webkitUserSelect = 'none'
+
+            //Normally charImg would be here, but since they were already made by
+            //nodes, we'll just gather them and sync them with charImg
+            this.charImg = []
+            this.charImg[0] = AddElem('img', '')
+            this.charImg[0].className = 'VNCharImgs' //Access it again
+            this.charImg[0].style.display = 'none' //Make it invisible for now until source is set
+            this.charImg[0].style.height = '85%'
+            this.charImg[0].style.position = 'absolute'
+            this.charImg[0].style.bottom = '0px'
+            this.charImg[0].style.left = '0%'
+            this.charImg[0].style.right = '0%'
+            this.charImg[0].style.margin = 'auto'
             
+            this.imagebox.appendChild(this.charImg[0])
+            
+
+            //this.charImg = document.getElementsByClassName('VNCharImgs')
+
             this.text = AddElem('p', 'TEXT WILL APPEAR HERE')
             this.text.className = 'VNText' //You can access the text at anytime with this 
                                            //class (class in case more than one is on 
@@ -304,6 +338,8 @@ if (finished === false || finished === undefined)
             this.text.style.msUserSelect = 'none'
             this.text.style.msTouchSelect = 'none'
             this.text.style.webkitUserSelect = 'none'
+
+            
 
             for (let i = 0; i < arcs.length; i++)
             {
@@ -693,7 +729,7 @@ if (finished === false || finished === undefined)
         {
             this.thisNode = this
             this.SetArc(arc)
-            this.SetNode(dialogue, speaker, charImg, bgImg)
+            this.SetNode(dialogue, speaker, charImg, bgImg);
         }
 
         //Sets the arc of this node. Returns this node to allow for chaining.
@@ -726,6 +762,23 @@ if (finished === false || finished === undefined)
             var displayedText = ''
             var letter : number = 0 //0 to length of string
             var textWindows = document.getElementsByClassName('VNText')
+
+            console.log(this.charImg.nicknames);
+
+            if (this.charImg.nicknames)
+            {
+                if (this.charImg.GetImage(this.charImg.nicknames[0]))
+                {
+                    console.log('got this far');
+                    console.log(this.arc.page.charImg);
+                    (this.arc.page.charImg[0] as HTMLImageElement).src = 'upload/resources/' + this.charImg.GetImage(
+                        this.charImg.nicknames[0]
+                    );
+
+                    (this.arc.page.charImg[0] as HTMLImageElement).style.display = 'block'
+
+                }
+            }
 
             this.dialogueInterval = setInterval((handler) => 
             {
