@@ -41,6 +41,8 @@ let MakeGame = async () =>
 
     outFile.AddElement("script", "src = \"type-lib.js\"", "")
 
+    outFile.AddElement("script", "src = \"vn-lib.js\"", "")
+
     outFile.AddElement("script", "src = \"func-lib.js\"", "")
 
     console.log("HTML file constructed in memory. Adding user scripts to build.")
@@ -76,27 +78,30 @@ let MakeGame = async () =>
 
     console.log("The HTML file has been added to the game build.")
 
-    let funcLib = new GameFile("func-lib.js", "")
+    AddLibFileToGameFiles(Game, 'js-src/func-lib.js', 'func-lib.js')
 
-    funcLib.contents = ReadFileOnServer("js-src/func-lib.js")
+    AddLibFileToGameFiles(Game, 'js-src/type-lib.js', 'type-lib.js')
 
-    Game.AddFile(funcLib)
-
-    console.log("The function library file (func-lib.js) has been added to the game build.")
-
-    let typeLib = new GameFile("type-lib.js", "")
-
-    typeLib.contents = ReadFileOnServer("js-src/type-lib.js")
-
-    Game.AddFile(typeLib)
-
-    console.log("The type library file (type-lib.js) has been added to the game build.")
+    AddLibFileToGameFiles(Game, 'js-src/vn-lib.js', 'vn-lib.js') //Adding Visual Novel library to 
+                                                                 //the build. Will be checked later 
+                                                                 //on to check if it's needed
 
     await new Promise(async (res, rej) => 
     {
         await GetImagesFileData().then(() => res())
     })
 
+}
+
+let AddLibFileToGameFiles = (game : GameFiles, src : string, name : string) => 
+{
+    let lib = new GameFile(name, "")
+
+    lib.contents = ReadFileOnServer(src)
+
+    Game.AddFile(lib)
+
+    console.log("The function library file (" + name + ") has been added to the game build.")
 }
 
 async function GetImagesFileData()
@@ -313,6 +318,12 @@ let ExecuteGameInEditor = (textInputWindowValue : string) =>
         document.getElementById("TypeLibScript").parentNode.removeChild(document.getElementById("TypeLibScript"))
     }
 
+    
+    if (document.getElementById("VNLibScript"))
+    {
+        document.getElementById("VNLibScript").parentNode.removeChild(document.getElementById("VNLibScript"))
+    }
+
     for (let i = 0; i < document.getElementsByClassName('RuntimeUserScript').length; i++)
     {
         document.getElementsByClassName('RuntimeUserScript')[i].parentNode.removeChild(
@@ -394,24 +405,33 @@ let AddDependenciesInEditor = () =>
     funcLib.id = "FuncLibScript"
     let typeLib = document.createElement("script")
     typeLib.id = "TypeLibScript"
+    let vnLib = document.createElement('script')
+    vnLib.id = "VNLibScript"
+
     funcLib.type = 'text/javascript'
     typeLib.type = 'text/javascript'
+    vnLib.type = 'text/javascript'
 
     var funcLibCode = ReadFileOnServer("js-src/func-lib.js")
     var typeLibCode = ReadFileOnServer("js-src/type-lib.js")
+    var vnLibCode = ReadFileOnServer("js-src/vn-lib.js")
     try 
     {
         funcLib.appendChild(document.createTextNode(funcLibCode))
         typeLib.appendChild(document.createTextNode(typeLibCode))
+        vnLib.appendChild(document.createTextNode(vnLibCode))
         document.getElementById("GamePreviewWindow").appendChild(typeLib)
         document.getElementById("GamePreviewWindow").appendChild(funcLib)
+        document.getElementById("GamePreviewWindow").appendChild(vnLib)
     }
     catch (error)
     {
         funcLib.text = funcLibCode
         typeLib.text = typeLibCode
+        vnLib.text = vnLibCode
         document.getElementById("GamePreviewWindow").appendChild(typeLib)
         document.getElementById("GamePreviewWindow").appendChild(funcLib)
+        document.getElementById("GamePreviewWindow").appendChild(vnLib)
     }
 }
 

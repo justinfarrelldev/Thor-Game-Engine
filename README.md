@@ -15,16 +15,8 @@ custom scripts included as well as multiple uploaded images
 - Thor includes a few library functions which you can use to quickly develop new games (see below)
 
 # Update Notes
-**30th Nov, 2019**
-- Made the interface fit together better again. The interface still looks quite ugly, as I am still
-working on adding the ability to switch windows at will. 
-- Check out VNTemplateExample.js for a quick rundown of how to make a simple Visual Novel.
-Keep in mind that it is FAR from perfect in its current state, but I am actively working on 
-it and I plan to keep improving its capabilities and ease of use.
-- console.log is now overwritten to appear in the actual console as well as in the engine 
-console. Please note that NOT ALL ENGINE ERRORS APPEAR IN THE CONSOLE YET. Use 
-inspect element just to make sure (for now), as errors on the part of the engine itself are
-still common.
+**7th Dec, 2019**
+- Made all Visual Novel related classes a part of their own separate 'VN library'. This change will allow all visual novel related classes to be culled from builds which do not use them, which will save on space. It also makes the code significantly easier to read. 
 
 # How to Use Thor
 To run Thor, install Node.js. Navigate to your download directory in the command line, enter the thor-game-engine folder and use 'node index.js'. This will start the Thor game engine, which you can then use in your browser by navigating to 'localhost:80'. 
