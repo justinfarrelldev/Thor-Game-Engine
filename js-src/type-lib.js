@@ -93,18 +93,18 @@ if (finished === false || finished === undefined) {
             this.nicknames = [];
         }
         GetImage(nickname) {
-            console.log("Nickname passed: ");
-            console.log(nickname);
-            console.log(this.characterImages);
-            console.log(this.characterImages[nickname]);
             return this.characterImages[nickname];
+        }
+        Get(nickname) {
+            return this.GetImage(nickname);
         }
         AddImage(nickname, imageName) {
             this.characterImages[nickname] = imageName;
             this.nicknames.push(nickname);
-            console.log(this.nicknames);
-            console.log(this.characterImages);
             return this;
+        }
+        Add(nickname, imageName) {
+            return this.AddImage(nickname, imageName);
         }
     }
     Global.VNCharacterImages = VNCharacterImages;
@@ -117,6 +117,9 @@ if (finished === false || finished === undefined) {
         AddImage(nickname, imageName) {
             this.characterImages.AddImage(nickname, imageName);
             return this;
+        }
+        Add(nickname, imageName) {
+            return this.AddImage(nickname, imageName);
         }
     }
     Global.VNCharacter = VNCharacter;
@@ -142,6 +145,9 @@ if (finished === false || finished === undefined) {
             }
             return this;
         }
+        Apply() {
+            return this.ApplyTheme();
+        }
     }
     Global.VNTheme = VNTheme;
     //A visual novel template which is based in a webpage, not a canvas.
@@ -161,7 +167,6 @@ if (finished === false || finished === undefined) {
             this.imagebox.style.width = '100%';
             this.imagebox.style.height = '100%';
             this.imagebox.style.position = 'relative';
-            this.imagebox.style.border = 'solid 1px red';
             this.playspace.appendChild(this.imagebox);
             this.textbox = AddElem('div', '');
             this.textbox.className = 'VNTextbox';
@@ -196,6 +201,9 @@ if (finished === false || finished === undefined) {
             this.charImg[0].style.left = '0%';
             this.charImg[0].style.right = '0%';
             this.charImg[0].style.margin = 'auto';
+            this.charImg[0].style.userSelect = 'none';
+            this.charImg[0].style.msUserSelect = 'none';
+            this.charImg[0].style.webkitUserSelect = 'none';
             this.imagebox.appendChild(this.charImg[0]);
             //this.charImg = document.getElementsByClassName('VNCharImgs')
             this.text = AddElem('p', 'TEXT WILL APPEAR HERE');
@@ -350,6 +358,21 @@ if (finished === false || finished === undefined) {
                 return this;
             }
         }
+        //Sets character image of last node
+        SetCharImage(charImg) {
+            if (this.dialogueNodes.length == 0) {
+                ThrowScriptError(new Error('No nodes to set a character image on.'));
+                return this;
+            }
+            if (!charImg) {
+                console.error('No character image specified.');
+            }
+            this.dialogueNodes[this.dialogueNodes.length - 1].charImg = charImg;
+            return this;
+        }
+        SetImg(charImg) {
+            return this.SetCharImage(charImg);
+        }
         //Adds a new dialogue node to the arc. Returns the arc to allow for chaining.
         AddNewNode(dialogue, speaker, charImg, bgImg) {
             if (speaker) {
@@ -424,6 +447,17 @@ if (finished === false || finished === undefined) {
                     but.style.display = 'block';
                     but.style.marginTop = '1%';
                     but.style.marginLeft = '1%';
+                    but.style.backgroundColor = 'rgba(150,0,150,0)';
+                    but.addEventListener('mouseenter', () => {
+                        //Change to desired color
+                        but.style.backgroundColor = 'rgba(150,0,150,1)';
+                    });
+                    but.addEventListener('mouseleave', () => {
+                        //Change to color when mouse is left
+                        but.style.backgroundColor = 'rgba(1,0,0,0)';
+                    });
+                    but.style.borderRadius = '10%';
+                    but.style.border = 'none';
                     but.className = 'ChoiceButton';
                     but.onclick = () => {
                         //Activate another arc which this button corresponds to
@@ -453,6 +487,7 @@ if (finished === false || finished === undefined) {
     class VNNode {
         //text scroll
         constructor(arc, dialogue, speaker, charImg, bgImg) {
+            this.charImg = []; //The characters on screen at once
             this.thisNode = this;
             this.SetArc(arc);
             this.SetNode(dialogue, speaker, charImg, bgImg);
@@ -470,7 +505,15 @@ if (finished === false || finished === undefined) {
         bgImg) {
             this.dialogue = (dialogue) ? dialogue : this.arc.dialogueNodes[this.indexInArc - 1].dialogue;
             this.speaker = (speaker) ? speaker : this.arc.dialogueNodes[this.indexInArc - 1].speaker;
-            this.charImg = (charImg) ? charImg : this.arc.dialogueNodes[this.indexInArc - 1].charImg;
+            if (charImg) {
+                if (charImg.length) {
+                    //It's an array
+                    this.charImg = charImg;
+                }
+                else {
+                    this.charImg.push(charImg); //It's not an array, make it an array
+                }
+            }
             this.bgImg = (bgImg) ? bgImg : this.arc.dialogueNodes[this.indexInArc - 1].bgImg;
             return this.thisNode;
         }
@@ -478,13 +521,14 @@ if (finished === false || finished === undefined) {
             var displayedText = '';
             var letter = 0; //0 to length of string
             var textWindows = document.getElementsByClassName('VNText');
-            console.log(this.charImg.nicknames);
-            if (this.charImg.nicknames) {
-                if (this.charImg.GetImage(this.charImg.nicknames[0])) {
-                    console.log('got this far');
-                    console.log(this.arc.page.charImg);
-                    this.arc.page.charImg[0].src = 'upload/resources/' + this.charImg.GetImage(this.charImg.nicknames[0]);
-                    this.arc.page.charImg[0].style.display = 'block';
+            let htmlImgs = document.getElementsByClassName('VNCharImgs');
+            for (let i = 0; i < htmlImgs.length; i++) {
+                for (let j = 0; j < this.charImg.length; j++) {
+                    htmlImgs[i].src = 'upload/resources/' + this.charImg;
+                    htmlImgs[i].style.display = 'block';
+                    htmlImgs[i].style.userSelect = 'none';
+                    htmlImgs[i].style.msUserSelect = 'none';
+                    htmlImgs[i].style.webkitUserSelect = 'none';
                 }
             }
             this.dialogueInterval = setInterval((handler) => {

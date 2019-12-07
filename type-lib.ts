@@ -156,21 +156,24 @@ if (finished === false || finished === undefined)
 
         GetImage(nickname : string) : string
         {
-            console.log("Nickname passed: ")
-            console.log(nickname)
-
-            console.log(this.characterImages)
-            console.log(this.characterImages[nickname])
             return this.characterImages[nickname]
+        }
+
+        Get(nickname : string) //Short for GetImage()
+        {
+            return this.GetImage(nickname)
         }
 
         AddImage(nickname : string, imageName : string) : VNCharacterImages
         {
             this.characterImages[nickname] = imageName
             this.nicknames.push(nickname)
-            console.log(this.nicknames)
-            console.log(this.characterImages)
             return this
+        }
+
+        Add(nickname : string, imageName : string) : VNCharacterImages //Short for AddImage()
+        {
+            return this.AddImage(nickname, imageName)
         }
     }
     (Global as any).VNCharacterImages = VNCharacterImages
@@ -195,6 +198,11 @@ if (finished === false || finished === undefined)
             this.characterImages.AddImage(nickname, imageName)
 
             return this
+        }
+
+        Add(nickname : string, imageName : string) //Short for AddImage()
+        {
+            return this.AddImage(nickname, imageName)
         }
     }
     (Global as any).VNCharacter = VNCharacter
@@ -236,6 +244,11 @@ if (finished === false || finished === undefined)
             }
 
             return this
+        }
+
+        Apply() : VNTheme //Short for ApplyTheme()
+        {
+            return this.ApplyTheme()
         }
     }
     (Global as any).VNTheme = VNTheme
@@ -279,7 +292,6 @@ if (finished === false || finished === undefined)
             this.imagebox.style.width = '100%'
             this.imagebox.style.height = '100%'
             this.imagebox.style.position = 'relative'
-            this.imagebox.style.border = 'solid 1px red'
             this.playspace.appendChild(this.imagebox)
 
             this.textbox = AddElem('div', '')
@@ -317,6 +329,9 @@ if (finished === false || finished === undefined)
             this.charImg[0].style.left = '0%'
             this.charImg[0].style.right = '0%'
             this.charImg[0].style.margin = 'auto'
+            this.charImg[0].style.userSelect = 'none'
+            this.charImg[0].style.msUserSelect = 'none'
+            this.charImg[0].style.webkitUserSelect = 'none'
             
             this.imagebox.appendChild(this.charImg[0])
             
@@ -547,10 +562,34 @@ if (finished === false || finished === undefined)
             }
         }
 
+        //Sets character image of last node
+        SetCharImage(charImg : string[])
+        {
+            if (this.dialogueNodes.length == 0)
+            {
+                ThrowScriptError(new Error('No nodes to set a character image on.'))
+                return this
+            }
+
+            if (!charImg)
+            {
+                console.error('No character image specified.')
+            }
+
+            this.dialogueNodes[this.dialogueNodes.length - 1].charImg = charImg
+
+            return this
+        }
+
+        SetImg(charImg : string[]) //Short for SetCharImage()
+        {
+            return this.SetCharImage(charImg)
+        }
+
         //Adds a new dialogue node to the arc. Returns the arc to allow for chaining.
         AddNewNode(dialogue : string,
                    speaker? : string | VNCharacter, 
-                   charImg? : VNCharacterImages,
+                   charImg? : string[],
                    bgImg? : string) : VNArc
         {
             if (speaker)
@@ -583,15 +622,13 @@ if (finished === false || finished === undefined)
                     return this
                 })
             }
-            
             return this
-
         }
 
         AddNewChoice(
             buttonDialogues : string[],
             buttonArcChoices : VNArc[],
-            charImg? : VNCharacterImages,
+            charImg? : string[],
             bgImg? : string)
         {
             for (let i = 0; i < buttonArcChoices.length; i++)
@@ -630,14 +667,14 @@ if (finished === false || finished === undefined)
 
         buttonDialogues : string[]
         buttonArcChoices : VNArc[]
-        charImg : VNCharacterImages
+        charImg : string[]
         bgImg : string
         dialogueInterval
         arc : VNArc
         constructor(arc : VNArc,                    //Must have an arc bound to it 
                     buttonDialogues : string[], 
                     buttonArcChoices : VNArc[], 
-                    charImg? : VNCharacterImages,
+                    charImg? : string[],
                     bgImg? : string) 
         {
             this.buttonDialogues = buttonDialogues
@@ -669,6 +706,23 @@ if (finished === false || finished === undefined)
                     but.style.display = 'block'
                     but.style.marginTop = '1%'
                     but.style.marginLeft = '1%'
+                    but.style.backgroundColor = 'rgba(150,0,150,0)'
+
+                    but.addEventListener('mouseenter', () => 
+                    {
+                        //Change to desired color
+                        but.style.backgroundColor = 'rgba(150,0,150,1)'
+
+                    })
+
+                    but.addEventListener('mouseleave', () => 
+                    {
+                        //Change to color when mouse is left
+                        but.style.backgroundColor = 'rgba(1,0,0,0)'
+                    })
+
+                    but.style.borderRadius = '10%'
+                    but.style.border = 'none'
                     but.className = 'ChoiceButton'
                     but.onclick = () => {
                         //Activate another arc which this button corresponds to
@@ -714,7 +768,7 @@ if (finished === false || finished === undefined)
 
         dialogue : string
         speaker : string | VNCharacter
-        charImg : VNCharacterImages
+        charImg : string[] = []//The characters on screen at once
         bgImg : string
         arc : VNArc //The arc this is in (set upon creation in arc)
         indexInArc : number //The place in the arc (set upon creation in arc)
@@ -724,7 +778,7 @@ if (finished === false || finished === undefined)
         constructor(arc : VNArc, 
                     dialogue : string, 
                     speaker? : string | VNCharacter,
-                    charImg? : VNCharacterImages,
+                    charImg? : string[],
                     bgImg? : string) 
         {
             this.thisNode = this
@@ -744,13 +798,24 @@ if (finished === false || finished === undefined)
         SetNode(
             dialogue : string,    //The text inside the text box
             speaker? : string | VNCharacter, //The name of the person talking
-            charImg? : VNCharacterImages,     //The image(s) paths displayed front and center
+            charImg? : string[],     //The image(s) paths displayed front and center
             bgImg? : string,       //The background image
             ) : VNNode
         {
             this.dialogue = (dialogue) ? dialogue : this.arc.dialogueNodes[this.indexInArc - 1].dialogue
             this.speaker = (speaker) ? speaker : this.arc.dialogueNodes[this.indexInArc-1].speaker
-            this.charImg = (charImg) ? charImg : this.arc.dialogueNodes[this.indexInArc-1].charImg
+            if (charImg)
+            {
+                if (charImg.length)
+                {
+                    //It's an array
+                    this.charImg = charImg
+                }
+                else
+                {
+                    this.charImg.push(charImg as any) //It's not an array, make it an array
+                }
+            }
             this.bgImg = (bgImg) ? bgImg : this.arc.dialogueNodes[this.indexInArc - 1].bgImg
 
             return this.thisNode
@@ -763,19 +828,17 @@ if (finished === false || finished === undefined)
             var letter : number = 0 //0 to length of string
             var textWindows = document.getElementsByClassName('VNText')
 
-            console.log(this.charImg.nicknames);
+            let htmlImgs = document.getElementsByClassName('VNCharImgs');
 
-            if (this.charImg.nicknames)
+            for (let i = 0; i < htmlImgs.length; i++)
             {
-                if (this.charImg.GetImage(this.charImg.nicknames[0]))
+                for (let j = 0; j < this.charImg.length; j++)
                 {
-                    console.log('got this far');
-                    console.log(this.arc.page.charImg);
-                    (this.arc.page.charImg[0] as HTMLImageElement).src = 'upload/resources/' + this.charImg.GetImage(
-                        this.charImg.nicknames[0]
-                    );
-
-                    (this.arc.page.charImg[0] as HTMLImageElement).style.display = 'block'
+                    (htmlImgs[i] as HTMLImageElement).src = 'upload/resources/' + this.charImg;
+                    (htmlImgs[i] as HTMLImageElement).style.display = 'block';
+                    (htmlImgs[i] as HTMLImageElement).style.userSelect = 'none';
+                    (htmlImgs[i] as HTMLImageElement).style.msUserSelect = 'none';
+                    (htmlImgs[i] as HTMLImageElement).style.webkitUserSelect = 'none';
 
                 }
             }

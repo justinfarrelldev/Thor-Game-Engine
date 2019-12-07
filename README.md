@@ -30,9 +30,13 @@ still common.
 To run Thor, install Node.js. Navigate to your download directory in the command line, enter the thor-game-engine folder and use 'node index.js'. This will start the Thor game engine, which you can then use in your browser by navigating to 'localhost:80'. 
 
 # To-Do
-**Updated 30th Nov, 2019**
+**Updated 7th Dec, 2019**
 - Fix vulnerabilities
 - Add support for deletion of images from the engine (as well as an interface to do so)
+- Make the website have a login and authentication screen (not posted to Github of course,
+lest there be a giant vulnerability)
+- Implement saving of projects (this will be after the login and authentication is 
+finished and will likely be tied to a specific user)
 - Add support for switching windows to the selected types
 - Enhance the file viewer (similar to Unity's project file viewer) with drag and drop capability
 as well as more interactability. 
