@@ -17,6 +17,9 @@ if (finished === false || finished === undefined)
         /**
          * A vector 2, which is a vector in 2 dimensional space
          * and can be a coordinate or a direction
+         * 
+         * 
+         * NOT READY FOR USE YET
          */
         x : number
         y : number

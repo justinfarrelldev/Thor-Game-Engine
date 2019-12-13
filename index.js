@@ -88,7 +88,6 @@ app.post('/upload/resources',upload.single('resources'), (req, res) =>
 
 app.post('/download', (req, res) => 
 {8
-    console.log("It's downloading the game and reflecting that serverside")
     res.sendStatus(200)
 })
 
