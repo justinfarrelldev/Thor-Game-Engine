@@ -383,6 +383,7 @@ if (finishedVNLib === false || finishedVNLib === undefined) {
                         //Activate another arc which this button corresponds to
                         this.arc.page.currentArc = this.buttonArcChoices[i];
                         this.arc.currentNode = 1;
+                        this.arc.page.currentArc.currentNode = 1;
                         this.arc.page.currentArc.dialogueNodes[0].ScrollText();
                         let char = document.getElementsByClassName('VNChar');
                         for (let i = 0; i < char.length; i++) {
