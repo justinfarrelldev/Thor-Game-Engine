@@ -20,7 +20,6 @@ let Start = async () =>
 {
     console.log("Thor Game Engine is initialized and starting.")
 
-
     const pathForm = new FormData()
     pathForm.append("path", 'upload/resources')
 
@@ -28,9 +27,10 @@ let Start = async () =>
     let result = await fetch('/imgfiles', { 
         method: "POST",
         body: pathForm
-    }).then(async (response) => 
+    })
+    .then(async (response) => 
     {
-        console.log("POST request has been answered.")
+        console.log("POST request for the images in the folder /upload/resources has been answered.")
         let f = response.headers.get('files')
         let fsplit = f.split(',')
 
@@ -49,12 +49,13 @@ let Start = async () =>
         }
 
         return fsplit
-    }
-    )
+    })
 
+    //Cycle through each part of result and make a new image icon for each 
+    //file name inside.
     result.forEach(el => 
         {
-            let imgIcon = new ImageFileIcon(String(el))
+            new ImageFileIcon(String(el).replace(/ /g, ''))
         })
 } 
  

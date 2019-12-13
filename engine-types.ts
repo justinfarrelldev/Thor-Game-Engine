@@ -172,7 +172,10 @@ class ImageFileIcon
     name : string
     constructor(name : string) {
 
-        name = name
+        this.name = name
+
+        var ext = name.split('.').pop()
+        
 
         let el = document.createElement('div')
         el.style.height = '33%'
@@ -180,18 +183,31 @@ class ImageFileIcon
         el.style.marginBottom = '5%'
         el.style.display = 'inline-block'
 
-        let img = document.createElement('img')
-        img.src = '/upload/resources/' + name
-        img.style.width = 'auto'
-        img.style.height = '100%'
-        img.style.margin = '1%'
-        img.style.marginBottom = '0%'
-        img.style.marginRight = '2%'
-        img.style.textAlign = 'center'
-        img.alt = name
-        img.title = name
+        var behavior = this.DetermineBehavior(ext)
 
-        el.appendChild(img)
+        if (behavior == 'img')
+        {
+            let img = document.createElement('img')
+            img.src = '/upload/resources/' + name
+            img.style.width = 'auto'
+            img.style.height = '100%'
+            img.style.margin = '1%'
+            img.style.marginBottom = '0%'
+            img.style.marginRight = '2%'
+            img.style.textAlign = 'center'
+            img.alt = name
+            img.title = name
+
+            el.appendChild(img)
+        }
+        else if (behavior == 'text')
+        {
+            let head = document.createElement('h1')
+            head.style.margin = '0px'
+            head.style.padding = '0px'
+            head.innerHTML = '📄'
+            el.appendChild(head)
+        }
 
         let text = document.createElement('p')
         text.style.width = '8%'
@@ -207,6 +223,30 @@ class ImageFileIcon
         el.appendChild(text)
 
         document.getElementById('File_Explorer').appendChild(el)
+    }
+
+    DetermineBehavior(extension : string) //Determines what kind of image will
+                                          //be displayed
+    {
+        extension = extension.toLowerCase()
+        switch(extension) 
+        {
+            case 'png': 
+                return 'img'
+            case 'txt': 
+                return 'text'
+            case 'jpg':
+                return 'img'
+            case 'tif': 
+                return 'img'
+            case 'tiff': 
+                return 'img'
+            case 'gif': 
+                return 'img'
+            default: 
+                console.log('Returning with text from default');
+                return 'text'
+        }
     }
 }
 

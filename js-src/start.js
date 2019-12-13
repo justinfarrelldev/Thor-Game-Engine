@@ -17,8 +17,9 @@ let Start = async () => {
     let result = await fetch('/imgfiles', {
         method: "POST",
         body: pathForm
-    }).then(async (response) => {
-        console.log("POST request has been answered.");
+    })
+        .then(async (response) => {
+        console.log("POST request for the images in the folder /upload/resources has been answered.");
         let f = response.headers.get('files');
         let fsplit = f.split(',');
         console.log("The files have been gotten from the response headers.");
@@ -31,8 +32,10 @@ let Start = async () => {
         }
         return fsplit;
     });
+    //Cycle through each part of result and make a new image icon for each 
+    //file name inside.
     result.forEach(el => {
-        let imgIcon = new ImageFileIcon(String(el));
+        new ImageFileIcon(String(el).replace(/ /g, ''));
     });
 };
 Start();
