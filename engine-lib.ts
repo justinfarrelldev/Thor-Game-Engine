@@ -1,6 +1,50 @@
 //Used for common engine functions, such as launching the game. Modify at your 
 //own risk.
 
+let CheckShortcutKeys = () => 
+{
+    if (keysDownArr.includes(' ') && keysDownArr.includes('Control'))
+    {
+        LaunchGame()
+    }
+}
+
+document.addEventListener('keydown', (event) =>
+{
+    //Must check key and keycode for almost full browser support
+    if (event.key)
+    {
+        if (!keysDownArr.includes(event.key))
+        {
+            keysDownArr.push(event.key)
+        }
+    }
+    else
+    {
+        //Safari more than likely
+        if (!keysDownArr.includes(event.keyCode))
+        {
+            keysDownArr.push(event.keyCode)
+        }        
+    }
+
+    CheckShortcutKeys()
+})
+
+document.addEventListener('keyup', (event) =>
+{
+        //Must check key and keycode for almost full browser support
+        if (event.key)
+        {
+            keysDownArr.splice(keysDownArr.indexOf(event.key))
+        }
+        else
+        {
+            //Safari more than likely
+            keysDownArr.splice(keysDownArr.indexOf(event.keyCode))
+        }
+})
+
 //Launches the game
 let LaunchGame = () =>
 {

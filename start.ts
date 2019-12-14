@@ -16,10 +16,9 @@ let CurrentUserScript : number = 0; //Goes by index
 
 new UserScript('Inline Script')
 
-let Start = async () => 
+async function CreateImageIcons()
 {
-    console.log("Thor Game Engine is initialized and starting.")
-
+    
     const pathForm = new FormData()
     pathForm.append("path", 'upload/resources')
 
@@ -57,6 +56,17 @@ let Start = async () =>
         {
             new ImageFileIcon(String(el).replace(/ /g, ''))
         })
+}
+
+var keysDownArr = []
+
+let Start = async () => 
+{
+
+    console.log("Thor Game Engine is initialized and starting.")
+
+    CreateImageIcons()
+
 } 
  
 Start()

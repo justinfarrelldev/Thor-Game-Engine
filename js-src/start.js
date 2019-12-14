@@ -9,8 +9,7 @@ let UserScripts = []; //Creates an array of userscripts
 //file
 let CurrentUserScript = 0; //Goes by index
 new UserScript('Inline Script');
-let Start = async () => {
-    console.log("Thor Game Engine is initialized and starting.");
+async function CreateImageIcons() {
     const pathForm = new FormData();
     pathForm.append("path", 'upload/resources');
     //First off, find the files in the image directory already.
@@ -37,6 +36,11 @@ let Start = async () => {
     result.forEach(el => {
         new ImageFileIcon(String(el).replace(/ /g, ''));
     });
+}
+var keysDownArr = [];
+let Start = async () => {
+    console.log("Thor Game Engine is initialized and starting.");
+    CreateImageIcons();
 };
 Start();
 //# sourceMappingURL=start.js.map

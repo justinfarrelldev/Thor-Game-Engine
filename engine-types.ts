@@ -182,6 +182,7 @@ class ImageFileIcon
         el.style.margin = '2%'
         el.style.marginBottom = '5%'
         el.style.display = 'inline-block'
+        el.style.backgroundColor = 'gray'
 
         var behavior = this.DetermineBehavior(ext)
 
