@@ -131,3 +131,19 @@ app.post('/imgfiles',upload.array('path'), (req, res) =>
     )
 
 })
+
+app.delete('/upload/resources/:fileName', (req, res) => 
+{
+    console.log("Server got the request for deletion for " + req.url)
+
+    fs.unlink(__dirname + req.url, (err) => 
+    {
+        if (err)
+        {
+            console.error(err);
+            res.end()
+        }
+        console.log(req.url + ' has been deleted. ');
+        res.end()
+    })
+})

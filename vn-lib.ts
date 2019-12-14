@@ -354,9 +354,7 @@ if (finishedVNLib === false || finishedVNLib === undefined)
         thisArc : any
         page : PageVN
         constructor() {
-            var index = 0;
             this.thisArc = this
-
         }
 
         //Advances the dialogue to the next node and starts printing it to the 

@@ -104,6 +104,27 @@ let AddLibFileToGameFiles = (game : GameFiles, src : string, name : string) =>
     console.log("The function library file (" + name + ") has been added to the game build.")
 }
 
+function DeleteImageFromServer(imgName : string)
+{
+
+    //Need to do a request to the server and then act upon the request
+    fetch('upload/resources/' + imgName, 
+        { 
+            method: 'delete'
+        }).then((response) => 
+        {
+
+            if (response.ok)
+            {
+                console.log('The delete request was recieved and was okay.')
+            }
+            else
+            {
+                console.error('The delete request was not legitimate.')
+            }
+        })
+}
+
 async function GetImagesFileData()
 {
     let imgs = await GetImagesOnServer('upload/resources')

@@ -222,6 +222,21 @@ class ImageFileIcon
 
         el.appendChild(text)
 
+
+        //Create delete button for image to remove it from the server
+        let delBut = document.createElement('button')
+        delBut.innerHTML = 'DELETE'
+        delBut.style.marginTop = '35%'
+        delBut.onclick = (event) => 
+        {
+            DeleteImageFromServer(name)
+            let parent = el.parentNode
+
+            parent.removeChild(el)
+        }
+
+        el.appendChild(delBut)
+
         document.getElementById('File_Explorer').appendChild(el)
     }
 

@@ -228,7 +228,6 @@ if (finishedVNLib === false || finishedVNLib === undefined) {
              */
             this.dialogueNodes = [];
             this.currentNode = 0;
-            var index = 0;
             this.thisArc = this;
         }
         //Advances the dialogue to the next node and starts printing it to the 
