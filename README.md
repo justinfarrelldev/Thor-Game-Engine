@@ -25,7 +25,8 @@ To run Thor, first install npm (Node Package Manager) and the Typescript transpi
 ## Compiling the Typescript
 Navigate to the root of the downloaded project in the command line and then type 
 tsc to transpile the Typescript files into Javascript files. These will be put into 
-the js-src folder. Once it starts reporting changes, press ctrl+c to cancel it out. 
+the js-src folder. Once it starts reporting errors, press ctrl+c to cancel it out and 
+then "y" to confirm. 
 This will leave the JS files and allow you to use the command line again. 
 ## Getting the dependencies
 Next, type "npm install" into the command line. This will install the dependencies into 
