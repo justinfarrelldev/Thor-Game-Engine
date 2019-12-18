@@ -3,3 +3,6 @@
 upload/resources/*
 !upload/resources/keep.gitkeep
 
+js-src/*
+
+node_modules/*
