@@ -25,7 +25,6 @@ To run Thor, install Node.js. Navigate to your download directory in the command
 
 # To-Do
 **Updated 14th Dec, 2019**
-- Fix vulnerabilities
 - Make the website have a login and authentication screen (not posted to Github of course,
 lest there be a giant vulnerability)
 - Implement saving of projects (this will be after the login and authentication is 
