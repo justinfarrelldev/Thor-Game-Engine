@@ -21,7 +21,17 @@ custom scripts included as well as multiple uploaded images
 - Added the ability to delete images from the engine
 
 # How to Use Thor
-To run Thor, install Node.js. Navigate to your download directory in the command line, enter the thor-game-engine folder and use 'node index.js'. This will start the Thor game engine, which you can then use in your browser by navigating to 'localhost:80'. 
+To run Thor, first install npm (Node Package Manager) and the Typescript transpiler. 
+## Compiling the Typescript
+Navigate to the root of the downloaded project in the command line and then type 
+tsc to transpile the Typescript files into Javascript files. These will be put into 
+the js-src folder. 
+## Getting the dependencies
+Next, type "npm init" into the command line. This will install the dependencies into 
+the node_modules folder. 
+## Starting the local server
+Finally, type "node index.js" to start the server. Navigate to http://localhost:80/
+inside of your browser and Thor should be displayed. Have fun! 
 
 # To-Do
 **Updated 14th Dec, 2019**

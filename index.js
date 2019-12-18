@@ -1,5 +1,6 @@
 //Start the engine from this file. This is where the magic will happen from.
 
+
 const fs = require('fs')
 
 const express = require('express')
@@ -9,6 +10,7 @@ const path = require('path')
 const PORT = 80
 
 var app = express()
+
 var upload = multer({dest: '/upload/resources'})
 
 var lastUploadName; //The last name of the last image uploaded. 
@@ -147,3 +149,5 @@ app.delete('/upload/resources/:fileName', (req, res) =>
         res.end()
     })
 })
+
+exports.app = app
