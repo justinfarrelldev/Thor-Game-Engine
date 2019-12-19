@@ -67,9 +67,10 @@ let MakeGame = async () =>
 
     console.log("Starting build process...")
 
-    let outFile = new HTMLFile("test.html", "")
+    //Will likely be allowed to be changed in the future
+    let outFile = new HTMLFile("index.html", "")
 
-    let title = "Test output game"
+    let title = (document.getElementById('ProjectNameInput') as any).value
 
     let html = outFile.MakeElement("html", "", "") //Outer HTML tag
 

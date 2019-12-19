@@ -25,6 +25,8 @@
         title = "Download the game to your computer" style = "display: inline-block;
         vertical-align: top;">📥</button>
 
+        <input type = 'text' name = 'ProjectName' value = 'Project name here' id = 'ProjectNameInput'>
+
         <!--Dropdown for options menu-->
         <div class = "DropdownDiv" style = "display: inline-block; vertical-align: top;">
             <ul class = "Dropdown" onselectstart = "return false;">
@@ -173,7 +175,9 @@
                 function(content)
                 {
                     console.log("BUILD FINISHED: The download is starting.")
-                    DownloadGameFile(content, "test.zip")
+                    let name = document.getElementById('ProjectNameInput').value
+                    name = String(name).replace(/ /g, '-')
+                    DownloadGameFile(content, name + ".zip")
                 }
             )
         }
