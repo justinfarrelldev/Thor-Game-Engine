@@ -55,6 +55,27 @@ app.post('/upload/resource', upload.single('resource-name'), (req, res) =>
 
 })
 
+//Saving projects for the engine
+app.post('/projects', upload.single('project-save'), (req, res) => 
+{
+    //Will account for users eventually, for now 
+    //simply works for the end user
+
+    console.log('Got request');
+
+    let data = req.body['project-save']
+
+    fs.mkdir(__dirname + req.url, () => {console.log('Resolved directory.');})
+
+    fs.writeFile( __dirname + req.url + '/save.project', data, () => 
+    {
+        console.log('Should have written to file.');
+        res.end()
+    })
+
+
+})
+
 app.post('/upload/resources',upload.single('resources'), (req, res) => 
 { 
     let data = [Buffer.alloc(0)]

@@ -3,6 +3,9 @@
 upload/resources/*
 !upload/resources/keep.gitkeep
 
+projects/*
+!projects/keep.gitkeep
+
 js-src/*
 !js-src/jquery-3.4.1.js
 

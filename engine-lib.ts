@@ -9,6 +9,59 @@ let CheckShortcutKeys = () =>
     }
 }
 
+let CreateSaveObject = () => 
+{
+
+    //We want to save the project name, scripts, and general settings and then read 
+    //them on project load. 
+    let obj = 
+    {
+        projectName : (document.getElementById('ProjectNameInput') as any).value,
+        scripts : UserScripts
+    }
+
+    return obj
+}
+
+//Allows you to save a project to a user (user part is coming soon, for now saves it to a 
+//project folder)
+let SaveProject = (location? : string) => 
+{
+    let formData = new FormData()
+ 
+    let saveObj = CreateSaveObject()
+
+
+    formData.append('project-save', JSON.stringify(saveObj))
+
+    let req = {
+        method: "POST", 
+        body: formData,
+    }
+
+    let SaveToFolder = () => 
+    {
+        
+        fetch('/projects', req).then((response) => 
+        {
+            if (!response.ok)
+            {
+                console.error(response.statusText);
+            }
+
+            console.log('done');
+        })
+
+    }
+
+    switch (location)
+    {
+        case "folder": 
+            SaveToFolder()
+            break;
+    }
+}
+
 document.addEventListener('keydown', (event) =>
 {
     //Must check key and keycode for almost full browser support

@@ -17,6 +17,8 @@
 <body>
     <div style = 'display: inline-block; border: 1px solid black; width: 100%'>
 
+        <button onclick = "SaveProject('folder')">Save</button>
+
         <button id = "PlayButton" onclick = "LaunchGame()" style = "color: green; display: inline-block;
         vertical-align: top;"
         title = "Play the game in the preview window (Ctrl + Space)">▶</button>
@@ -389,7 +391,6 @@
     <script src = "js-src/constants.js"></script>
     <script src = "js-src/start.js"></script>
     <script src = "js-src/engine-lib.js"></script>
-    <script src = "js-src/file-explorer.js"></script>
     <script src = "codemirror/codemirror/codemirror-5.49.2/lib/codemirror.js"></script>
     <script src = "codemirror/codemirror/codemirror-5.49.2/mode/javascript/javascript.js"></script>
     <script src = 'codemirror/codemirror/codemirror-5.49.2/addon/hint/show-hint.js'></script>
