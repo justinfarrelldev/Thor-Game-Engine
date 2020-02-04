@@ -65,6 +65,8 @@ let Start = async () =>
 
     console.log("Thor Game Engine is initialized and starting.")
 
+    LoadSaveFile()
+
     CreateImageIcons()
 
 } 

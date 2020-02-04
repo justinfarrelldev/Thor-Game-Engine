@@ -1,6 +1,21 @@
 //Holds important classes for the engine, such as the GameFiles and File types
 //NOT included in game builds
 
+class ProjectSave
+{
+    name : string
+    scripts : UserScript[]
+    /**
+     * A save for a project made with the engine
+     * (saved in JSON format and read back into this format)
+     */
+    constructor(name : string, scripts : UserScript[]) 
+    {
+        this.name = name
+        this.scripts = scripts    
+    }
+}
+
 class GameFiles
 {
     /**

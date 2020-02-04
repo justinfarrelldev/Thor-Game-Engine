@@ -368,10 +368,12 @@ if (finishedVNLib === false || finishedVNLib === undefined)
                 {
                     if (this.dialogueNodes[this.currentNode - 1].dialogueInterval)
                     {
+                        //Clear text scrolling
                         clearInterval(this.dialogueNodes[this.currentNode - 1].dialogueInterval)
                     }
                 }
                     
+                //Scroll the new text
                 this.dialogueNodes[this.currentNode].ScrollText()
 
                 for (let i = 0; i < document.getElementsByClassName('VNChar').length; i++)
@@ -403,6 +405,18 @@ if (finishedVNLib === false || finishedVNLib === undefined)
                 }
                 else
                 {
+
+                    //If the background images are the same, skip the transition. 
+                    //Otherwise, do the transition.
+                    if (this.dialogueNodes[this.currentNode].bgImg != this.dialogueNodes[this.currentNode - 1].bgImg)
+                    {
+
+                    }
+                    else
+                    {
+                        
+                    }
+
                     let previewWindow = document.getElementById('GamePreviewWindow');
 
                     (previewWindow) ? previewWindow.style.backgroundColor = 'black'

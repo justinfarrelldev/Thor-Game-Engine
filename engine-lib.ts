@@ -14,23 +14,84 @@ let CreateSaveObject = () =>
 
     //We want to save the project name, scripts, and general settings and then read 
     //them on project load. 
-    let obj = 
-    {
-        projectName : (document.getElementById('ProjectNameInput') as any).value,
-        scripts : UserScripts
-    }
+
+    let obj = new ProjectSave((document.getElementById('ProjectNameInput') as any).value,
+                               UserScripts)
 
     return obj
+}
+
+//Loading, incomplete
+let LoadSaveFile = () => 
+{
+    fetch('/projects/save.project', {method: 'GET'})
+        .then((res) => 
+        {
+            if (res.ok)
+            {
+                LoadProject(res)
+            }
+            else
+            {
+                if (res.status === 404)
+                {
+                    console.log('No save file found, will generate a save file upon saving. ');
+                    return
+                }
+            }
+
+        })
+}
+
+let LoadProject = (response : Response) => //If no location is given, assume latest project
+{
+
+    response.json().then((data) => 
+    {
+        SetProjectUpAfterLoad(data)
+    });
+
+}
+
+let SetProjectUpAfterLoad = (savedData) => 
+{
+    (document.getElementById('ProjectNameInput') as HTMLInputElement).value = savedData.name
+
+    let el = document.getElementById('Window2Dropdown')
+
+    for (let i = 0; i < el.childElementCount; i++)
+    {
+        el.removeChild(el.lastChild)
+    }
+
+    UserScripts.splice(0, UserScripts.length)
+
+    for (let i = 0; i < savedData.scripts.length; i++)
+    {
+        UserScripts.pop()
+        UserScripts.push(new UserScript(savedData.scripts[i].name))
+        UserScripts[UserScripts.length - 1].text = savedData.scripts[i].text
+    }
+
+    UserScripts.pop() //Pop the extra one that is produced
+
+    //Last step is now to make the CodeMirror editor have the code appear which is in
+    //the first script
+
+    editor.getDoc().setValue(UserScripts[0].text)
+
 }
 
 //Allows you to save a project to a user (user part is coming soon, for now saves it to a 
 //project folder)
 let SaveProject = (location? : string) => 
 {
+
     let formData = new FormData()
  
     let saveObj = CreateSaveObject()
 
+    SaveUserScriptText()
 
     formData.append('project-save', JSON.stringify(saveObj))
 
