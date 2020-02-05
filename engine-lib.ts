@@ -204,6 +204,8 @@ let MakeGame = async () =>
 
     outFile.AddElement("script", "src = \"func-lib.js\"", "")
 
+    outFile.AddElement("script", "src = \"jquery-3.4.1.js\"", "")
+
     console.log("HTML file constructed in memory. Adding user scripts to build.")
 
     let biggest = 0;
@@ -244,6 +246,8 @@ let MakeGame = async () =>
     AddLibFileToGameFiles(Game, 'js-src/vn-lib.js', 'vn-lib.js') //Adding Visual Novel library to 
                                                                  //the build. Will be checked later 
                                                                  //on to check if it's needed
+
+    AddLibFileToGameFiles(Game, 'js-src/jquery-3.4.1.js', 'jquery-3.4.1.js')
 
     await new Promise(async (res, rej) => 
     {
@@ -487,6 +491,11 @@ let SaveUserScriptText = () =>
 let ExecuteGameInEditor = (textInputWindowValue : string) => 
 {
     SaveUserScriptText()
+
+    Sounds.forEach((val) => 
+    {
+        val.pause()
+    })
 
     if (document.getElementById("FuncLibScript"))
     {

@@ -12,6 +12,8 @@ let UserScripts : UserScript[] = [] //Creates an array of userscripts
                                     //included in the build's HTML 
                                     //file
 
+let Sounds : HTMLAudioElement[] = [] //Sounds will be an array which will be stopped when the editor is replayed
+
 let CurrentUserScript : number = 0; //Goes by index
 
 new UserScript('Inline Script')

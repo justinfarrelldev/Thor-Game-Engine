@@ -137,6 +137,50 @@ if (finishedVNLib === false || finishedVNLib === undefined)
         charImg : HTMLElement[] //The actual images of the characters
         constructor(arcs : VNArc[], startingTheme? : VNTheme) {
 
+            if (!document.getElementById('THOR-ENGINE-IN-EDITOR'))
+            {
+                $(document).ready(() => 
+                {
+                    let splashHead = document.createElement('h1')
+                    splashHead.innerHTML = 'Created with the Thor Game Engine'
+                    splashHead.id = 'SplashHead'
+                    document.body.appendChild(splashHead)
+                    splashHead.style.display = 'none'
+                    splashHead.style.textAlign = 'center'
+        
+                    let splashButton = document.createElement('button')
+                    splashButton.innerHTML = 'Click here to start'
+                    splashButton.className = 'SplashButton'
+                    splashButton.style.textAlign = 'center'
+                    splashButton.onclick = () => 
+                    {
+                        $('#SplashHead, #SplashButton').fadeOut(1000, () =>
+                        {
+                            document.body.removeChild(splashButton)
+                            document.body.removeChild(splashHead)
+                            this.StartVNArcs(arcs, startingTheme)
+
+                        })
+
+                    }
+                    splashButton.id = 'SplashButton'
+                    document.body.appendChild(splashButton)
+                    
+                    $('#SplashHead, #SplashButton').fadeIn(1000)
+
+                })
+
+            }
+            else
+            {
+                this.StartVNArcs(arcs, startingTheme)
+            }
+
+        }
+
+        StartVNArcs(arcs : VNArc[], startingTheme? : VNTheme) //Starts the game arcs
+        {
+
             if (!arcs.length)
             {
                 
@@ -145,7 +189,7 @@ if (finishedVNLib === false || finishedVNLib === undefined)
                 
             }
 
-            let defaultTheme = new VNTheme('white', '#874BE8', 'rgba(132, 0, 255, 0.15)')
+            let defaultTheme = new VNTheme('white', '#874BE8', 'rgba(132, 0, 255, 0.35)')
 
             this.arcs = arcs
 
@@ -219,7 +263,6 @@ if (finishedVNLib === false || finishedVNLib === undefined)
             this.text.style.msUserSelect = 'none'
             this.text.style.msTouchSelect = 'none'
             this.text.style.webkitUserSelect = 'none'
-
             
 
             for (let i = 0; i < arcs.length; i++)
@@ -244,6 +287,7 @@ if (finishedVNLib === false || finishedVNLib === undefined)
                 const char = document.getElementsByClassName('VNChar')
                 for (let i = 0; i < char.length; i++)
                 {
+                    console.log(this.currentArc.dialogueNodes[this.currentArc.currentNode]);
                     if ((this.currentArc.dialogueNodes[this.currentArc.currentNode].speaker as any).name)
                     {
                         //If it's a character type
@@ -273,7 +317,10 @@ if (finishedVNLib === false || finishedVNLib === undefined)
 
                 if (this.currentArc.currentNode == this.currentArc.dialogueNodes.length + 1)
                 {
-                    this.currentArc.choiceNode.CreateButtons()
+                    if (this.currentArc.choiceNode)
+                    {
+                        this.currentArc.choiceNode.CreateButtons()
+                    }
                 }
             }
 
@@ -282,7 +329,8 @@ if (finishedVNLib === false || finishedVNLib === undefined)
             {
                 document.body.addEventListener('click', (mouseEvent)=>
                 {
-                    if ((mouseEvent.target as HTMLButtonElement).className != 'ChoiceButton')
+                    if ((mouseEvent.target as HTMLButtonElement).className != 'ChoiceButton'
+                      && (mouseEvent.target as HTMLButtonElement).className != 'SplashButton')
                     {
                         advanceChoice()
                     }
@@ -293,7 +341,8 @@ if (finishedVNLib === false || finishedVNLib === undefined)
                     if (event.keyCode === 32)
                     {
                         //space 
-                        if ((event.target as HTMLButtonElement).className != 'ChoiceButton')
+                        if ((event.target as HTMLButtonElement).className != 'ChoiceButton'
+                        && (event.target as HTMLButtonElement).className != 'SplashButton')
                         {
                             advanceChoice()
                         }                    
@@ -322,7 +371,8 @@ if (finishedVNLib === false || finishedVNLib === undefined)
                     if (e.keyCode === 32)
                     {
                         //space 
-                        if ((e.target as HTMLButtonElement).className != 'ChoiceButton')
+                        if ((e.target as HTMLButtonElement).className != 'ChoiceButton' 
+                        && (e.target as HTMLButtonElement).className != 'SplashButton')
                         {
                             advanceChoice()
                         }                    
@@ -336,6 +386,42 @@ if (finishedVNLib === false || finishedVNLib === undefined)
         }
     }
     (Global as any).PageVN = PageVN
+
+    class VNSound
+    {
+        /**
+         * A sound to be played in the Visual Novel template
+         */
+
+        audioElement : HTMLAudioElement
+        src : string
+
+
+        constructor(src : string) 
+        {
+            this.src = src
+            this.audioElement = document.createElement('audio')
+            this.audioElement.src = src
+            this.audioElement.setAttribute('preload', 'auto')
+            this.audioElement.setAttribute('controls', 'none')
+            this.audioElement.style.display = 'none'
+        }
+
+        Play()
+        {
+            this.audioElement.play()
+            if (document.getElementById('THOR-ENGINE-IN-EDITOR'))
+            {
+                Sounds.push(this.audioElement)
+            }
+        }
+
+        Pause()
+        {
+            this.audioElement.pause()
+        }
+    }
+    (Global as any).VNSound = VNSound
 
     class VNArc
     {
@@ -401,27 +487,30 @@ if (finishedVNLib === false || finishedVNLib === undefined)
                 {
                     document.body.style.backgroundColor = 'black'
                     document.body.style.backgroundImage = "url(upload/resources/" + this.dialogueNodes[this.currentNode].bgImg + ")"
+                    document.body.style.zIndex = '-1'
                     document.body.style.backgroundSize = "100% 100%"
-                }
+                } 
                 else
                 {
 
                     //If the background images are the same, skip the transition. 
                     //Otherwise, do the transition.
-                    if (this.dialogueNodes[this.currentNode].bgImg != this.dialogueNodes[this.currentNode - 1].bgImg)
+                    if (this.dialogueNodes[this.currentNode - 1])
                     {
+                        if (this.dialogueNodes[this.currentNode].bgImg != this.dialogueNodes[this.currentNode - 1].bgImg)
+                        {
 
-                    }
-                    else
-                    {
-                        
+                        }
+                        else
+                        {
+                            
+                        }
                     }
 
                     let previewWindow = document.getElementById('GamePreviewWindow');
 
                     (previewWindow) ? previewWindow.style.backgroundColor = 'black'
                                     : document.body.style.backgroundColor = 'black';
-
                     (previewWindow) ? previewWindow.style.backgroundImage = "url(upload/resources/" + this.dialogueNodes[this.currentNode].bgImg + ")"
                                     : document.body.style.backgroundImage = "url(upload/resources/" + this.dialogueNodes[this.currentNode].bgImg + ")";
 
@@ -714,7 +803,21 @@ if (finishedVNLib === false || finishedVNLib === undefined)
                 for (let j = 0; j < this.charImg.length; j++)
                 {
                     (htmlImgs[i] as HTMLImageElement).src = 'upload/resources/' + this.charImg;
-                    (htmlImgs[i] as HTMLImageElement).style.display = 'block';
+
+                    var fet = new Image()
+
+                    fet.onload = () => 
+                    {
+                        (htmlImgs[i] as HTMLImageElement).style.display = 'block';
+                    }
+
+                    fet.onerror = () => 
+                    {
+                        (htmlImgs[i] as HTMLImageElement).style.display = 'none';
+                    }
+
+                    fet.src = (htmlImgs[i] as HTMLImageElement).src;
+                    
                     (htmlImgs[i] as HTMLImageElement).style.userSelect = 'none';
                     (htmlImgs[i] as HTMLImageElement).style.msUserSelect = 'none';
                     (htmlImgs[i] as HTMLImageElement).style.webkitUserSelect = 'none';
