@@ -527,6 +527,14 @@ let ExecuteGameInEditor = (textInputWindowValue : string) =>
 
     //Then add user scripts in execution order
     AddUserScriptsInEditor()
+
+    AddDebugToolsInEditor()
+}
+
+let AddDebugToolsInEditor = () => 
+{
+    //Adds in debug tools in the future
+    console.error("Debugging in-editor not fully implemented")
 }
 
 let AddUserScriptsInEditor = () => 

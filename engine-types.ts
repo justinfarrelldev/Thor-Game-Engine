@@ -195,13 +195,13 @@ class ImageFileIcon
         let el = document.createElement('div')
         el.style.height = '33%'
         el.style.maxWidth = "10%"
-        el.style.margin = '2%'
-        el.style.marginBottom = '5%'
+        el.style.margin = '15%'
+        el.style.marginBottom = '10%'
         el.style.display = 'inline-block'
         el.style.backgroundColor = 'gray'
 
         var behavior = this.DetermineBehavior(ext)
-
+ 
         if (behavior == 'img')
         {
             let img = document.createElement('img')
@@ -251,7 +251,7 @@ class ImageFileIcon
         //Create delete button for image to remove it from the server
         let delBut = document.createElement('button')
         delBut.innerHTML = 'DELETE'
-        delBut.style.marginTop = '35%'
+        delBut.style.marginTop = '100%'
         delBut.onclick = (event) => 
         {
             DeleteImageFromServer(name)
