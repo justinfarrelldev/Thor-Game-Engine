@@ -522,19 +522,23 @@ let ExecuteGameInEditor = (textInputWindowValue : string) =>
 
     ClearGamePreviewWindow()
 
+    AddDebugToolsInEditor()
+
     //Add dependencies first
     AddDependenciesInEditor()
 
     //Then add user scripts in execution order
     AddUserScriptsInEditor()
-
-    AddDebugToolsInEditor()
 }
 
 let AddDebugToolsInEditor = () => 
 {
     //Adds in debug tools in the future
-    console.error("Debugging in-editor not fully implemented")
+    console.error("Debugging in-editor not fully implemented");
+
+    debug = new Debugger(); //Assigns the debugger as a new debugger
+
+    debug.gameData = []
 }
 
 let AddUserScriptsInEditor = () => 

@@ -167,10 +167,20 @@ if (finishedVNLib === false || finishedVNLib === undefined)
                 {
                     $('#SplashHead, #SplashButton').fadeOut(1000, () =>
                     {
-                        document.body.removeChild(splashButton)
-                        document.body.removeChild(splashHead)
-                        this.StartVNArcs(arcs, startingTheme)
+                        if (splashButton.parentNode == document.body)
+                        {
+                            document.body.removeChild(splashButton)
+                        }
+                        if (splashHead.parentNode == document.body)
+                        {
+                            document.body.removeChild(splashHead)
+                        }
                     })
+
+                    setTimeout(() => 
+                    {
+                        this.StartVNArcs(arcs, startingTheme)
+                    }, 1000)
 
                 }
                 splashButton.id = 'SplashButton'
@@ -183,6 +193,14 @@ if (finishedVNLib === false || finishedVNLib === undefined)
 
         StartVNArcs(arcs : VNArc[], startingTheme? : VNTheme) //Starts the game arcs
         {
+            if (document.getElementById('THOR-ENGINE-IN-EDITOR'))
+            {
+            debug.gameData["arcs"] = arcs
+                
+            console.log("Debug arcs: ");
+            console.log(debug.gameData)
+            }
+
 
             if (!arcs.length)
             {
@@ -317,7 +335,7 @@ if (finishedVNLib === false || finishedVNLib === undefined)
             let advanceChoice = () =>
             {
                 this.currentArc.Advance()
-
+ 
                 if (this.currentArc.currentNode == this.currentArc.dialogueNodes.length + 1)
                 {
                     if (this.currentArc.choiceNode)
@@ -336,6 +354,7 @@ if (finishedVNLib === false || finishedVNLib === undefined)
                       && (mouseEvent.target as HTMLButtonElement).className != 'SplashButton')
                     {
                         advanceChoice()
+                        return
                     }
                 })
 
@@ -348,6 +367,7 @@ if (finishedVNLib === false || finishedVNLib === undefined)
                         && (event.target as HTMLButtonElement).className != 'SplashButton')
                         {
                             advanceChoice()
+                            return
                         }                    
                     }
                 })
@@ -365,6 +385,7 @@ if (finishedVNLib === false || finishedVNLib === undefined)
                         if ((e.target as HTMLButtonElement).className != 'ChoiceButton')
                         {
                             advanceChoice()
+                            return
                         }                    
                     }
                 }
@@ -378,6 +399,7 @@ if (finishedVNLib === false || finishedVNLib === undefined)
                         && (e.target as HTMLButtonElement).className != 'SplashButton')
                         {
                             advanceChoice()
+                            return
                         }                    
                     }
                 }
@@ -449,8 +471,7 @@ if (finishedVNLib === false || finishedVNLib === undefined)
         //Advances the dialogue to the next node and starts printing it to the 
         //screen with scrolling. Returns the arc to allow for chaining
         Advance() : VNArc
-        {
-        
+        {        
             if (this.dialogueNodes.length > 0 && this.dialogueNodes.length > this.currentNode)
             {
                 if (this.dialogueNodes[this.currentNode - 1])

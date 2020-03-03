@@ -2,6 +2,8 @@
 
 var editor; //CodeMirror editor
 
+var debug; //Debugger for the engine
+
 var Game = new GameFiles() //The files to be built 
 
 let Windows = document.getElementsByClassName("Window")
