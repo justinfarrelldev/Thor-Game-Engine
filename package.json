@@ -23,6 +23,7 @@
     "express-session": "^1.17.0",
     "formidable": "^1.2.1",
     "mkdirp": "^0.5.1",
-    "multer": "^1.4.2"
+    "multer": "^1.4.2",
+    "node-minify": "^3.6.0"
   }
 }

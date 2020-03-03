@@ -135,47 +135,50 @@ if (finishedVNLib === false || finishedVNLib === undefined)
         currentArc : VNArc
         imagebox : HTMLElement
         charImg : HTMLElement[] //The actual images of the characters
-        constructor(arcs : VNArc[], startingTheme? : VNTheme) {
-
+        constructor(arcs : VNArc[], startingTheme? : VNTheme) 
+        {
             if (!document.getElementById('THOR-ENGINE-IN-EDITOR'))
             {
-                $(document).ready(() => 
-                {
-                    let splashHead = document.createElement('h1')
-                    splashHead.innerHTML = 'Created with the Thor Game Engine'
-                    splashHead.id = 'SplashHead'
-                    document.body.appendChild(splashHead)
-                    splashHead.style.display = 'none'
-                    splashHead.style.textAlign = 'center'
-        
-                    let splashButton = document.createElement('button')
-                    splashButton.innerHTML = 'Click here to start'
-                    splashButton.className = 'SplashButton'
-                    splashButton.style.textAlign = 'center'
-                    splashButton.onclick = () => 
-                    {
-                        $('#SplashHead, #SplashButton').fadeOut(1000, () =>
-                        {
-                            document.body.removeChild(splashButton)
-                            document.body.removeChild(splashHead)
-                            this.StartVNArcs(arcs, startingTheme)
-
-                        })
-
-                    }
-                    splashButton.id = 'SplashButton'
-                    document.body.appendChild(splashButton)
-                    
-                    $('#SplashHead, #SplashButton').fadeIn(1000)
-
-                })
-
+                this.BuildSplashScreen(arcs, startingTheme)
             }
             else
             {
                 this.StartVNArcs(arcs, startingTheme)
             }
+        }
 
+        BuildSplashScreen(arcs : VNArc[], startingTheme? : VNTheme)
+        {
+            $(document).ready(() => 
+            {
+                let splashHead = document.createElement('h1')
+                splashHead.innerHTML = 'Created with the Thor Game Engine'
+                splashHead.id = 'SplashHead'
+                document.body.appendChild(splashHead)
+                splashHead.style.display = 'none'
+                splashHead.style.textAlign = 'center'
+    
+                let splashButton = document.createElement('button')
+                splashButton.innerHTML = 'Click here to start'
+                splashButton.className = 'SplashButton'
+                splashButton.style.margin = '0 auto'
+                splashButton.style.display = 'block'
+                splashButton.onclick = () => 
+                {
+                    $('#SplashHead, #SplashButton').fadeOut(1000, () =>
+                    {
+                        document.body.removeChild(splashButton)
+                        document.body.removeChild(splashHead)
+                        this.StartVNArcs(arcs, startingTheme)
+                    })
+
+                }
+                splashButton.id = 'SplashButton'
+                document.body.appendChild(splashButton)
+                
+                $('#SplashHead, #SplashButton').fadeIn(1000)
+
+            })
         }
 
         StartVNArcs(arcs : VNArc[], startingTheme? : VNTheme) //Starts the game arcs
@@ -798,25 +801,60 @@ if (finishedVNLib === false || finishedVNLib === undefined)
 
             let htmlImgs = document.getElementsByClassName('VNCharImgs');
 
+
             for (let i = 0; i < htmlImgs.length; i++)
             {
                 for (let j = 0; j < this.charImg.length; j++)
                 {
-                    (htmlImgs[i] as HTMLImageElement).src = 'upload/resources/' + this.charImg;
+
+                    let nodesrc = 'upload/resources/' + this.charImg;
+                    let emptyPath = false;
+                    if (nodesrc === "upload/resources/ " || nodesrc === "upload/resources/")
+                    {
+                        emptyPath = true;
+                    }
+                    if (!emptyPath)
+                    {
+                        (htmlImgs[i] as HTMLImageElement).src = 'upload/resources/' + this.charImg;
+                    }
+                    else
+                    {
+                        if ((htmlImgs[i] as any).style.display != 'none')
+                        {
+                            $( "." + htmlImgs[i].className ).fadeOut(250, () => {
+                                (htmlImgs[i] as HTMLImageElement).style.display = 'none';
+                                return;
+                            })
+                        }
+                    }
 
                     var fet = new Image()
 
+                    let errored = false;
+
                     fet.onload = () => 
                     {
-                        (htmlImgs[i] as HTMLImageElement).style.display = 'block';
+                        if (this.arc.dialogueNodes[this.arc.currentNode - 2].charImg != this.charImg
+                            && !emptyPath)
+                        {
+                            $( "." + htmlImgs[i].className ).fadeIn(250, () => 
+                            (htmlImgs[i] as HTMLImageElement).style.display = 'block');
+                        }
+                        else
+                        {
+                            (htmlImgs[i] as HTMLImageElement).style.display = 'block';
+                        }
                     }
 
                     fet.onerror = () => 
                     {
-                        (htmlImgs[i] as HTMLImageElement).style.display = 'none';
+                        errored = true;
                     }
 
-                    fet.src = (htmlImgs[i] as HTMLImageElement).src;
+                    if (!errored)
+                    {
+                        fet.src = (htmlImgs[i] as HTMLImageElement).src;
+                    }
                     
                     (htmlImgs[i] as HTMLImageElement).style.userSelect = 'none';
                     (htmlImgs[i] as HTMLImageElement).style.msUserSelect = 'none';

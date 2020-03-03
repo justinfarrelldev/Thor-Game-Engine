@@ -7,7 +7,9 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const multer = require('multer')
 const path = require('path')
-const PORT = 80
+//const min = require('node-minify')
+
+const PORT = 80 
 
 var app = express()
 
@@ -76,7 +78,9 @@ app.post('/projects', upload.single('project-save'), (req, res) =>
 
 })
 
-app.post('/upload/resources',upload.single('resources'), (req, res) => 
+//For copying over resources from the upload/resources folder in the project to the folder 
+//in the game build
+app.post('/upload/resources',upload.single('resources'), async (req, res) => 
 { 
     let data = [Buffer.alloc(0)]
     let fullData
@@ -94,11 +98,16 @@ app.post('/upload/resources',upload.single('resources'), (req, res) =>
             resolve(data)
 
         })
-    }).then((val) => 
+    }).then(async (val) => 
     {
         fullData = Buffer.concat(data)
 
-        fs.writeFile(__dirname + '/upload/resources/' + String(lastUploadName).replace(/ /g, '-'), fullData, {}, (err) => 
+        let compressedImg = await compress(fullData, {
+            maxSizeMB: 1,
+            maxWidthOrHeight: 1080
+        })
+
+        fs.writeFile(__dirname + '/upload/resources/' + String(lastUploadName).replace(/ /g, '-'), compressedImg, {}, (err) => 
         {
             if (err)
             {
@@ -114,6 +123,7 @@ app.post('/download', (req, res) =>
     res.sendStatus(200)
 })
 
+//For reading a directory
 async function readDirectory(dir)
 {
 
@@ -131,6 +141,7 @@ async function readDirectory(dir)
     })
 }
 
+//Upload images in the directory given
 app.post('/imgfiles',upload.array('path'), (req, res) =>  
 {
     new Promise(async (resolve, rej) => 
