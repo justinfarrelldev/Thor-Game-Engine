@@ -10,3 +10,5 @@ js-src/*
 !js-src/jquery-3.4.1.js
 
 node_modules/*
+
+*.tmp

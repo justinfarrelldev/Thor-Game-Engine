@@ -194,6 +194,7 @@ class ImageFileIcon
 
         let el = document.createElement('div')
         el.style.height = '33%'
+        el.style.maxWidth = "10%"
         el.style.margin = '2%'
         el.style.marginBottom = '5%'
         el.style.display = 'inline-block'
@@ -224,15 +225,23 @@ class ImageFileIcon
             head.innerHTML = '📄'
             el.appendChild(head)
         }
+        else if (behavior == 'sound')
+        {
+            let head = document.createElement('h1')
+            head.style.margin = '0px'
+            head.style.padding = '0px'
+            head.innerHTML = '🎵'
+            el.appendChild(head)
+        }
 
         let text = document.createElement('p')
-        text.style.width = '8%'
-        text.style.height = '5%'
+        text.style.width = '100%'
+        text.style.height = '45%'
         text.style.marginTop = '0%'
         text.style.fontFamily = 'monospace, sans-serif'
         text.style.fontSize = '14px'
         text.style.whiteSpace = 'initial'
-        text.style.position = 'absolute'
+        text.style.position = 'relative'
         text.style.wordBreak = 'break-all'
         text.innerHTML = name
 
@@ -274,6 +283,8 @@ class ImageFileIcon
                 return 'img'
             case 'gif': 
                 return 'img'
+            case 'mp3' || 'wav' || 'wma' || 'ogg':
+                return 'sound'
             default: 
                 console.log('Returning with text from default');
                 return 'text'
