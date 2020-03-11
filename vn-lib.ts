@@ -538,6 +538,28 @@ if (finishedVNLib === false || finishedVNLib === undefined)
                                     : document.body.style.backgroundSize = "auto 100%";
                 }
 
+                let texts = document.getElementsByClassName("VNText")
+                if (this.dialogueNodes[this.currentNode].isTextItalic)
+                {
+                    for (var i = 0; i < texts.length; i++)
+                    {
+                        if ((texts[i] as any) != undefined)
+                        {
+                            (texts[i] as any).style.fontStyle = "italic"
+                        }
+                    }
+                }
+                else
+                {
+                    for (var i = 0; i < texts.length; i++)
+                    {
+                        if ((texts[i] as any).style.fontStyle != "normal")
+                        {
+                            (texts[i] as any).style.fontStyle = "normal"
+                        }
+                    }
+                }
+
                 this.currentNode ++
 
                 return this
@@ -564,6 +586,26 @@ if (finishedVNLib === false || finishedVNLib === undefined)
             }
 
             this.dialogueNodes[this.dialogueNodes.length - 1].charImg = charImg
+
+            return this
+        }
+
+        SetItalicText() : VNArc //Makes the last node have italic text
+        {
+            if (this.dialogueNodes.length == 0)
+            {
+                ThrowScriptError(new Error('No nodes to set the text of.'))
+                return this
+            }
+            if (this.dialogueNodes[this.dialogueNodes.length - 1].isTextItalic === false)
+            {
+                this.dialogueNodes[this.dialogueNodes.length - 1].isTextItalic = true;
+            }
+            else
+            {
+                this.dialogueNodes[this.dialogueNodes.length - 1].isTextItalic = false;
+            }
+            
 
             return this
         }
@@ -765,6 +807,7 @@ if (finishedVNLib === false || finishedVNLib === undefined)
         thisNode : VNNode
         dialogueInterval //The setInterval for scrolling text - useful for stopping
                         //text scroll
+        isTextItalic : boolean = false //Whether this node's text is italic
         constructor(arc : VNArc, 
                     dialogue : string, 
                     speaker? : string | VNCharacter,
