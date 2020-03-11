@@ -508,7 +508,7 @@ if (finishedVNLib === false || finishedVNLib === undefined)
                     document.body.style.backgroundColor = 'black'
                     document.body.style.backgroundImage = "url(upload/resources/" + this.dialogueNodes[this.currentNode].bgImg + ")"
                     document.body.style.zIndex = '-1'
-                    document.body.style.backgroundSize = "100% 100%"
+                    document.body.style.backgroundSize = "100% auto"
                 } 
                 else
                 {
@@ -534,8 +534,8 @@ if (finishedVNLib === false || finishedVNLib === undefined)
                     (previewWindow) ? previewWindow.style.backgroundImage = "url(upload/resources/" + this.dialogueNodes[this.currentNode].bgImg + ")"
                                     : document.body.style.backgroundImage = "url(upload/resources/" + this.dialogueNodes[this.currentNode].bgImg + ")";
 
-                    (previewWindow) ? previewWindow.style.backgroundSize = "100% 100%"
-                                    : document.body.style.backgroundSize = "100% 100%";
+                    (previewWindow) ? previewWindow.style.backgroundSize = "auto 100%"
+                                    : document.body.style.backgroundSize = "auto 100%";
                 }
 
                 this.currentNode ++
