@@ -7,7 +7,6 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const multer = require('multer')
 const path = require('path')
-//const min = require('node-minify')
 
 const PORT = 80 
 
@@ -102,12 +101,7 @@ app.post('/upload/resources',upload.single('resources'), async (req, res) =>
     {
         fullData = Buffer.concat(data)
 
-        let compressedImg = await compress(fullData, {
-            maxSizeMB: 1,
-            maxWidthOrHeight: 1080
-        })
-
-        fs.writeFile(__dirname + '/upload/resources/' + String(lastUploadName).replace(/ /g, '-'), compressedImg, {}, (err) => 
+        fs.writeFile(__dirname + '/upload/resources/' + String(lastUploadName).replace(/ /g, '-'), fullData, {}, (err) => 
         {
             if (err)
             {

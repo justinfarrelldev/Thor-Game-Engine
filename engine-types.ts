@@ -196,7 +196,8 @@ class ImageFileIcon
         el.style.height = '33%'
         el.style.maxWidth = "10%"
         el.style.margin = '15%'
-        el.style.marginBottom = '10%'
+        el.style.marginBottom = '0%'
+        el.style.marginTop = '3%'
         el.style.display = 'inline-block'
         el.style.backgroundColor = 'gray'
 

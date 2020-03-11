@@ -195,10 +195,7 @@ if (finishedVNLib === false || finishedVNLib === undefined)
         {
             if (document.getElementById('THOR-ENGINE-IN-EDITOR'))
             {
-            debug.gameData["arcs"] = arcs
-                
-            console.log("Debug arcs: ");
-            console.log(debug.gameData)
+                debug.gameData["arcs"] = arcs
             }
 
 
@@ -308,7 +305,6 @@ if (finishedVNLib === false || finishedVNLib === undefined)
                 const char = document.getElementsByClassName('VNChar')
                 for (let i = 0; i < char.length; i++)
                 {
-                    console.log(this.currentArc.dialogueNodes[this.currentArc.currentNode]);
                     if ((this.currentArc.dialogueNodes[this.currentArc.currentNode].speaker as any).name)
                     {
                         //If it's a character type
@@ -603,10 +599,12 @@ if (finishedVNLib === false || finishedVNLib === undefined)
                         if ((this.dialogueNodes[0].speaker as any).name) //If it's a VNCharacter
                         {
                             VNC[i].innerHTML = (this.dialogueNodes[0].speaker as any).name
+
                         }
                         else //It's a string
                         {
                             VNC[i].innerHTML = (this.dialogueNodes[0].speaker as any)
+
                         }
                     }
 
@@ -639,7 +637,7 @@ if (finishedVNLib === false || finishedVNLib === undefined)
 
         //Returns the arc to allow for chaining. Adds an existing VNNode to 
         //the arc
-        AddNode(node : VNNode) : VNArc
+        AddExistingNode(node : VNNode) : VNArc
         {
             node.arc = this.thisArc
             node.indexInArc = this.dialogueNodes.length
@@ -855,11 +853,18 @@ if (finishedVNLib === false || finishedVNLib === undefined)
 
                     fet.onload = () => 
                     {
-                        if (this.arc.dialogueNodes[this.arc.currentNode - 2].charImg != this.charImg
-                            && !emptyPath)
+                        if (this.arc.dialogueNodes[this.arc.currentNode-2])
                         {
-                            $( "." + htmlImgs[i].className ).fadeIn(250, () => 
-                            (htmlImgs[i] as HTMLImageElement).style.display = 'block');
+                            if (this.arc.dialogueNodes[this.arc.currentNode - 2].charImg != this.charImg
+                                && !emptyPath)
+                            {
+                                $( "." + htmlImgs[i].className ).fadeIn(250, () => 
+                                (htmlImgs[i] as HTMLImageElement).style.display = 'block');
+                            }
+                            else
+                            {
+                                (htmlImgs[i] as HTMLImageElement).style.display = 'block';
+                            }
                         }
                         else
                         {
