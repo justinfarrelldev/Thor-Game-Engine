@@ -10,11 +10,11 @@ const path = require('path')
 
 const PORT = 80 
 
-var app = express()
+const app = express()
 
-var upload = multer({dest: '/upload/resources'})
+const upload = multer({dest: '/upload/resources'})
 
-var lastUploadName; //The last name of the last image uploaded. 
+let lastUploadName; //The last name of the last image uploaded. 
 
 app.use(bodyParser.urlencoded({extended: false}))
 app.use(bodyParser.json())

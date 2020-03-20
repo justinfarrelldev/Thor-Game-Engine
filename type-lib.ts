@@ -9,7 +9,7 @@ import { createReadStream } from "fs"
 
 if (finished === false || finished === undefined)
 {
-    let Global = window || global
+    const Global = window || global
 
     //Vector 2 (position x and y + magnitude)
     class Vec2

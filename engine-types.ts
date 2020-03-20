@@ -129,7 +129,7 @@ class HTMLFile extends GameFile
 
     ToGameFile() : GameFile
     {
-        let file = new GameFile(this.fileName, this.relFilePath)
+        const file = new GameFile(this.fileName, this.relFilePath)
         file.contents = this.contents
 
         return file
@@ -168,7 +168,7 @@ class UserScript
         this.text = CodeMirrorDefaultCode
 
         $(document).ready(() => {
-            let mid = Math.round($('#Window2Dropdown li').length)
+            const mid = Math.round($('#Window2Dropdown li').length)
             $('#Window2Dropdown li:nth-child(' + mid + ')').after(
                 '<li class = "DropdownItem2" onclick = "ChangeUserScript(' + this.index + ')">' + this.name + '</li>'
                 )
@@ -192,7 +192,7 @@ class ImageFileIcon
         var ext = name.split('.').pop()
         
 
-        let el = document.createElement('div')
+        const el = document.createElement('div')
         el.style.height = '33%'
         el.style.maxWidth = "10%"
         el.style.margin = '15%'
@@ -205,7 +205,7 @@ class ImageFileIcon
  
         if (behavior == 'img')
         {
-            let img = document.createElement('img')
+            const img = document.createElement('img')
             img.src = '/upload/resources/' + name
             img.style.width = 'auto'
             img.style.height = '100%'
@@ -220,7 +220,7 @@ class ImageFileIcon
         }
         else if (behavior == 'text')
         {
-            let head = document.createElement('h1')
+            const head = document.createElement('h1')
             head.style.margin = '0px'
             head.style.padding = '0px'
             head.innerHTML = '📄'
@@ -228,14 +228,14 @@ class ImageFileIcon
         }
         else if (behavior == 'sound')
         {
-            let head = document.createElement('h1')
+            const head = document.createElement('h1')
             head.style.margin = '0px'
             head.style.padding = '0px'
             head.innerHTML = '🎵'
             el.appendChild(head)
         }
 
-        let text = document.createElement('p')
+        const text = document.createElement('p')
         text.style.width = '100%'
         text.style.height = '45%'
         text.style.marginTop = '0%'
@@ -250,13 +250,13 @@ class ImageFileIcon
 
 
         //Create delete button for image to remove it from the server
-        let delBut = document.createElement('button')
+        const delBut = document.createElement('button')
         delBut.innerHTML = 'DELETE'
         delBut.style.marginTop = '100%'
         delBut.onclick = (event) => 
         {
             DeleteImageFromServer(name)
-            let parent = el.parentNode
+            const parent = el.parentNode
 
             parent.removeChild(el)
         }
@@ -311,11 +311,11 @@ class EngineWindow
         this.preset = preset
         this.sectionMembers1 = sectionMembers1
 
-        let head = document.createElement('h1')
+        const head = document.createElement('h1')
         head.innerHTML = title
         head.style.fontFamily = 'monospace, sans-serif'
 
-        let el = document.createElement('div')
+        const el = document.createElement('div')
         this.div = el
         this.div.style.backgroundColor = 'white'
         this.div.style.border = '1px solid gray'
@@ -338,7 +338,7 @@ class EngineWindow
         switch (preset)
         {
             case 0: 
-                    let element = document.createElement('div')
+                    const element = document.createElement('div')
                     element.style.width = '50%'
                     element.style.border = '1px solid black'
                     element.style.height = '72%'
@@ -347,7 +347,7 @@ class EngineWindow
 
                     for (let i = 0; i < this.sectionMembers1.length; i++)
                     {
-                        let but = document.createElement('button')
+                        const but = document.createElement('button')
                         element.appendChild(but)
                         but.style.width = '100%'
                         but.innerHTML = this.sectionMembers1[i]

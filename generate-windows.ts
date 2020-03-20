@@ -2,11 +2,11 @@
 
 //This code is so temporary that it isn't even funny
 
-let CreateWindow = (windowName : string) => 
+const CreateWindow = (windowName : string) => 
 {
     if (windowName === 'GamePreview')
     {
-        let GamePreviewHTML = 
+        const GamePreviewHTML = 
         '<div id = "GamePreviewWindow" class = "Window">'
         +
         '<!--Elements are added to this to simulate gameplay.-->'
@@ -32,7 +32,7 @@ let CreateWindow = (windowName : string) =>
     }
     else if (windowName === 'GamePreviewWindowDropdown')
     {
-        let el = 
+        const el = 
             '<div class = "DropdownDiv">'
         +            '<ul class = "Dropdown" onselectstart = "return false;">'
         +                '<li style = "position: absolute">'
@@ -50,7 +50,7 @@ let CreateWindow = (windowName : string) =>
     }
     else if (windowName === 'ErrorLog')
     {
-        let el = 
+        const el = 
         '        <div id = "ErrorWindow" class = "Window">'
        + '<!--Dropdown for preview menu-->'
        + '<div class = "DropdownDiv">'

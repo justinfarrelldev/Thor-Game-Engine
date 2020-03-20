@@ -6,15 +6,15 @@ var debug; //Debugger for the engine
 
 var Game = new GameFiles() //The files to be built 
 
-let Windows = document.getElementsByClassName("Window")
+const Windows = document.getElementsByClassName("Window")
 
-let UserScripts : UserScript[] = [] //Creates an array of userscripts
+const UserScripts : UserScript[] = [] //Creates an array of userscripts
                                     //with a default constant 
                                     //inline userscript which will be
                                     //included in the build's HTML 
                                     //file
 
-let Sounds : HTMLAudioElement[] = [] //Sounds will be an array which will be stopped when the editor is replayed
+const Sounds : HTMLAudioElement[] = [] //Sounds will be an array which will be stopped when the editor is replayed
 
 let CurrentUserScript : number = 0; //Goes by index
 
@@ -27,15 +27,15 @@ async function CreateImageIcons()
     pathForm.append("path", 'upload/resources')
 
     //First off, find the files in the image directory already.
-    let result = await fetch('/imgfiles', { 
+    const result = await fetch('/imgfiles', { 
         method: "POST",
         body: pathForm
     })
     .then(async (response) => 
     {
         console.log("POST request for the images in the folder /upload/resources has been answered.")
-        let f = response.headers.get('files')
-        let fsplit = f.split(',')
+        const f = response.headers.get('files')
+        const fsplit = f.split(',')
 
         console.log("The files have been gotten from the response headers.")
 
@@ -64,7 +64,7 @@ async function CreateImageIcons()
 
 var keysDownArr = []
 
-let Start = async () => 
+const Start = async () => 
 {
 
     console.log("Thor Game Engine is initialized and starting.")

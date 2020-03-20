@@ -6,7 +6,7 @@ console.log(finishedVNLib);
 
 if (finishedVNLib === false || finishedVNLib === undefined)
 {
-    let Global = window || global
+    const Global = window || global
     
     class VNCharacterImages
     {
@@ -91,19 +91,19 @@ if (finishedVNLib === false || finishedVNLib === undefined)
         //Makes the theme apply when called
         ApplyTheme() : VNTheme
         {
-            let VNChars = document.getElementsByClassName('VNChar') as HTMLCollectionOf<HTMLElement>
+            const VNChars = document.getElementsByClassName('VNChar') as HTMLCollectionOf<HTMLElement>
             for (let i = 0; i < VNChars.length; i++)
             {
                 VNChars[i].style.color = this.charTextColor
             }
 
-            let VNTexts = document.getElementsByClassName('VNText') as HTMLCollectionOf<HTMLElement>
+            const VNTexts = document.getElementsByClassName('VNText') as HTMLCollectionOf<HTMLElement>
             for (let i = 0; i < VNTexts.length; i++)
             {
                 VNTexts[i].style.color = this.dialogueTextColor
             }
 
-            let VNTextboxes = document.getElementsByClassName('VNTextbox') as HTMLCollectionOf<HTMLElement>
+            const VNTextboxes = document.getElementsByClassName('VNTextbox') as HTMLCollectionOf<HTMLElement>
             for (let i = 0; i < VNTextboxes.length; i++)
             {
                 VNTextboxes[i].style.backgroundColor = this.textBGColor
@@ -151,14 +151,14 @@ if (finishedVNLib === false || finishedVNLib === undefined)
         {
             $(document).ready(() => 
             {
-                let splashHead = document.createElement('h1')
+                const splashHead = document.createElement('h1')
                 splashHead.innerHTML = 'Created with the Thor Game Engine'
                 splashHead.id = 'SplashHead'
                 document.body.appendChild(splashHead)
                 splashHead.style.display = 'none'
                 splashHead.style.textAlign = 'center'
     
-                let splashButton = document.createElement('button')
+                const splashButton = document.createElement('button')
                 splashButton.innerHTML = 'Click here to start'
                 splashButton.className = 'SplashButton'
                 splashButton.style.margin = '0 auto'
@@ -207,7 +207,7 @@ if (finishedVNLib === false || finishedVNLib === undefined)
                 
             }
 
-            let defaultTheme = new VNTheme('white', '#874BE8', 'rgba(132, 0, 255, 0.35)')
+            const defaultTheme = new VNTheme('white', '#874BE8', 'rgba(132, 0, 255, 0.35)')
 
             this.arcs = arcs
 
@@ -328,7 +328,7 @@ if (finishedVNLib === false || finishedVNLib === undefined)
         CheckForInput()
         {
 
-            let advanceChoice = () =>
+            const advanceChoice = () =>
             {
                 this.currentArc.Advance()
  
@@ -373,9 +373,9 @@ if (finishedVNLib === false || finishedVNLib === undefined)
                 //Otherwise, make sure it's clicking in the preview window so that editing 
                 //does not make playtesting a pain
 
-                let advanceOnClick = (e) => 
+                const advanceOnClick = (e) => 
                 {
-                    let div = document.getElementById('GamePreviewWindow')
+                    const div = document.getElementById('GamePreviewWindow')
                     if (div.contains(e.target))
                     {
                         if ((e.target as HTMLButtonElement).className != 'ChoiceButton')
@@ -386,7 +386,7 @@ if (finishedVNLib === false || finishedVNLib === undefined)
                     }
                 }
 
-                let advanceOnSpace = (e) =>
+                const advanceOnSpace = (e) =>
                 {
                     if (e.keyCode === 32)
                     {
@@ -456,7 +456,7 @@ if (finishedVNLib === false || finishedVNLib === undefined)
          */
 
         dialogueNodes : VNNode[] = []
-        choiceNode : VNChoice //For now, let's leave it at one choice at the end of the arc
+        choiceNode : VNChoice //For now, const's leave it at one choice at the end of the arc
         currentNode : number = 0
         thisArc : any
         page : PageVN
@@ -527,7 +527,7 @@ if (finishedVNLib === false || finishedVNLib === undefined)
                         }
                     }
 
-                    let previewWindow = document.getElementById('GamePreviewWindow');
+                    const previewWindow = document.getElementById('GamePreviewWindow');
 
                     (previewWindow) ? previewWindow.style.backgroundColor = 'black'
                                     : document.body.style.backgroundColor = 'black';
@@ -538,7 +538,7 @@ if (finishedVNLib === false || finishedVNLib === undefined)
                                     : document.body.style.backgroundSize = "auto 100%";
                 }
 
-                let texts = document.getElementsByClassName("VNText")
+                const texts = document.getElementsByClassName("VNText")
                 if (this.dialogueNodes[this.currentNode].isTextItalic)
                 {
                     for (var i = 0; i < texts.length; i++)
@@ -627,15 +627,21 @@ if (finishedVNLib === false || finishedVNLib === undefined)
                 {
                     (speaker as any).theme.ApplyTheme()
                 }
+                else
+                {
+                    console.error("There is no speaker defined for the node. If you are adding nodes "
+                                + "to a new arc, remember to define the speaker, image to use and "
+                                + "background again.")
+                }
             }
-            let node = new VNNode(this, dialogue, speaker, charImg, bgImg)
+            const node = new VNNode(this, dialogue, speaker, charImg, bgImg)
             this.dialogueNodes.push(node)
 
             if (this.dialogueNodes.length == 1)
             {
                 document.addEventListener('DOMContentLoaded', () =>
                 {
-                    let VNC = document.getElementsByClassName('VNChar')
+                    const VNC = document.getElementsByClassName('VNChar')
                     for (let i = 0; i < VNC.length; i++)
                     {
                         if ((this.dialogueNodes[0].speaker as any).name) //If it's a VNCharacter
@@ -721,7 +727,7 @@ if (finishedVNLib === false || finishedVNLib === undefined)
 
             clearInterval(this.arc.dialogueNodes[this.arc.currentNode - 2].dialogueInterval)
 
-            let chars = document.getElementsByClassName('VNChar')
+            const chars = document.getElementsByClassName('VNChar')
             for (let i = 0; i < chars.length; i++)
             {
                 chars[i].innerHTML = ' '
@@ -732,7 +738,7 @@ if (finishedVNLib === false || finishedVNLib === undefined)
                 textWindows[j].innerHTML = '' //Clear the text on the text windows
                 for (let i = 0; i < this.buttonDialogues.length; i++)
                 {
-                    let but = document.createElement('button')
+                    const but = document.createElement('button')
                     but.innerHTML = this.buttonDialogues[i]
                     but.style.display = 'block'
                     but.style.marginTop = '1%'
@@ -760,12 +766,13 @@ if (finishedVNLib === false || finishedVNLib === undefined)
                         this.arc.page.currentArc = this.buttonArcChoices[i]
                         this.arc.currentNode = 1;
                         this.arc.page.currentArc.currentNode = 1
+                        console.log(this.arc.page.currentArc)
                         this.arc.page.currentArc.dialogueNodes[0].ScrollText()
 
-                        let char = document.getElementsByClassName('VNChar')
+                        const char = document.getElementsByClassName('VNChar')
                         for (let i = 0; i < char.length; i++)
                         {
-                            let speaker = (this.arc.page.currentArc.dialogueNodes[0] as any).speaker
+                            const speaker = (this.arc.page.currentArc.dialogueNodes[0] as any).speaker
                             char[i].innerHTML = 
                             (speaker.name) ? 
                             speaker.name : 
@@ -861,7 +868,7 @@ if (finishedVNLib === false || finishedVNLib === undefined)
             var letter : number = 0 //0 to length of string
             var textWindows = document.getElementsByClassName('VNText')
 
-            let htmlImgs = document.getElementsByClassName('VNCharImgs');
+            const htmlImgs = document.getElementsByClassName('VNCharImgs');
 
 
             for (let i = 0; i < htmlImgs.length; i++)
@@ -869,7 +876,7 @@ if (finishedVNLib === false || finishedVNLib === undefined)
                 for (let j = 0; j < this.charImg.length; j++)
                 {
 
-                    let nodesrc = 'upload/resources/' + this.charImg;
+                    const nodesrc = 'upload/resources/' + this.charImg;
                     let emptyPath = false;
                     if (nodesrc === "upload/resources/ " || nodesrc === "upload/resources/")
                     {

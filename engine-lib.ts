@@ -1,7 +1,7 @@
 //Used for common engine functions, such as launching the game. Modify at your 
 //own risk.
 
-let CheckShortcutKeys = () => 
+const CheckShortcutKeys = () => 
 {
     if (keysDownArr.includes(' ') && keysDownArr.includes('Control'))
     {
@@ -9,20 +9,20 @@ let CheckShortcutKeys = () =>
     }
 }
 
-let CreateSaveObject = () => 
+const CreateSaveObject = () => 
 {
 
     //We want to save the project name, scripts, and general settings and then read 
     //them on project load. 
 
-    let obj = new ProjectSave((document.getElementById('ProjectNameInput') as any).value,
+    const obj = new ProjectSave((document.getElementById('ProjectNameInput') as any).value,
                                UserScripts)
 
     return obj
 }
 
 //Loading, incomplete
-let LoadSaveFile = () => 
+const LoadSaveFile = () => 
 {
     fetch('/projects/save.project', {method: 'GET'})
         .then((res) => 
@@ -43,7 +43,7 @@ let LoadSaveFile = () =>
         })
 }
 
-let LoadProject = (response : Response) => //If no location is given, assume latest project
+const LoadProject = (response : Response) => //If no location is given, assume latest project
 {
 
     response.json().then((data) => 
@@ -53,11 +53,11 @@ let LoadProject = (response : Response) => //If no location is given, assume lat
 
 }
 
-let SetProjectUpAfterLoad = (savedData) => 
+const SetProjectUpAfterLoad = (savedData) => 
 {
     (document.getElementById('ProjectNameInput') as HTMLInputElement).value = savedData.name
 
-    let el = document.getElementById('Window2Dropdown')
+    const el = document.getElementById('Window2Dropdown')
 
     for (let i = 0; i < el.childElementCount; i++)
     {
@@ -84,23 +84,23 @@ let SetProjectUpAfterLoad = (savedData) =>
 
 //Allows you to save a project to a user (user part is coming soon, for now saves it to a 
 //project folder)
-let SaveProject = (location? : string) => 
+const SaveProject = (location? : string) => 
 {
 
-    let formData = new FormData()
+    const formData = new FormData()
  
-    let saveObj = CreateSaveObject()
+    const saveObj = CreateSaveObject()
 
     SaveUserScriptText()
 
     formData.append('project-save', JSON.stringify(saveObj))
 
-    let req = {
+    const req = {
         method: "POST", 
         body: formData,
     }
 
-    let SaveToFolder = () => 
+    const SaveToFolder = () => 
     {
         
         fetch('/projects', req).then((response) => 
@@ -160,13 +160,13 @@ document.addEventListener('keyup', (event) =>
 })
 
 //Launches the game
-let LaunchGame = () =>
+const LaunchGame = () =>
 {
 
     //Grab the stuff written in the text window and check
     //if it works as Javascript 
 
-    let textInputWindowValue = editor.getValue()
+    const textInputWindowValue = editor.getValue()
 
     ExecuteGameInEditor(textInputWindowValue)
 
@@ -175,20 +175,20 @@ let LaunchGame = () =>
 //Gets called before the game is packed into a zip.
 //Makes all of the game files and adds them to the
 //game itself to be exported
-let MakeGame = async () => 
+const MakeGame = async () => 
 {
     //Doctype needs to be up here as well as charset
 
     console.log("Starting build process...")
 
     //Will likely be allowed to be changed in the future
-    let outFile = new HTMLFile("index.html", "")
+    const outFile = new HTMLFile("index.html", "")
 
-    let title = (document.getElementById('ProjectNameInput') as any).value
+    const title = (document.getElementById('ProjectNameInput') as any).value
 
-    let html = outFile.MakeElement("html", "", "") //Outer HTML tag
+    const html = outFile.MakeElement("html", "", "") //Outer HTML tag
 
-    let head = outFile.MakeElement("head", "", "")
+    const head = outFile.MakeElement("head", "", "")
 
     outFile.NestElement(head,
                         outFile.MakeElement("title", "", title)) //Put the title in the head
@@ -209,7 +209,7 @@ let MakeGame = async () =>
     console.log("HTML file constructed in memory. Adding user scripts to build.")
 
     let biggest = 0;
-    let scriptsInExecutionOrder : UserScript[] = [];
+    const scriptsInExecutionOrder : UserScript[] = [];
     for (let i = 1; i < UserScripts.length; i++)
     {
         if (UserScripts[i].executionOrder > biggest)
@@ -225,7 +225,7 @@ let MakeGame = async () =>
         outFile.AddElement("script", "src = \"" + scriptsInExecutionOrder[i].name + ".js\"", "")
         console.log(scriptsInExecutionOrder[i].name + " has had a script tag added in the HTML file.")
 
-        let script = new GameFile(scriptsInExecutionOrder[i].name + '.js', '')
+        const script = new GameFile(scriptsInExecutionOrder[i].name + '.js', '')
         script.contents = scriptsInExecutionOrder[i].text
         Game.AddFile(script)
         console.log(scriptsInExecutionOrder[i].name + " has had its file added to the build.")
@@ -256,9 +256,9 @@ let MakeGame = async () =>
 
 }
 
-let AddLibFileToGameFiles = (game : GameFiles, src : string, name : string) => 
+const AddLibFileToGameFiles = (game : GameFiles, src : string, name : string) => 
 {
-    let lib = new GameFile(name, "")
+    const lib = new GameFile(name, "")
 
     lib.contents = ReadFileOnServer(src)
 
@@ -290,7 +290,7 @@ function DeleteImageFromServer(imgName : string)
 
 async function GetImagesFileData()
 {
-    let imgs = await GetImagesOnServer('upload/resources')
+    const imgs = await GetImagesOnServer('upload/resources')
 
     console.log("It has awaited the images on the server.")
 
@@ -309,7 +309,7 @@ async function GetImagesFileData()
         //no matter what this will be string[]
         {
             imgs[i] = imgs[i].replace(/ /g, '')
-            let imgFile = new GameFile(imgs[i], '/imgs/')
+            const imgFile = new GameFile(imgs[i], '/imgs/')
             fetch('/upload/resources/' + imgs[i], 
             {
                 method: "GET"
@@ -317,7 +317,7 @@ async function GetImagesFileData()
             .then(async (res) => 
             {
                 console.log("Fetch request successful. Awaiting blob.")
-                let resBlob = await res.blob()
+                const resBlob = await res.blob()
 
                 console.log('"' + imgs[i] + '" has had its data recieved from the server.')
 
@@ -351,14 +351,14 @@ async function GetImagesOnServer(path : string) //Gets images from server with p
     return await new Promise(async (resolve, reject) => 
     {
         console.log("Sending a POST request to the server for the image files present.")
-        let result = await fetch('/imgfiles', { 
+        const result = await fetch('/imgfiles', { 
             method: "POST",
             body: pathForm
         }).then((response) => 
         {
             console.log("POST request has been answered.")
-            let f = response.headers.get('files')
-            let fsplit = f.split(',')
+            const f = response.headers.get('files')
+            const fsplit = f.split(',')
 
             console.log("The files have been gotten from the response headers.")
     
@@ -374,7 +374,7 @@ async function GetImagesOnServer(path : string) //Gets images from server with p
                 }
             }
     
-            let images = fsplit
+            const images = fsplit
 
             console.log("Image files prepared.")
             resolve(images)
@@ -386,7 +386,7 @@ async function GetImageOnServer(name : string, directory : string)
 {
     return await new Promise(async (resolve, reject) => 
     {
-        let imgTest = new GameFile(name, directory)
+        const imgTest = new GameFile(name, directory)
 
         //  upload/resources/name.jpg
         if (directory[directory.length - 1] != '/') //If it doesn't end in a slash
@@ -404,33 +404,33 @@ async function GetImageOnServer(name : string, directory : string)
     })
 }
 
-let ClearGamePreviewWindow = () => 
+const ClearGamePreviewWindow = () => 
 {
-    let el = document.getElementById('GamePreviewWindow')
+    const el = document.getElementById('GamePreviewWindow')
 
     el.innerHTML = null
 
     el.insertAdjacentHTML('afterbegin', CreateWindow('GamePreviewWindowDropdown'))
 }
 
-let ThrowScriptError = (error : Error) => 
+const ThrowScriptError = (error : Error) => 
 {
-    let el = document.createElement("p")
+    const el = document.createElement("p")
     el.innerHTML = error.name + ": " + error.message + '; ' + error.stack
     el.className = "ErrorText"
     document.getElementById("ErrorWindow").appendChild(el)
     WarnOfCommonErrors(error)
 }
 
-let PrintToConsole = (content : string) => 
+const PrintToConsole = (content : string) => 
 {
-    let el = document.createElement('p')
+    const el = document.createElement('p')
     el.innerHTML = content
     el.className = 'ConsoleText'
     document.getElementById('ErrorWindow').appendChild(el)
 }
 
-let WarnOfCommonErrors = (error) => 
+const WarnOfCommonErrors = (error) => 
 {
     var advice = "";
     if (error.message.toLowerCase() === "addelem is not defined")
@@ -449,14 +449,14 @@ let WarnOfCommonErrors = (error) =>
         advice += "Did you mean 'SetStyle(element : any, style : string)'?"
     }
 
-    let el = document.createElement("p")
+    const el = document.createElement("p")
     el.innerHTML = advice
     el.className = "ErrorFix"
     document.getElementById("ErrorWindow").appendChild(el)
 }
 
 //Adds a user script to the list of user scripts
-let AddUserScript = (name?) : UserScript =>
+const AddUserScript = (name?) : UserScript =>
 {
     console.log("Adding a user script.")
 
@@ -465,7 +465,7 @@ let AddUserScript = (name?) : UserScript =>
 
 //Changes the current user script in the CodeMirror to being 
 //the script the user selects.
-let ChangeUserScript = (index) : UserScript => 
+const ChangeUserScript = (index) : UserScript => 
 {
     SaveUserScriptText()
 
@@ -478,7 +478,7 @@ let ChangeUserScript = (index) : UserScript =>
 
 //Saves the user script text in the CodeMirror to a variable
 //for the user script it corresponds to
-let SaveUserScriptText = () => 
+const SaveUserScriptText = () => 
 {
     if (editor.getValue() === CodeMirrorDefaultCode)
     {
@@ -488,7 +488,7 @@ let SaveUserScriptText = () =>
 }
 
 //Executes the game inside the editor itself (in the game preview window)
-let ExecuteGameInEditor = (textInputWindowValue : string) => 
+const ExecuteGameInEditor = (textInputWindowValue : string) => 
 {
     SaveUserScriptText()
 
@@ -531,7 +531,7 @@ let ExecuteGameInEditor = (textInputWindowValue : string) =>
     AddUserScriptsInEditor()
 }
 
-let AddDebugToolsInEditor = () => 
+const AddDebugToolsInEditor = () => 
 {
     //Adds in debug tools in the future
     console.error("Debugging in-editor not fully implemented");
@@ -541,11 +541,11 @@ let AddDebugToolsInEditor = () =>
     debug.gameData = []
 }
 
-let AddUserScriptsInEditor = () => 
+const AddUserScriptsInEditor = () => 
 {
     //Make this with respect to script execution order
 
-    let scriptsInExecutionOrder = []
+    const scriptsInExecutionOrder = []
     let biggest = 0;
 
     for (let i = 1; i < UserScripts.length; i++)
@@ -559,12 +559,12 @@ let AddUserScriptsInEditor = () =>
     for (let i = 0; i < scriptsInExecutionOrder.length; i++)
     {
         //Add elements to link the userscripts up
-        let script = document.createElement("script")
+        const script = document.createElement("script")
         script.id = scriptsInExecutionOrder[i].name
         script.setAttribute('class', 'RuntimeUserScript')
         script.type = 'text/javascript'
-        let userScriptText = "try {\n" + scriptsInExecutionOrder[i].text + "\n} catch (error) { ThrowScriptError(error) }"
-        let code = userScriptText
+        const userScriptText = "try {\n" + scriptsInExecutionOrder[i].text + "\n} catch (error) { ThrowScriptError(error) }"
+        const code = userScriptText
 
         try
         {
@@ -579,12 +579,12 @@ let AddUserScriptsInEditor = () =>
     }
 
     //Deal with inline script last as it always executes last
-    let script = document.createElement("script")
+    const script = document.createElement("script")
     script.id = UserScripts[0].name
     script.setAttribute('class', 'RuntimeUserScript')
     script.type = 'text/javascript'
-    let userScriptText = "try {\n" + UserScripts[0].text + "\n} catch (error) { ThrowScriptError(error) }"
-    let code = userScriptText
+    const userScriptText = "try {\n" + UserScripts[0].text + "\n} catch (error) { ThrowScriptError(error) }"
+    const code = userScriptText
 
     try
     {
@@ -599,14 +599,14 @@ let AddUserScriptsInEditor = () =>
 }
 
 //Adds engine dependencies in while still in-engine
-let AddDependenciesInEditor = () => 
+const AddDependenciesInEditor = () => 
 {
     
-    let funcLib = document.createElement("script")
+    const funcLib = document.createElement("script")
     funcLib.id = "FuncLibScript"
-    let typeLib = document.createElement("script")
+    const typeLib = document.createElement("script")
     typeLib.id = "TypeLibScript"
-    let vnLib = document.createElement('script')
+    const vnLib = document.createElement('script')
     vnLib.id = "VNLibScript"
 
     funcLib.type = 'text/javascript'
@@ -637,16 +637,16 @@ let AddDependenciesInEditor = () =>
 }
 
 //Downloads the file which will play the game (.html file)
-let DownloadGameFile = (data : string, fileName : string) =>
+const DownloadGameFile = (data : string, fileName : string) =>
 {
-    let blob : Blob = new Blob([data], {type: 'text/csv'})
+    const blob : Blob = new Blob([data], {type: 'text/csv'})
     if (window.navigator.msSaveOrOpenBlob)
     {
         window.navigator.msSaveBlob(blob, fileName)
     }
     else
     {
-        let a = document.createElement('a')
+        const a = document.createElement('a')
         a.href = URL.createObjectURL(blob)
         a.download = fileName
         document.body.appendChild(a)
@@ -655,12 +655,12 @@ let DownloadGameFile = (data : string, fileName : string) =>
     }
 }
 
-let ReadFileOnServer = (path : string) : string => 
+const ReadFileOnServer = (path : string) : string => 
 {
     
     let result = null
     
-    let XMLHttp = new XMLHttpRequest()
+    const XMLHttp = new XMLHttpRequest()
     //For now, leaving as XMLHttpRequest. Will become fetch in the future.
     XMLHttp.open("GET", path, false)
     XMLHttp.send()
@@ -675,7 +675,7 @@ let ReadFileOnServer = (path : string) : string =>
 async function ReadImageOnServer (path: string)
 {
 
-    let getData = await fetch(path).then(async (response) => 
+    const getData = await fetch(path).then(async (response) => 
     {
         return await response.blob()
     }).catch(async (err) => 
@@ -684,10 +684,10 @@ async function ReadImageOnServer (path: string)
         return null
     })
     
-    let reader = new FileReader()
+    const reader = new FileReader()
     reader.readAsArrayBuffer(getData)  //1st
 
-    let res = new Promise(async (resolve) => 
+    const res = new Promise(async (resolve) => 
     {
         reader.addEventListener("loadend",async () => 
         {
@@ -704,7 +704,7 @@ async function ReadImageOnServer (path: string)
 }
 
 //Displaying options windows, etc.
-let OpenWindow = (window : string) => 
+const OpenWindow = (window : string) => 
 {
     
 }

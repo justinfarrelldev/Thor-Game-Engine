@@ -17,7 +17,7 @@ class Debugger
 
     AddGUI()
     {
-        let div = document.createElement("div")
+        const div = document.createElement("div")
 
         div.style.backgroundColor = "rgb(94,94,94,0.4)"
         div.style.width = "75%"
@@ -33,7 +33,7 @@ class Debugger
 
     HideGUI()
     {
-        let gui = document.getElementById("ThorDebuggerGUI")
+        const gui = document.getElementById("ThorDebuggerGUI")
 
         gui.style.display = 'none'
 
@@ -42,7 +42,7 @@ class Debugger
 
     ShowGUI()
     {
-        let gui = document.getElementById("ThorDebuggerGUI")
+        const gui = document.getElementById("ThorDebuggerGUI")
         gui.style.display = this.defaultDisplayValue
 
         this.BuildUI()
@@ -52,11 +52,11 @@ class Debugger
 
     BuildUI()
     {
-        let gui = document.getElementById("ThorDebuggerGUI")
+        const gui = document.getElementById("ThorDebuggerGUI")
 
         //will need to make these elements nest
-        let uiElement = document.createElement("div")
-        let name = document.createElement('p')
+        const uiElement = document.createElement("div")
+        const name = document.createElement('p')
         name.style.fontWeight = "bold"
         uiElement.appendChild(name)
     }

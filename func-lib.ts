@@ -6,7 +6,7 @@ function AddElem(type : string, innerHTML : string) : any
 
 function AddElem(type : string, innerHTML : string, id? : string) : any
 {
-    let el = document.createElement(type)
+    const el = document.createElement(type)
     el.innerHTML = innerHTML
 
     if (id != undefined)
@@ -23,7 +23,7 @@ function AddButton(text : string, onclick : string) : HTMLButtonElement
 //Shorthand
 function AddButton(text : string, onclick : any, id? : string) : HTMLButtonElement
 {
-    let el = document.createElement("button")
+    const el = document.createElement("button")
     el.innerHTML = text
 
     if (id != undefined)
@@ -41,7 +41,7 @@ function AddButton(text : string, onclick : any, id? : string) : HTMLButtonEleme
 //Adds canvas with optional context as well
 function AddCanvas(contextName? : string, mode? : string, style? : string) : HTMLCanvasElement
 {
-    let canvas = AddElem("canvas", 'Your browser does not support canvas.')
+    const canvas = AddElem("canvas", 'Your browser does not support canvas.')
 
     if (contextName != null || contextName != undefined)
     {
@@ -109,7 +109,7 @@ function GetById(id : string) : HTMLElement
 function SetBackgroundImage(imgName : string)
 {
 
-    let sizing = 'cover'
+    const sizing = 'cover'
     if (!document.getElementById("THOR-ENGINE-IN-EDITOR"))
     {
         document.body.style.backgroundImage = "url(upload/resources/" + imgName + ")"
@@ -118,7 +118,7 @@ function SetBackgroundImage(imgName : string)
     }
     else
     {
-        let previewWindow = document.getElementById('GamePreviewWindow');
+        const previewWindow = document.getElementById('GamePreviewWindow');
         (previewWindow) ? previewWindow.style.backgroundImage = "url(upload/resources/" + imgName + ")"
                         : document.body.style.backgroundImage = "url(upload/resources/" + imgName + ")";
 
