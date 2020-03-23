@@ -458,13 +458,16 @@ if (finishedVNLib === false || finishedVNLib === undefined)
         dialogueNodes : VNNode[] = []
         choiceNode : VNChoice //For now, const's leave it at one choice at the end of the arc
         choiceButton : HTMLButtonElement
-        choiceButtonColorEnter : number[] = [150, 0, 150, 1]
-        choiceButtonColorExit : number[] = [100, 0, 100, 0.5]
+        choiceButtonColorEnter : string = "rgba(150, 0, 150, 1)"//[150, 0, 150, 1]
+        choiceButtonColorExit : string = "rgba(100, 0, 100, 0.5)"//[100, 0, 100, 0.5]
+        choiceButtonTextColor : string = "white"
         choiceButtonFontSize : any = "medium" 
         choiceButtonMargin : string = "0 0 0 0"
         choiceButtonPadding : string = "0% 0% 0% 0%"
-
         choiceButtonDisplay : string = "block"
+        choiceButtonFontFamily : string = "Arial"
+        choiceButtonBorder = "none"
+        choiceButtonBorderRadius = "10%"
         currentNode : number = 0
         thisArc : any
         page : PageVN
@@ -751,35 +754,28 @@ if (finishedVNLib === false || finishedVNLib === undefined)
                     but.style.display = this.arc.choiceButtonDisplay
                     but.style.margin = this.arc.choiceButtonMargin
                     but.style.padding = this.arc.choiceButtonPadding
-                    but.style.backgroundColor = "rgba(" + this.arc.choiceButtonColorExit[0] + "," +
-                                                          this.arc.choiceButtonColorExit[1] + "," +
-                                                          this.arc.choiceButtonColorExit[2] + "," +
-                                                          this.arc.choiceButtonColorExit[3] + ")"
+                    but.style.backgroundColor = this.arc.choiceButtonColorExit
                     //Button attributes: Color, margin, display, etc
 
                     but.addEventListener('mouseenter', () => 
                     {
                         //Change to desired color
-                        but.style.backgroundColor = "rgba(" + this.arc.choiceButtonColorEnter[0] + "," +
-                                                                this.arc.choiceButtonColorEnter[1] + "," +
-                                                                this.arc.choiceButtonColorEnter[2] + "," +
-                                                                this.arc.choiceButtonColorEnter[3] + ")"
+                        but.style.backgroundColor = this.arc.choiceButtonColorEnter
 
                     })
 
                     but.addEventListener('mouseleave', () => 
                     {
                         //Change to color when mouse is left
-                        but.style.backgroundColor = "rgba(" + this.arc.choiceButtonColorExit[0] + "," +
-                        this.arc.choiceButtonColorExit[1] + "," +
-                        this.arc.choiceButtonColorExit[2] + "," +
-                        this.arc.choiceButtonColorExit[3] + ")"
+                        but.style.backgroundColor = this.arc.choiceButtonColorExit
                     })
 
-                    but.style.borderRadius = '10%'
-                    but.style.border = 'none'
+                    but.style.borderRadius = this.arc.choiceButtonBorderRadius
+                    but.style.border = this.arc.choiceButtonBorder
                     but.className = 'ChoiceButton'
                     but.style.fontSize = this.arc.choiceButtonFontSize
+                    but.style.fontFamily = this.arc.choiceButtonFontFamily
+                    but.style.color = this.arc.choiceButtonTextColor
                     but.onclick = () => {
                         //Activate another arc which this button corresponds to
                         this.arc.page.currentArc = this.buttonArcChoices[i]
