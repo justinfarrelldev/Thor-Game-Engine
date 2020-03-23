@@ -457,6 +457,14 @@ if (finishedVNLib === false || finishedVNLib === undefined)
 
         dialogueNodes : VNNode[] = []
         choiceNode : VNChoice //For now, const's leave it at one choice at the end of the arc
+        choiceButton : HTMLButtonElement
+        choiceButtonColorEnter : number[] = [150, 0, 150, 1]
+        choiceButtonColorExit : number[] = [100, 0, 100, 0.5]
+        choiceButtonFontSize : any = "medium" 
+        choiceButtonMargin : string = "0 0 0 0"
+        choiceButtonPadding : string = "0% 0% 0% 0%"
+
+        choiceButtonDisplay : string = "block"
         currentNode : number = 0
         thisArc : any
         page : PageVN
@@ -723,7 +731,7 @@ if (finishedVNLib === false || finishedVNLib === undefined)
 
         CreateButtons()
         {
-            var textWindows = document.getElementsByClassName('VNText')
+            const textWindows = document.getElementsByClassName('VNText')
 
             clearInterval(this.arc.dialogueNodes[this.arc.currentNode - 2].dialogueInterval)
 
@@ -740,33 +748,43 @@ if (finishedVNLib === false || finishedVNLib === undefined)
                 {
                     const but = document.createElement('button')
                     but.innerHTML = this.buttonDialogues[i]
-                    but.style.display = 'block'
-                    but.style.marginTop = '1%'
-                    but.style.marginLeft = '1%'
-                    but.style.backgroundColor = 'rgba(150,0,150,0)'
+                    but.style.display = this.arc.choiceButtonDisplay
+                    but.style.margin = this.arc.choiceButtonMargin
+                    but.style.padding = this.arc.choiceButtonPadding
+                    but.style.backgroundColor = "rgba(" + this.arc.choiceButtonColorExit[0] + "," +
+                                                          this.arc.choiceButtonColorExit[1] + "," +
+                                                          this.arc.choiceButtonColorExit[2] + "," +
+                                                          this.arc.choiceButtonColorExit[3] + ")"
+                    //Button attributes: Color, margin, display, etc
 
                     but.addEventListener('mouseenter', () => 
                     {
                         //Change to desired color
-                        but.style.backgroundColor = 'rgba(150,0,150,1)'
+                        but.style.backgroundColor = "rgba(" + this.arc.choiceButtonColorEnter[0] + "," +
+                                                                this.arc.choiceButtonColorEnter[1] + "," +
+                                                                this.arc.choiceButtonColorEnter[2] + "," +
+                                                                this.arc.choiceButtonColorEnter[3] + ")"
 
                     })
 
                     but.addEventListener('mouseleave', () => 
                     {
                         //Change to color when mouse is left
-                        but.style.backgroundColor = 'rgba(1,0,0,0)'
+                        but.style.backgroundColor = "rgba(" + this.arc.choiceButtonColorExit[0] + "," +
+                        this.arc.choiceButtonColorExit[1] + "," +
+                        this.arc.choiceButtonColorExit[2] + "," +
+                        this.arc.choiceButtonColorExit[3] + ")"
                     })
 
                     but.style.borderRadius = '10%'
                     but.style.border = 'none'
                     but.className = 'ChoiceButton'
+                    but.style.fontSize = this.arc.choiceButtonFontSize
                     but.onclick = () => {
                         //Activate another arc which this button corresponds to
                         this.arc.page.currentArc = this.buttonArcChoices[i]
                         this.arc.currentNode = 1;
                         this.arc.page.currentArc.currentNode = 1
-                        console.log(this.arc.page.currentArc)
                         this.arc.page.currentArc.dialogueNodes[0].ScrollText()
 
                         const char = document.getElementsByClassName('VNChar')
@@ -785,7 +803,7 @@ if (finishedVNLib === false || finishedVNLib === undefined)
                             }
                         }
                     }
-
+                    this.arc.choiceButton = but
                     textWindows[j].appendChild(but)
                 }
             }
