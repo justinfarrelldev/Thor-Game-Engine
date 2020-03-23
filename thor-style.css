@@ -123,6 +123,16 @@ ul.Dropdown li.DropdownItem1:active, .DropdownItem2:active {
     vertical-align: top;
 }
 
+.DropdownDiv #GamePreviewWindowDropdownDiv {
+    float: right;
+    height: 1.75em; 
+    width: 2.2em; 
+    margin-right: 5.5%; 
+    margin-top: 1.5%;
+    vertical-align: top;
+    position: absolute;
+}
+
 .DropdownItem1 {
     margin-left: 0;
     padding-left: 0;

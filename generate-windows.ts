@@ -11,7 +11,7 @@ const CreateWindow = (windowName : string) =>
         +
         '<!--Elements are added to this to simulate gameplay.-->'
 
-        +'    <!--Dropdown for preview menu-->'
+        +'    <!--Dropdown for preview menu-->' 
         +    '<div class = "DropdownDiv">'
         +            '<ul class = "Dropdown" onselectstart = "return false;">'
         +                '<li style = "position: absolute">'
@@ -33,7 +33,7 @@ const CreateWindow = (windowName : string) =>
     else if (windowName === 'GamePreviewWindowDropdown')
     {
         const el = 
-            '<div class = "DropdownDiv">'
+            '<div class = "DropdownDiv" style = "position: absolute; right: 0%; z-index: 10">'
         +            '<ul class = "Dropdown" onselectstart = "return false;">'
         +                '<li style = "position: absolute">'
                    +         '<button onclick = "DropdownOpenClose(' + "'Window1Dropdown'" + ')" title = '

@@ -24,6 +24,7 @@ class Debugger
         div.style.height = "25%"
         div.id = "ThorDebuggerGUI"
         div.style.overflow = "auto"
+        div.style.position = "absolute"
         this.defaultDisplayValue = div.style.display
 
         document.getElementById('GamePreviewWindow').appendChild(div)
