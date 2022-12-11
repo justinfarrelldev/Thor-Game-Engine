@@ -19,7 +19,7 @@
   "dependencies": {
     "@okta/oidc-middleware": "^2.1.0",
     "body-parser": "^1.19.0",
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "express-session": "^1.17.0",
     "formidable": "^1.2.2",
     "mkdirp": "^1.0.3",
