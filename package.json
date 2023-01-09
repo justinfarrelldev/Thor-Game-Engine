@@ -17,7 +17,7 @@
   },
   "homepage": "https://github.com/VortrusDev/Thor-Game-Engine#readme",
   "dependencies": {
-    "@okta/oidc-middleware": "^2.1.0",
+    "@okta/oidc-middleware": "^5.0.0",
     "body-parser": "^1.19.0",
     "express": "^4.17.1",
     "express-session": "^1.17.0",
